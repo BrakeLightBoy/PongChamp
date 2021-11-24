@@ -22,7 +22,7 @@ public class HelloApplication extends Application {
         try{
             BorderPane root = new BorderPane();
             ImageView imageView = new ImageView();
-            imageView.setImage(new Image("file:D:\\Programming\\Java\\PongChamp\\pongchamp\\src\\main\\resources\\pongchamp\\pongchamp\\Start.PNG"));
+            imageView.setImage(new Image("file:D:\\Programming\\Java\\PongChamp\\pongchamp\\src\\main\\resources\\pongchamp\\pongchamp\\Start.PNG"));                                           //I forgot to fix this path here so it might not work for everyone...
             imageView.fitWidthProperty().bind(stage.widthProperty());
             imageView.fitHeightProperty().bind(stage.heightProperty());
             imageView.setPreserveRatio(true);
