@@ -1,4 +1,4 @@
-package com.example.pongchamp;
+package pongchamp.pongchamp;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

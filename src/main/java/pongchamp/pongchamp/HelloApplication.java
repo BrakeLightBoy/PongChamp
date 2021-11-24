@@ -1,4 +1,4 @@
-package com.example.pongchamp;
+package pongchamp.pongchamp;
 
 import java.io.IOException;
 import javafx.application.Application;
