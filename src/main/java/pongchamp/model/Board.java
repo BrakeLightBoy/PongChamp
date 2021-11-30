@@ -29,7 +29,7 @@ public class Board implements Runnable {
     private Ball ball;
 
 
-    private List<Entity> entities;
+    private List<Entity> entities; //this may be a design flaw, but all the leftPaddle, rightPaddle and ball variables should be added to entities inside the constructor
 
     public Board() {
         this(new ArrayList<>());
@@ -58,12 +58,14 @@ public class Board implements Runnable {
 
         PaddleController emptyController = new EmptyPaddleController(); //this is for test purposes, will be removed in the future
 
+        //initialising entities
         this.leftPaddle = new NormalPaddle(new Location(42,450),leftPaddleMovementPath,emptyController,this);
         this.rightPaddle = new NormalPaddle(new Location(1158,450),rightPaddleMovementPath,emptyController,this);
         this.ball = new NormalBall(new Location(width/2f,height/2f),10,new Vector(-5,0),new Vector(0,0),this);
 
         this.entities.add(leftPaddle);
         this.entities.add(rightPaddle);
+        this.entities.add(ball);
 
     }
 
