@@ -20,6 +20,12 @@ public abstract class Ball extends Entity {
     }
 
     public void tick(){
+        if (location.getX()<0){
+            location.setX(600);
+        }
+        else if (location.getX()>1200){
+            location.setX(600);
+        }
         move();
     }
 

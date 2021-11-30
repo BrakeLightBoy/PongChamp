@@ -54,7 +54,7 @@ public class Board implements Runnable {
 
         this.leftPaddle = new NormalPaddle(new Point(42,450),leftPaddleMovementPath,emptyController,"left");
         this.rightPaddle = new NormalPaddle(new Point(1158,450),rightPaddleMovementPath,emptyController,"right");
-        this.ball = new NormalBall(new Point(width/2f,height/2f),10,new Vector(-1,5),new Vector(0,0));
+        this.ball = new NormalBall(new Point(width/2f,height/2f),10,new Vector(-4,0),new Vector(0,0));
 
         this.gameEntities.add(leftPaddle);
         this.gameEntities.add(rightPaddle);
