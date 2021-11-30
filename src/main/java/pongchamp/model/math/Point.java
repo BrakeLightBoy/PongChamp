@@ -1,10 +1,10 @@
 package pongchamp.model.math;
 
-public class Location {
+public class Point {
     private float x;
     private float y;
 
-    public Location(float x, float y) {
+    public Point(float x, float y) {
         this.x = x;
         this.y = y;
     }
@@ -24,14 +24,15 @@ public class Location {
     public void setY(float y) {
         this.y = y;
     }
-    public void add(Vector v){
+
+    public void movePoint(Vector v){
         this.x += v.getX();
         this.y += v.getY();
     }
 
     @Override
     public String toString() {
-        return "Location{" +
+        return "Point{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';

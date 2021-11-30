@@ -3,26 +3,36 @@ package pongchamp.model.entities;
 
 import pongchamp.controller.PaddleController;
 import pongchamp.model.Board;
+import pongchamp.model.Collidable;
+import pongchamp.model.Collision;
+import pongchamp.model.HitBox;
 import pongchamp.model.math.LineSegment;
-import pongchamp.model.math.Location;
+import pongchamp.model.math.Point;
 
-public abstract class Paddle extends Entity {
+public abstract class Paddle extends Entity implements Collidable {
     protected LineSegment movementPath;
     protected PaddleController paddleController;
-    protected Board board;
     protected float width;
     protected float height;
+    protected HitBox paddleHitBox;
+    protected String paddleType;
 
-    public Paddle(Location location, float width, float height , LineSegment movementPath, PaddleController paddleController, Board board) {
+    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, String paddleType) {
         super(location);
+        if (!(paddleType.equals("left")||paddleType.equals("right"))){
+            throw new IllegalArgumentException("Wrong paddle type");
+        }
+        this.paddleType = paddleType;
         this.movementPath = movementPath;
         this.paddleController = paddleController;
-        this.board = board;
         this.width =  width;
         this.height = height;
+        paddleHitBox = new HitBox(location.getX()-width/2,location.getY()-height/2, location.getX()+width/2, location.getY()+height/2);
     }
 
-    public abstract void onBallHit(Ball ball);
+    public abstract Collision checkBallCollision(Ball ball);
+
+
 
     public void setPaddleController(PaddleController paddleController) {
         this.paddleController = paddleController;

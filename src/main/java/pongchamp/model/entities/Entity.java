@@ -1,18 +1,18 @@
 package pongchamp.model.entities;
 
 import pongchamp.model.Collidable;
-import pongchamp.model.math.Location;
+import pongchamp.model.math.Point;
 import pongchamp.model.Metadata;
 
 import java.util.UUID;
 
-public abstract class Entity implements Collidable {
+public abstract class Entity {
 
    private final UUID uuid;
-   protected Location location;
+   protected Point location;
    private Metadata metadata;
 
-   public Entity(Location location) {
+   public Entity(Point location) {
        this.location = location;
        this.uuid = UUID.randomUUID();
        this.metadata =  new Metadata();
@@ -20,11 +20,11 @@ public abstract class Entity implements Collidable {
 
    public abstract void tick();
 
-   public Location getLocation() {
+   public Point getLocation() {
        return location;
    }
 
-   public void setLocation(Location location) {
+   public void setLocation(Point location) {
        this.location = location;
    }
 

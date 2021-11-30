@@ -56,7 +56,7 @@ public class SimpleRenderEngine extends JPanel implements Runnable {
         Graphics2D g2 = ((Graphics2D) g);
         g2.setColor(Color.WHITE);
 
-        for (Entity entity : board.getEntities()) {
+        for (Entity entity : board.getGameEntities()) {
             if (entity instanceof NormalBall){
                 renderBall(((Ball) entity),g2);
             }

@@ -4,7 +4,7 @@ import pongchamp.model.entities.*;
 import pongchamp.controller.EmptyPaddleController;
 import pongchamp.controller.PaddleController;
 import pongchamp.model.math.LineSegment;
-import pongchamp.model.math.Location;
+import pongchamp.model.math.Point;
 import pongchamp.model.math.Vector;
 
 import java.util.ArrayList;
@@ -17,67 +17,76 @@ public class Board implements Runnable {
     private final float paddleDistanceFromTheEdge = Properties.PADDLE_DISTANCE_FROM_THE_EDGE;
     private boolean running;
 
-    private final LineSegment upperWall;
-    private final LineSegment lowerWall;
+    private final Wall upperWall,lowerWall;
+    private final LineSegment leftPaddleMovementPath,rightPaddleMovementPath;
+    private Paddle leftPaddle,rightPaddle;
 
-    private final LineSegment leftPaddleMovementPath;
-    private final LineSegment rightPaddleMovementPath;
-
-    private Paddle leftPaddle;
-    private Paddle rightPaddle;
+    private ArrayList<Collidable> obstacles;
 
     private Ball ball;
 
+    private List<Entity> gameEntities;
 
-    private List<Entity> entities;
+
 
     public Board() {
-        this(new ArrayList<>());
-    }
-
-    public Board(List<Entity> entities) {
-        this.entities = new ArrayList<>(entities);
-
-        this.upperWall = new LineSegment(
-                new Location(0,0),
-                new Location(width,0)
-        );
-        this.lowerWall = new LineSegment(
-                new Location(0,height),
-                new Location(width,height));
+        gameEntities = new ArrayList<>();
+        obstacles = new ArrayList<>();
 
 
+        LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
+        upperWall = new Wall("upper",wallSegment);
+
+        wallSegment = new LineSegment(new Point(0,height),new Point(width,height));
+        lowerWall = new Wall("lower",wallSegment);
+
+//I don't think the paddle movement paths are still necessary, given the current implementation. -WP
         this.leftPaddleMovementPath = new LineSegment(
-                new Location(paddleDistanceFromTheEdge,0),
-                new Location(paddleDistanceFromTheEdge,height)
+                new Point(paddleDistanceFromTheEdge,0),
+                new Point(paddleDistanceFromTheEdge,height)
         );
         this.rightPaddleMovementPath = new LineSegment(
-                new Location(width-paddleDistanceFromTheEdge,0),
-                new Location(width-paddleDistanceFromTheEdge,height)
+                new Point(width-paddleDistanceFromTheEdge,0),
+                new Point(width-paddleDistanceFromTheEdge,height)
         );
 
         PaddleController emptyController = new EmptyPaddleController(); //this is for test purposes, will be removed in the future
 
-        this.leftPaddle = new NormalPaddle(new Location(42,450),leftPaddleMovementPath,emptyController,this);
-        this.rightPaddle = new NormalPaddle(new Location(1158,450),rightPaddleMovementPath,emptyController,this);
-        this.ball = new NormalBall(new Location(width/2f,height/2f),10,new Vector(-5,0),new Vector(0,0),this);
+        this.leftPaddle = new NormalPaddle(new Point(42,450),leftPaddleMovementPath,emptyController,"left");
+        this.rightPaddle = new NormalPaddle(new Point(1158,450),rightPaddleMovementPath,emptyController,"right");
+        this.ball = new NormalBall(new Point(width/2f,height/2f),10,new Vector(-5,0),new Vector(0,0));
 
-        this.entities.add(leftPaddle);
-        this.entities.add(rightPaddle);
+        this.gameEntities.add(leftPaddle);
+        this.gameEntities.add(rightPaddle);
 
+        obstacles.add(leftPaddle);
+        obstacles.add(rightPaddle);
+        obstacles.add(leftPaddle);
+        obstacles.add(lowerWall);
+        obstacles.add(upperWall);
     }
 
-    public List<Entity> getEntities() {
-        return entities;
+    public List<Entity> getGameEntities() {
+        return gameEntities;
     }
 
 
     @Override
     public void run() {
         while (running) {
-            for (Entity entity : entities) {
+            for (Entity entity : gameEntities) {
                 entity.tick();
+                if (entity instanceof Collidable){
+                     Collision collision = ((Collidable) entity).checkBallCollision(ball);
+                     ball.onCollision(collision);
+                }
             }
+            for (Collidable obstacle : obstacles){
+                Collision collision = obstacle.checkBallCollision(ball);
+                ball.onCollision(collision);
+            }
+
+
             //todo some rendering whether in this thread or a new one
             //todo some TPS/FPS syncing
 
@@ -90,7 +99,7 @@ public class Board implements Runnable {
         }
     }
 
-    public void checkCollision(){
+    public void checkCollisions(){
 
        //if collision happens it calls something like ball.onCollision(Collidable)
 
@@ -118,11 +127,11 @@ public class Board implements Runnable {
         return paddleDistanceFromTheEdge;
     }
 
-    public LineSegment getUpperWall() {
+    public Wall getUpperWall() {
         return upperWall;
     }
 
-    public LineSegment getLowerWall() {
+    public Wall getLowerWall() {
         return lowerWall;
     }
 

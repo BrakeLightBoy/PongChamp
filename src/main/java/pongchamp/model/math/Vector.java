@@ -25,11 +25,18 @@ public class Vector {
         this.y = y;
     }
 
-    public void apply(Vector v){
+    public void addVector(Vector v){
         this.x += v.x;
         this.y += v.y;
     }
 
+    public void multiplyX(float multiplier){
+        x *= multiplier;
+    }
+
+    public void multiplyY(float multiplier){
+        y *= multiplier;
+    }
 
     @Override
     public String toString() {
