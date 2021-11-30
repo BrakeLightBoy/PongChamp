@@ -18,4 +18,6 @@ public class LineSegment implements Collidable {
     public Location getEndPoint() {
         return endPoint;
     }
+
+    
 }

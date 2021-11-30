@@ -10,16 +10,14 @@ public abstract class Ball extends Entity {
     private int radius;
     protected Vector speed;
     protected Vector acceleration;
-    protected LineSegment ballPath;
     protected Board board;
 
 
-    public Ball(Location location, int radius, Vector speed, Vector acceleration, LineSegment ballPath, Board board) {
+    public Ball(Location location, int radius, Vector speed, Vector acceleration, Board board) {
         super(location);
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
-        this.ballPath = ballPath;
         this.board = board;
     }
 
@@ -49,13 +47,6 @@ public abstract class Ball extends Entity {
         this.acceleration = acceleration;
     }
 
-    public LineSegment getBallPath() {
-        return ballPath;
-    }
-
-    public void setBallPath(LineSegment ballPath) {
-        this.ballPath = ballPath;
-    }
 
     public int getRadius() {
         return radius;

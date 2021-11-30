@@ -1,12 +1,11 @@
 package pongchamp.model;
 
-import pongchamp.model.entities.Paddle;
+import pongchamp.model.entities.*;
 import pongchamp.controller.EmptyPaddleController;
 import pongchamp.controller.PaddleController;
-import pongchamp.model.entities.Entity;
-import pongchamp.model.entities.NormalPaddle;
 import pongchamp.model.math.LineSegment;
 import pongchamp.model.math.Location;
+import pongchamp.model.math.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,8 @@ public class Board implements Runnable {
 
     private Paddle leftPaddle;
     private Paddle rightPaddle;
+
+    private Ball ball;
 
 
     private List<Entity> entities;
@@ -55,10 +56,11 @@ public class Board implements Runnable {
                 new Location(width-paddleDistanceFromTheEdge,height)
         );
 
-        PaddleController emptyController = new EmptyPaddleController();
+        PaddleController emptyController = new EmptyPaddleController(); //this is for test purposes, will be removed in the future
 
-        this.leftPaddle = new NormalPaddle(new Location(42,450),50,16,leftPaddleMovementPath,emptyController,this);
-        this.rightPaddle = new NormalPaddle(new Location(1158,450),50,16,rightPaddleMovementPath,emptyController,this);
+        this.leftPaddle = new NormalPaddle(new Location(42,450),leftPaddleMovementPath,emptyController,this);
+        this.rightPaddle = new NormalPaddle(new Location(1158,450),rightPaddleMovementPath,emptyController,this);
+        this.ball = new NormalBall(new Location(width/2f,height/2f),10,new Vector(-5,0),new Vector(0,0),this);
 
         this.entities.add(leftPaddle);
         this.entities.add(rightPaddle);
@@ -80,7 +82,7 @@ public class Board implements Runnable {
             //todo some TPS/FPS syncing
 
             try {
-                Thread.sleep(10);
+                Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

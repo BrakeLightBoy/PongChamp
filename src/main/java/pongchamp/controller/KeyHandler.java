@@ -5,8 +5,14 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener,PaddleController {
 
+    private int upButton,downButton;
+
     private boolean upPressed, downPressed;
 
+    public KeyHandler(int upButton, int downButton) {
+        this.upButton = upButton;
+        this.downButton = downButton;
+    }
 
     public void keyTyped(KeyEvent e) {
 
@@ -17,20 +23,20 @@ public class KeyHandler implements KeyListener,PaddleController {
         int code = e.getKeyCode();
 
 
-        if (code == KeyEvent.VK_W){
+        if (code == upButton){
             upPressed = true;
         }
-        else if (code == KeyEvent.VK_S){
+        else if (code == downButton){
             downPressed = true;
         }
     }
 
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_W){
+        if (code == upButton){
             upPressed = false;
         }
-        else if (code == KeyEvent.VK_S){
+        else if (code == downButton){
             downPressed = false;
         }
     }
