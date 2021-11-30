@@ -26,25 +26,48 @@ public class NormalPaddle extends Paddle {
         if (paddleController.movingDown()){
             Vector movementVector = new Vector(0,platformSpeed);
             location.movePoint(movementVector);
-            paddleHitBox.moveBox(movementVector);
+            paddleCenterHitBox.moveBox(movementVector);
+            paddleLowerHitBox.moveBox(movementVector);
+            paddleUpperHitBox.moveBox(movementVector);
+
         }
         else if (paddleController.movingUp()){
             Vector movementVector = new Vector(0,-platformSpeed);
             location.movePoint(movementVector);
-            paddleHitBox.moveBox(movementVector);
+            paddleCenterHitBox.moveBox(movementVector);
+            paddleLowerHitBox.moveBox(movementVector);
+            paddleUpperHitBox.moveBox(movementVector);
         }
     }
 
     @Override
     public Collision checkBallCollision(Ball ball) {
-        if (paddleHitBox.checkBallIntersect(ball)){
-            if (paddleType.equals("left")){
-                return new Collision("paddle-left");
-            }
-            else {
-                return new Collision("paddle-right");
-            }
+        Boolean center = paddleCenterHitBox.checkBallIntersect(ball);
+        Boolean upper = paddleLowerHitBox.checkBallIntersect(ball);
+        Boolean lower = paddleUpperHitBox.checkBallIntersect(ball);
+
+        String data = "paddle-";
+        if (paddleType.equals("left")){
+            data += "left";
         }
+        else {
+            data += "right";
+        }
+        if (center){
+            data +="-center";
+            return new Collision(data);
+        }
+        else if (upper){
+            System.out.println("Ucorner");
+            data +="-uCorner";
+            return new Collision(data);
+        }
+        else if (lower){
+            System.out.println("lCorner");
+            data +="-lCorner";
+            return new Collision(data);
+        }
+
         return null;
     }
 }

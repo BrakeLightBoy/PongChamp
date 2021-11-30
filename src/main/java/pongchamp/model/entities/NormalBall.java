@@ -16,6 +16,9 @@ public class NormalBall extends Ball{
         location.movePoint(speed);
         speed.addVector(acceleration);
 
+        //use this to slow down the ball when testing corner shots
+//        speed.multiplyY(.99f);
+
 //        float friction = Properties.FRICTION;
 //        acceleration.setX(acceleration.getX()*friction);
 //        acceleration.setY(acceleration.getY()*friction);
@@ -28,6 +31,15 @@ public class NormalBall extends Ball{
         }
 
         String collisionData = collision.getData();
+
+        //temporarily switched lower and upper because of the render engine having the inverted y-axis
+        if (collisionData.contains("lCorner")){
+            speed.setY(Math.abs(speed.getY()));
+        }
+        else if (collisionData.contains("uCorner")){
+            speed.setY(-Math.abs(speed.getY()));
+        }
+
         if (collisionData.contains("left")){
             speed.setX(Math.abs(speed.getX()));
         }
