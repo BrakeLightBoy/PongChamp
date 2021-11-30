@@ -32,10 +32,10 @@ public class NormalBall extends Ball{
             speed.setX(Math.abs(speed.getX()));
         }
         else if (collisionData.contains("right")){
-            speed.setX(Math.abs(-speed.getX()));
+            speed.setX(-Math.abs(speed.getX()));
         }
         else if (collisionData.contains("upper")){
-            speed.setY(Math.abs(-speed.getY()));
+            speed.setY(-Math.abs(speed.getY()));
         }
         else if (collisionData.contains("lower")){
             speed.setY(Math.abs(speed.getY()));

@@ -35,13 +35,13 @@ public class Wall implements Collidable {
                 return new Collision("wall-left");
             }
             else if (wallType.equals("right")){
-                return new Collision("paddle-right");
+                return new Collision("wall-right");
             }
             else if (wallType.equals("upper")){
-                return new Collision("paddle-upper");
+                return new Collision("wall-upper");
             }
             else {
-                return new Collision("paddle-lower");
+                return new Collision("wall-lower");
             }
         }
         return null;

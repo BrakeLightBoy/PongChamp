@@ -35,10 +35,10 @@ public class Board implements Runnable {
 
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
-        upperWall = new Wall("upper",wallSegment);
+        lowerWall = new Wall("lower",wallSegment);
 
         wallSegment = new LineSegment(new Point(0,height),new Point(width,height));
-        lowerWall = new Wall("lower",wallSegment);
+        upperWall = new Wall("upper",wallSegment);
 
 //I don't think the paddle movement paths are still necessary, given the current implementation. -WP
         this.leftPaddleMovementPath = new LineSegment(
@@ -54,7 +54,7 @@ public class Board implements Runnable {
 
         this.leftPaddle = new NormalPaddle(new Point(42,450),leftPaddleMovementPath,emptyController,"left");
         this.rightPaddle = new NormalPaddle(new Point(1158,450),rightPaddleMovementPath,emptyController,"right");
-        this.ball = new NormalBall(new Point(width/2f,height/2f),10,new Vector(-5,0),new Vector(0,0));
+        this.ball = new NormalBall(new Point(width/2f,height/2f),10,new Vector(-1,5),new Vector(0,0));
 
         this.gameEntities.add(leftPaddle);
         this.gameEntities.add(rightPaddle);
@@ -79,11 +79,13 @@ public class Board implements Runnable {
                 entity.tick();
                 if (entity instanceof Collidable){
                      Collision collision = ((Collidable) entity).checkBallCollision(ball);
+                    System.out.println(collision);
                      ball.onCollision(collision);
                 }
             }
             for (Collidable obstacle : obstacles){
                 Collision collision = obstacle.checkBallCollision(ball);
+                System.out.println(collision);
                 ball.onCollision(collision);
             }
 

@@ -24,10 +24,14 @@ public class NormalPaddle extends Paddle {
     public void tick() {
 
         if (paddleController.movingDown()){
-            location.movePoint(new Vector(0,platformSpeed));
+            Vector movementVector = new Vector(0,platformSpeed);
+            location.movePoint(movementVector);
+            paddleHitBox.moveBox(movementVector);
         }
         else if (paddleController.movingUp()){
-            location.movePoint(new Vector(0,-platformSpeed));
+            Vector movementVector = new Vector(0,-platformSpeed);
+            location.movePoint(movementVector);
+            paddleHitBox.moveBox(movementVector);
         }
     }
 

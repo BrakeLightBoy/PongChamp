@@ -7,6 +7,10 @@ public class Collision {
 
     //should have metadata included later on.
 
+    public String toString(){
+        return "Data: "+data;
+    }
+
     public Collision(String data) {
         this.data = data;
     }

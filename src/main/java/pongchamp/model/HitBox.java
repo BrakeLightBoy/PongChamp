@@ -21,13 +21,17 @@ public class HitBox {
 
         float distX1 = Math.abs(bXpos-minX);
         float distX2 = Math.abs(bXpos-maxX);
-        float circleXDistance = Math.min(distX1,distX2);
+
+        Boolean inRangeX = (bXpos > (minX-bRadius)) && (bXpos <= (maxX+bRadius));
 
         float distY1 = Math.abs(bYpos-minY);
         float distY2 = Math.abs(bYpos-maxY);
         float circleYDistance = Math.min(distY1,distY2);
 
-        return ((circleXDistance<=bRadius) && (circleYDistance <= bRadius));
+        Boolean inRangeY = (bYpos > (minY-bRadius)) && (bYpos <= (maxY+bRadius));
+
+
+        return inRangeX && inRangeY;
     }
 
     public void moveBox(Vector vector){
