@@ -78,7 +78,7 @@ public class SimpleRenderEngine extends JPanel implements Runnable {
         //  y = y-(r/2);
     }
     private void renderPlatform(Paddle paddle, Graphics2D g2){
-        g2.fillRect((int)paddle.getLocation().getX(),(int) paddle.getLocation().getY(),(int)paddle.getWidth(),(int)paddle.getHeight());
+        g2.fillRect((int)(paddle.getLocation().getX() - paddle.getWidth()/2),(int) (paddle.getLocation().getY()-paddle.getHeight()/2),(int)paddle.getWidth(),(int)paddle.getHeight());
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
