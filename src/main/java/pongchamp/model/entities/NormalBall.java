@@ -24,7 +24,7 @@ public class NormalBall extends Ball{
     }
 
     @Override
-    public void onCollusion(Collidable collidable) {
+    public void onCollision(Collidable collidable) {
 
     }
 

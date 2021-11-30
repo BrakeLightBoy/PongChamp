@@ -29,31 +29,9 @@ public abstract class Ball extends Entity {
     }
 
     public abstract void move();
-    public abstract void onCollusion(Collidable collidable);
-
-    public Collidable checkCollusion(){ //it's either another entity or a line segment
-
-        //check for collusion with the 2 walls at the top and the bottom. either y <= 0 or y >= 900
-
-        if (location.getY() - radius <=0){
-            return board.getUpperWall();
-        }
-        else if (location.getY() + radius >= 900){
-            return board.getLowerWall();
-        }
-
-        //check for collusion with the paddles' movement path. it'll then check if the paddle is actually there
-
-        else if (location.getX() - radius <=board.getPaddleDistanceFromTheEdge()){
-            Paddle leftPaddle = board.getLeftPaddle();
-        }
-        else if (location.getX() + radius >= board.getWidth()- board.getPaddleDistanceFromTheEdge()){
-            Paddle rightPaddle = board.getRightPaddle();
-        }
+    public abstract void onCollision(Collidable collidable);
 
 
-        return null;
-    }
 
     public Vector getSpeed() {
         return speed;

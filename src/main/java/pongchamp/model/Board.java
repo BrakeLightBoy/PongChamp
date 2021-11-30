@@ -88,6 +88,12 @@ public class Board implements Runnable {
         }
     }
 
+    public void checkCollision(){
+
+       //if collision happens it calls something like ball.onCollision(Collidable)
+
+    }
+
     public void startGame(){
         running = true;
         Thread thread = new Thread(this);
