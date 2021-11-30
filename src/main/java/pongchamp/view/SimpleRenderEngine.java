@@ -57,10 +57,12 @@ public class SimpleRenderEngine extends JPanel implements Runnable {
         g2.setColor(Color.WHITE);
 
         for (Entity entity : board.getGameEntities()) {
-            if (entity instanceof NormalBall){
+            if (entity instanceof Ball){
+
                 renderBall(((Ball) entity),g2);
             }
             if (entity instanceof NormalPaddle){
+
                 renderPlatform(((NormalPaddle) entity),g2);
             }
         }
@@ -69,14 +71,14 @@ public class SimpleRenderEngine extends JPanel implements Runnable {
     private void renderBall(Ball ball,Graphics2D g2){
         int radius = ball.getRadius();
         g2.fillOval((int)ball.getLocation().getX() - ball.getRadius()/2,(int)ball.getLocation().getY()- ball.getRadius()/2,radius,radius);
-        g2.setColor(Color.RED);
-        g2.fillOval((int)(ball.getLocation().getX() - ball.getRadius()/2),(int)(ball.getLocation().getY()- ball.getRadius()/2),radius/2,radius/2);
+        //g2.setColor(Color.RED);
+        //g2.fillOval((int)(ball.getLocation().getX() - ball.getRadius()/2),(int)(ball.getLocation().getY()- ball.getRadius()/2),radius/2,radius/2);
 
         //x = x-(r/2);
         //  y = y-(r/2);
     }
     private void renderPlatform(Paddle paddle, Graphics2D g2){
-        g2.fillRect((int)paddle.getLocation().getX(),(int) paddle.getLocation().getY(),15,100);
+        g2.fillRect((int)paddle.getLocation().getX(),(int) paddle.getLocation().getY(),(int)paddle.getWidth(),(int)paddle.getHeight());
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);

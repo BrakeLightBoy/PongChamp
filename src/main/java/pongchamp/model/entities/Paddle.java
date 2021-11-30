@@ -37,4 +37,12 @@ public abstract class Paddle extends Entity implements Collidable {
     public void setPaddleController(PaddleController paddleController) {
         this.paddleController = paddleController;
     }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
 }

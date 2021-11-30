@@ -58,6 +58,7 @@ public class Board implements Runnable {
 
         this.gameEntities.add(leftPaddle);
         this.gameEntities.add(rightPaddle);
+        this.gameEntities.add(ball);
 
         obstacles.add(leftPaddle);
         obstacles.add(rightPaddle);
