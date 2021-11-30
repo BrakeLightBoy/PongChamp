@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="pongchamp" />
         <module name="PongChamp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="pongchamp" target="16" />
       <module name="PongChamp" target="16" />
     </bytecodeTargetLevel>
   </component>
