@@ -6,6 +6,8 @@ import pongchamp.controller.PaddleController;
 import pongchamp.model.math.LineSegment;
 import pongchamp.model.math.Point;
 import pongchamp.model.math.Vector;
+import pongchamp.view.RenderEngine;
+import pongchamp.view.SimpleRenderEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +29,12 @@ public class Board implements Runnable {
 
     private List<Entity> gameEntities;
 
+    private RenderEngine renderEngine;
 
 
-    public Board() {
+
+    public Board(SimpleRenderEngine renderEngine) {
+        this.renderEngine = renderEngine;
         gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
 
@@ -87,9 +92,11 @@ public class Board implements Runnable {
                 ball.onCollision(collision);
             }
 
+            renderEngine.render(this);
 
             //todo some rendering whether in this thread or a new one
             //todo some TPS/FPS syncing
+
 
             try {
                 Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
