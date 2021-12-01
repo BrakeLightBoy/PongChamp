@@ -9,7 +9,7 @@ import pongchamp.model.math.Vector;
 public class NormalPaddle extends Paddle {
 
     private static final float platformSpeed = Properties.PLATFORM_SPEED;
-    private static final int defaultPaddleWidth = 15; //todo consider whether these sizes are good sizes in a 1200x900 board or not
+    private static final int defaultPaddleWidth = 20; //todo consider whether these sizes are good sizes in a 1200x900 board or not
     private static final int defaultPaddleHeight = 100;
 
 

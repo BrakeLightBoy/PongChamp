@@ -26,9 +26,16 @@ public class NormalBall extends Ball{
 
     @Override
     public void onCollision(Collision collision) {
+
+
         if (collision == null){
             return;
         }
+
+        //Shows where a registered collision happened. Keep in mind that there are 3 hitboxes per paddle.
+        System.out.print("X:"+location.getX());
+        System.out.println("Y:"+location.getY());
+        System.out.println();
 
         String collisionData = collision.getData();
 
