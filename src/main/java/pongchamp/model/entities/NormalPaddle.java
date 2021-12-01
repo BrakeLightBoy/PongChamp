@@ -26,48 +26,63 @@ public class NormalPaddle extends Paddle {
         if (paddleController.movingDown()){
             Vector movementVector = new Vector(0,platformSpeed);
             location.movePoint(movementVector);
-            paddleCenterHitBox.moveBox(movementVector);
-            paddleLowerHitBox.moveBox(movementVector);
-            paddleUpperHitBox.moveBox(movementVector);
+            paddleHitBox.moveBox(movementVector);
+//            paddleLowerHitBox.moveBox(movementVector);
+//            paddleUpperHitBox.moveBox(movementVector);
 
         }
         else if (paddleController.movingUp()){
             Vector movementVector = new Vector(0,-platformSpeed);
             location.movePoint(movementVector);
-            paddleCenterHitBox.moveBox(movementVector);
-            paddleLowerHitBox.moveBox(movementVector);
-            paddleUpperHitBox.moveBox(movementVector);
+            paddleHitBox.moveBox(movementVector);
+//            paddleLowerHitBox.moveBox(movementVector);
+//            paddleUpperHitBox.moveBox(movementVector);
         }
     }
 
     @Override
     public Collision checkBallCollision(Ball ball) {
-        Boolean center = paddleCenterHitBox.checkBallIntersect(ball);
-        Boolean upper = paddleLowerHitBox.checkBallIntersect(ball);
-        Boolean lower = paddleUpperHitBox.checkBallIntersect(ball);
+//        Boolean center =
+//        Boolean upper = paddleLowerHitBox.checkBallIntersect(ball);
+//        Boolean lower = paddleUpperHitBox.checkBallIntersect(ball);
 
-        String data = "paddle-";
-        if (paddleType.equals("left")){
-            data += "left";
+
+        String collidedPart = paddleHitBox.checkBallIntersect(ball);
+
+        if (collidedPart == null){
+            return null;
         }
         else {
-            data += "right";
-        }
-        if (center){
-            data +="-center";
-            return new Collision(data);
-        }
-        else if (upper){
-            System.out.println("Ucorner");
-            data +="-uCorner";
-            return new Collision(data);
-        }
-        else if (lower){
-            System.out.println("lCorner");
-            data +="-lCorner";
-            return new Collision(data);
-        }
+            String data = "paddle-";
 
-        return null;
+            if (paddleType.equals("left")) {
+                data += "left";
+            } else {
+                data += "right";
+            }
+
+            if (collidedPart.equals("vertical")) {
+                data += "-longSegment";
+            }
+            else{
+                //FLIPPED DUE TO Y-AXIS RENDERING
+                if (ball.location.getY()< location.getY()){
+                    data += "-higher";
+                }
+                else {
+                    data += "-lower";
+                }
+
+                if (collidedPart.equals("horizontal")) {
+                    data += "-shortSegment";
+                }
+                else {
+                    data += "-corner";
+                }
+            }
+
+
+            return new Collision(data);
+        }
     }
 }

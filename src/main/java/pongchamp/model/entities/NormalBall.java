@@ -26,8 +26,6 @@ public class NormalBall extends Ball{
 
     @Override
     public void onCollision(Collision collision) {
-
-
         if (collision == null){
             return;
         }
@@ -40,11 +38,25 @@ public class NormalBall extends Ball{
         String collisionData = collision.getData();
 
         //temporarily switched lower and upper because of the render engine having the inverted y-axis
-        if (collisionData.contains("lCorner")){
-            speed.setY(Math.abs(speed.getY()));
+
+        System.out.println(collisionData);
+        if (collisionData.contains("shortSegment")){
+            if (collisionData.contains("higher")){
+                speed.setY(-Math.abs(speed.getY()));
+            }
+            else {
+                speed.setY(Math.abs(speed.getY()));
+            }
+            return;
         }
-        else if (collisionData.contains("uCorner")){
-            speed.setY(-Math.abs(speed.getY()));
+
+        if (collisionData.contains("corner")){
+            if (collisionData.contains("higher")){
+                speed.setY(-Math.abs(speed.getY()));
+            }
+            else {
+                speed.setY(Math.abs(speed.getY()));
+            }
         }
 
         if (collisionData.contains("left")){

@@ -13,7 +13,7 @@ public abstract class Paddle extends Entity implements Collidable {
     protected PaddleController paddleController;
     protected float width;
     protected float height;
-    protected HitBox paddleCenterHitBox, paddleLowerHitBox, paddleUpperHitBox;
+    protected HitBox paddleHitBox, paddleLowerHitBox, paddleUpperHitBox;
     protected String paddleType;
 
     public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, String paddleType) {
@@ -26,11 +26,11 @@ public abstract class Paddle extends Entity implements Collidable {
         this.paddleController = paddleController;
         this.width =  width;
         this.height = height;
-        paddleCenterHitBox = new HitBox(location.getX()-width/2,location.getY()-height*4/10, location.getX()+width/2, location.getY()+height*4/10);
+        paddleHitBox = new HitBox(location.getX()-width/2f,location.getY()-height/2f, location.getX()+width/2f, location.getY()+height/2f);
 
 
-        paddleUpperHitBox = new HitBox(location.getX()-width/2,location.getY()+height*4/10, location.getX()+width/2, location.getY()+height/2);
-        paddleLowerHitBox = new HitBox(location.getX()-width/2,location.getY()-height/2, location.getX()+width/2, location.getY()-height*4/10);
+//        paddleUpperHitBox = new HitBox(location.getX()-width/2,location.getY()+height*4/10, location.getX()+width/2, location.getY()+height/2);
+//        paddleLowerHitBox = new HitBox(location.getX()-width/2,location.getY()-height/2, location.getX()+width/2, location.getY()-height*4/10);
     }
 
     public abstract Collision checkBallCollision(Ball ball);
