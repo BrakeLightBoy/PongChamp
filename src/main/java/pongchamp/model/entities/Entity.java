@@ -1,6 +1,6 @@
 package pongchamp.model.entities;
 
-import pongchamp.model.Collidable;
+import pongchamp.model.Board;
 import pongchamp.model.math.Point;
 import pongchamp.model.Metadata;
 
@@ -8,14 +8,16 @@ import java.util.UUID;
 
 public abstract class Entity {
 
-   private final UUID uuid;
+   protected final UUID uuid;
    protected Point location;
-   private Metadata metadata;
+   protected Metadata metadata;
+   protected Board board;
 
-   public Entity(Point location) {
+   public Entity(Board board,Point location) {
        this.location = location;
        this.uuid = UUID.randomUUID();
        this.metadata =  new Metadata();
+       this.board = board;
    }
 
    public abstract void tick();
@@ -38,5 +40,9 @@ public abstract class Entity {
 
     public void setMetadata(Metadata metadata) {
         this.metadata = metadata;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

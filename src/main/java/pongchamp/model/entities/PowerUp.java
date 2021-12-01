@@ -1,5 +1,12 @@
 package pongchamp.model.entities;
 
-public abstract class PowerUp {
-    public abstract void onBallHit(pongchamp.model.entities.Ball ball);
+import pongchamp.model.Board;
+import pongchamp.model.math.Point;
+
+public abstract class PowerUp extends Entity {
+    public PowerUp(Board board, Point location) {
+        super(board, location);
+    }
+
+    public abstract void onBallHit(Ball ball);
 }

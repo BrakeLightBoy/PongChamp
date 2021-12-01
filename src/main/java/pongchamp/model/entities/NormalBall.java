@@ -7,8 +7,8 @@ import pongchamp.model.math.Vector;
 public class NormalBall extends Ball{
 
 
-    public NormalBall(Point location, int radius, Vector speed, Vector acceleration) {
-        super(location, radius, speed, acceleration);
+    public NormalBall(Board board,Point location, int radius, Vector speed, Vector acceleration) {
+        super(board,location, radius, speed, acceleration);
     }
 
     @Override

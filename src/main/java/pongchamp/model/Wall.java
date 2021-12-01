@@ -1,8 +1,7 @@
-package pongchamp.model.entities;
+package pongchamp.model;
 
-import pongchamp.model.Collidable;
-import pongchamp.model.Collision;
-import pongchamp.model.HitBox;
+
+import pongchamp.model.entities.Ball;
 import pongchamp.model.math.LineSegment;
 
 
@@ -32,22 +31,22 @@ public class Wall implements Collidable {
     public Collision checkBallCollision(Ball ball) {
         switch (wallType){
             case "right":
-                if (ball.location.getX()+ball.getRadius()>=wallLine.getStartPoint().getX()){
+                if (ball.getLocation().getX()+ball.getRadius()>=wallLine.getStartPoint().getX()){
                     return new Collision("wall-right");
                 }
                 break;
             case "left":
-                if (ball.location.getX()- ball.getRadius()<=wallLine.getStartPoint().getX()){
+                if (ball.getLocation().getX()- ball.getRadius()<=wallLine.getStartPoint().getX()){
                     return new Collision("wall-left");
                 }
                 break;
             case "upper":
-                if (ball.location.getY()+ball.getRadius()>=wallLine.getStartPoint().getY()){
+                if (ball.getLocation().getY()+ball.getRadius()>=wallLine.getStartPoint().getY()){
                     return new Collision("wall-upper");
                 }
                 break;
             case "lower":
-                if (ball.location.getY()- ball.getRadius()<=wallLine.getStartPoint().getY()){
+                if (ball.getLocation().getY()- ball.getRadius()<=wallLine.getStartPoint().getY()){
                     return new Collision("wall-lower");
                 }
                 break;

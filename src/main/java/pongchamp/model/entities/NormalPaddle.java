@@ -13,11 +13,11 @@ public class NormalPaddle extends Paddle {
     private static final int defaultPaddleHeight = 100;
 
 
-    public NormalPaddle (Point initialLocation, LineSegment movementPath, PaddleController paddleController,String paddleType){ //if you don't put a height and width while making a paddle, the default sizes will be used
-        this(initialLocation,defaultPaddleWidth,defaultPaddleHeight,movementPath,paddleController,paddleType);
+    public NormalPaddle (Board board,Point initialLocation, LineSegment movementPath, PaddleController paddleController,String paddleType){ //if you don't put a height and width while making a paddle, the default sizes will be used
+        this(board,initialLocation,defaultPaddleWidth,defaultPaddleHeight,movementPath,paddleController,paddleType);
     }
-    public NormalPaddle(Point initialLocation, float width, float height, LineSegment movementPath, PaddleController paddleController,String paddleType) {
-        super(initialLocation,width,height,movementPath,paddleController,paddleType);
+    public NormalPaddle(Board board,Point initialLocation, float width, float height, LineSegment movementPath, PaddleController paddleController,String paddleType) {
+        super(board,initialLocation,width,height,movementPath,paddleController,paddleType);
     }
 
     @Override

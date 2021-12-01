@@ -2,6 +2,7 @@ package pongchamp.model.entities;
 
 
 import pongchamp.controller.PaddleController;
+import pongchamp.model.Board;
 import pongchamp.model.Collidable;
 import pongchamp.model.Collision;
 import pongchamp.model.HitBox;
@@ -16,8 +17,8 @@ public abstract class Paddle extends Entity implements Collidable {
     protected HitBox paddleHitBox, paddleLowerHitBox, paddleUpperHitBox;
     protected String paddleType;
 
-    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, String paddleType) {
-        super(location);
+    public Paddle(Board board, Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, String paddleType) {
+        super(board,location);
         if (!(paddleType.equals("left")||paddleType.equals("right"))){
             throw new IllegalArgumentException("Wrong paddle type");
         }

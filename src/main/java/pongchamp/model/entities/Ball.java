@@ -12,8 +12,8 @@ public abstract class Ball extends Entity {
 
 
 
-    public Ball(Point location, int radius, Vector speed, Vector acceleration) {
-        super(location);
+    public Ball(Board board,Point location, int radius, Vector speed, Vector acceleration) {
+        super(board,location);
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
