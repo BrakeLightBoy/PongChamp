@@ -30,28 +30,42 @@ public class NormalBall extends Ball{
         String collisionData = collision.getData();
 
         //Shows where a registered collision happened. Keep in mind that there are 3 hitboxes per paddle.
-        System.out.println(location + "\n" + collisionData);
+        System.out.println(location + "\n" + collisionData + "\n");
 
         //temporarily switched lower and upper because of the render engine having the inverted y-axis
         if (collisionData.contains("shortSegment")){
-            if (collisionData.contains("higher")){
-                speed.setY(-Math.abs(speed.getY()));
-            }
-            else {
-                speed.setY(Math.abs(speed.getY()));
-            }
+            onShortPaddleSegmentCollision(collisionData);
             return;
         }
 
         if (collisionData.contains("corner")){
-            if (collisionData.contains("higher")){
-                speed.setY(-Math.abs(speed.getY()));
-            }
-            else {
-                speed.setY(Math.abs(speed.getY()));
-            }
+            onCornerCollision(collisionData);
+            return;
         }
 
+        onPaddleVerticalOrWallCollision(collisionData);
+    }
+
+    public void onCornerCollision(String collisionData){
+        if (collisionData.contains("higher")){
+            speed.setY(-Math.abs(speed.getY()));
+        }
+        else {
+            speed.setY(Math.abs(speed.getY()));
+        }
+    }
+
+    public void onShortPaddleSegmentCollision(String collisionData){
+        if (collisionData.contains("higher")){
+            speed.setY(-Math.abs(speed.getY()));
+        }
+        else {
+            speed.setY(Math.abs(speed.getY()));
+        }
+        return;
+    }
+
+    public void onPaddleVerticalOrWallCollision(String collisionData){
         if (collisionData.contains("left")){
             speed.setX(Math.abs(speed.getX()));
         }
@@ -64,7 +78,6 @@ public class NormalBall extends Ball{
         else if (collisionData.contains("lower")){
             speed.setY(Math.abs(speed.getY()));
         }
-
     }
 
 }
