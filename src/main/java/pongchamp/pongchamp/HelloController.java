@@ -7,12 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import pongchamp.pongchamp.view.SimpleRenderEngine;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class HelloController {
@@ -39,6 +38,21 @@ public class HelloController {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    //Added for MVP version where play button takes you to Swing render engine.
+    public void switchToGame(ActionEvent event) throws IOException {
+        JFrame window = new JFrame();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.setTitle("PongChamp");
+
+        SimpleRenderEngine renderEngine = new SimpleRenderEngine();
+        window.add(renderEngine);
+        window.pack();
+
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
     }
     public void logout(ActionEvent event) {
         stage = (Stage) mainPane.getScene().getWindow();
