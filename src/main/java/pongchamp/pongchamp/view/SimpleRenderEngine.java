@@ -61,17 +61,16 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         }
         g2.dispose();
     }
+
     private void renderBall(Ball ball,Graphics2D g2){
         int radius = ball.getRadius();
         g2.fillOval((int)(ball.getLocation().getX() - ball.getRadius()),(int)(ball.getLocation().getY()- ball.getRadius()),radius*2,radius*2);
-        //g2.setColor(Color.RED);
-        //g2.fillOval((int)(ball.getLocation().getX() - ball.getRadius()/2),(int)(ball.getLocation().getY()- ball.getRadius()/2),radius,radius);
-        //x = x-r , R = r*2
-        //y = y-r
     }
+
     private void renderPlatform(Paddle paddle, Graphics2D g2){
         g2.fillRect((int)(paddle.getLocation().getX() - paddle.getWidth()/2),(int) (paddle.getLocation().getY()-paddle.getHeight()/2),(int)paddle.getWidth(),(int)paddle.getHeight());
     }
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         render(board,g);
