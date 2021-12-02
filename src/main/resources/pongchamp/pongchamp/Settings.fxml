@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.HelloController">
     <children>
         <Button layoutX="530.0" layoutY="319.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="207.0" text="Lower Brightness" />
       <Button layoutX="530.0" layoutY="399.0" mnemonicParsing="false" onAction="#switchToMain" prefHeight="56.0" prefWidth="207.0" text="Go Back" />
