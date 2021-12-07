@@ -31,6 +31,8 @@ public class Board implements Runnable {
 
     private RenderEngine renderEngine;
 
+    protected int leftScore, rightScore;
+
 
 
     public Board(SimpleRenderEngine renderEngine) {
@@ -152,4 +154,12 @@ public class Board implements Runnable {
     public Paddle getRightPaddle() {
         return rightPaddle;
     }
+
+    public int getLeftScore() { return leftScore; }
+
+    public void leftGoal() { ++leftScore; }
+
+    public int getRightScore() { return rightScore; }
+
+    public void rightGoal() { ++rightScore; }
 }
