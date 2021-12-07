@@ -1,8 +1,13 @@
 package pongchamp.pongchamp.model.entities;
 
+import javafx.scene.control.ColorPicker;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
+
+import java.io.File;
 
 public abstract class Ball extends Entity {
 
@@ -22,9 +27,11 @@ public abstract class Ball extends Entity {
         }
         else if (location.getX()>1200){
             location.setX(600);
+
         }
         move();
     }
+
 
     public abstract void move();
 

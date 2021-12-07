@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.HelloController">
+<AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="713.0" prefWidth="1269.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.StartController">
     <children>
-        <Button layoutX="530.0" layoutY="319.0" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="56.0" prefWidth="207.0" text="Settings" />
-      <Button fx:id="logoutButton" layoutX="530.0" layoutY="401.0" mnemonicParsing="false" onAction="#logout" prefHeight="56.0" prefWidth="207.0" text="Exit" />
-      <Button layoutX="530.0" layoutY="234.0" mnemonicParsing="false" onAction="#switchToGame" prefHeight="56.0" prefWidth="207.0" text="Play" />
+      <ImageView fitHeight="715.0" fitWidth="1282.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/background.PNG" />
+         </image>
+      </ImageView>
+      <Pane prefHeight="714.0" prefWidth="277.0">
+         <children>
+            <Button layoutX="28.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToGame" prefHeight="185.0" prefWidth="211.0" styleClass="p" stylesheets="@style.css" />
+              <Button layoutX="35.0" layoutY="265.0" mnemonicParsing="false" onAction="#switchToSettings" prefHeight="177.0" prefWidth="207.0" styleClass="settings" stylesheets="@style.css" />
+            <Button fx:id="logoutButton" layoutX="35.0" layoutY="505.0" mnemonicParsing="false" onAction="#logout" prefHeight="181.0" prefWidth="207.0" styleClass="exit" stylesheets="@style.css" />
+         </children>
+      </Pane>
     </children>
 </AnchorPane>

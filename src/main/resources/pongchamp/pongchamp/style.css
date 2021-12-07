@@ -1,0 +1,65 @@
+.p {
+    -fx-background-image: url("Images/P.PNG");
+    -fx-background-radius: 110;
+    -fx-background-insets: 110;
+}
+.p:hover {
+    -fx-background-image: url("Images/PF.PNG");
+    -fx-background-radius: 110;
+    -fx-background-insets: 110;
+}
+
+.exit {
+    -fx-background-image: url("Images/EX.PNG");
+    -fx-background-radius: 110;
+    -fx-background-insets: 110;
+
+}
+.exit:hover {
+    -fx-background-image: url("Images/E.PNG");
+    -fx-background-radius: 90;
+    -fx-background-insets: 90;
+}
+
+
+.settings {
+    -fx-background-image: url("Images/SEM.PNG");
+    -fx-background-radius: 110;
+    -fx-background-insets: 110;
+}
+.settings:hover {
+    -fx-background-image: url("Images/S.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}
+
+
+.music{
+    -fx-background-image: url("Images/music.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}
+
+.sound{
+    -fx-background-image: url("Images/sounds.png");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}
+
+.scotland {
+    -fx-background-image: url("scotland.png");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+
+}
+.sverige {
+    -fx-background-image: url("Images/swede.png");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+
+}
+.sun{
+    -fx-background-image: url("Images/sun.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}

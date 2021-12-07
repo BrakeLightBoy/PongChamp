@@ -16,6 +16,7 @@ public class NormalBall extends Ball{
         location.movePoint(speed);
         speed.addVector(acceleration);
 
+
 //        float friction = Properties.FRICTION;
 //        acceleration.setX(acceleration.getX()*friction);
 //        acceleration.setY(acceleration.getY()*friction);
@@ -26,7 +27,6 @@ public class NormalBall extends Ball{
         if (collision == null){
             return;
         }
-
         String collisionData = collision.getData();
 
         //Shows where a registered collision happened. Keep in mind that there are 3 hitboxes per paddle.
