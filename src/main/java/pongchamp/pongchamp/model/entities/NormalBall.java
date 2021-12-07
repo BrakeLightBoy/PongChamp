@@ -40,7 +40,6 @@ public class NormalBall extends Ball{
 
         if (collisionData.contains("corner")){
             onCornerCollision(collisionData);
-            return;
         }
 
         onPaddleVerticalOrWallCollision(collisionData);
