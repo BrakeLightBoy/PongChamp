@@ -1,6 +1,8 @@
-package pongchamp.pongchamp.model.entities;
+package pongchamp.pongchamp.model.entities.powerups;
 
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.entities.Ball;
+import pongchamp.pongchamp.model.entities.Entity;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.Collectible;
 

@@ -17,18 +17,7 @@ public abstract class Ball extends Entity {
     }
 
     public void tick(){
-        if(!(board.getLeftScore() == 10 || board.getRightScore() == 10)) {
-            if (location.getX() < 0) {
-                location.setX(600);
-                board.rightGoal();
-                System.out.println(board.getLeftScore() + " : " + board.getRightScore());
-            } else if (location.getX() > 1200) {
-                location.setX(600);
-                board.leftGoal();
-                System.out.println(board.getLeftScore() + " : " + board.getRightScore());
-            }
-            move();
-        } else board.endGame();
+        move();
     }
 
     public abstract void move();

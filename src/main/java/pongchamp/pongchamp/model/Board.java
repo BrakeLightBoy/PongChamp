@@ -106,6 +106,8 @@ public class Board implements Runnable {
                 ball.onCollision(collision);
             }
 
+            checkScore();
+
             renderEngine.render(this);
 
             //todo some rendering whether in this thread or a new one
@@ -119,6 +121,20 @@ public class Board implements Runnable {
             }
 
         }
+    }
+
+    public void checkScore() {
+        if(!(this.getLeftScore() == 10 || this.getRightScore() == 10)) {
+            if (ball.getLocation().getX() < 0) {
+                ball.getLocation().setX(600);
+                rightGoal();
+                System.out.println(this.getLeftScore() + " : " + this.getRightScore());
+            } else if (ball.getLocation().getX() > 1200) {
+                ball.getLocation().setX(600);
+                this.leftGoal();
+                System.out.println(this.getLeftScore() + " : " + this.getRightScore());
+            }
+        } else endGame();
     }
 
     public void startGame(){

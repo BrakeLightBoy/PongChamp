@@ -67,6 +67,7 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         g2.fillOval((int)(ball.getLocation().getX() - ball.getRadius()),(int)(ball.getLocation().getY()- ball.getRadius()),radius*2,radius*2);
     }
 
+
     private void renderPlatform(Paddle paddle, Graphics2D g2){
         g2.fillRect((int)(paddle.getLocation().getX() - paddle.getWidth()/2),(int) (paddle.getLocation().getY()-paddle.getHeight()/2),(int)paddle.getWidth(),(int)paddle.getHeight());
     }
