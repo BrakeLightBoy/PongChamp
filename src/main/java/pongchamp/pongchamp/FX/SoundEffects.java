@@ -12,7 +12,7 @@ public class SoundEffects {
     ToggleButton sound;
 
     public void ef1() {
-        String path = "Untitled3.mp3";
+        String path = "/Users/umair/Desktop/merge test/pongchamp/src/main/resources/pongchamp/pongchamp/Sounds/Untitled3.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
@@ -20,7 +20,7 @@ public class SoundEffects {
     }
 
     public void ef2() {
-        String path = "Untitled4.mp3";
+        String path = "/Users/umair/Desktop/merge test/pongchamp/src/main/resources/pongchamp/pongchamp/Sounds/Untitled4.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
