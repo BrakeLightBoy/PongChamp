@@ -64,7 +64,7 @@ public class SettingsController extends StartController implements Initializable
     }
     @FXML
     public void playHit(ActionEvent event) throws IOException {
-        String path = "/Users/umair/Desktop/Music/Singles/The Pharcyde-Ya Mama.mp3";
+        String path = "The Pharcyde-Ya Mama.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(5);
