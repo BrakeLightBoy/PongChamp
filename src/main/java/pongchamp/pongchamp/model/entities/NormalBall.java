@@ -30,7 +30,7 @@ public class NormalBall extends Ball{
         String collisionData = collision.getData();
 
         //Shows where a registered collision happened. Keep in mind that there are 3 hitboxes per paddle.
-        System.out.println(location + "\n" + collisionData + "\n");
+//        System.out.println(location + "\n" + collisionData + "\n");
 
         //temporarily switched lower and upper because of the render engine having the inverted y-axis
         if (collisionData.contains("shortSegment")){

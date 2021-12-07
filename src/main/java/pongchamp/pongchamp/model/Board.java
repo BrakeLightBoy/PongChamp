@@ -8,15 +8,17 @@ import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
 import pongchamp.pongchamp.view.RenderEngine;
 import pongchamp.pongchamp.view.SimpleRenderEngine;
+import static pongchamp.pongchamp.model.Properties.*;
+import pongchamp.pongchamp.model.entities.powerups.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board implements Runnable {
 
-    private final float width = Properties.BOARD_WIDTH;
-    private final float height = Properties.BOARD_HEIGHT;
-    private final float paddleDistanceFromTheEdge = Properties.PADDLE_DISTANCE_FROM_THE_EDGE;
+    private final float width = BOARD_WIDTH;
+    private final float height = BOARD_HEIGHT;
+    private final float paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
     private boolean running;
 
     private final Wall upperWall,lowerWall;
@@ -28,6 +30,7 @@ public class Board implements Runnable {
     private Ball ball;
 
     private List<Entity> gameEntities;
+    private List<Collectible> spawnedPowerUps;
 
     private RenderEngine renderEngine;
 
@@ -39,6 +42,7 @@ public class Board implements Runnable {
         this.renderEngine = renderEngine;
         gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
+        spawnedPowerUps = new ArrayList<>();
 
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
@@ -61,7 +65,7 @@ public class Board implements Runnable {
 
         this.leftPaddle = new NormalPaddle(this,new Point(40,450),leftPaddleMovementPath,emptyController,"left");
         this.rightPaddle = new NormalPaddle(this,new Point(1160,450),rightPaddleMovementPath,emptyController,"right");
-        this.ball = new NormalBall(this,new Point(width/2f,height/2f),20,new Vector(2,4),new Vector(0,0));
+        this.ball = new NormalBall(this,new Point(width/2f,height/2f),BALL_RADIUS,new Vector(2,4),new Vector(0,0));
 
         this.gameEntities.add(leftPaddle);
         this.gameEntities.add(rightPaddle);
@@ -82,6 +86,14 @@ public class Board implements Runnable {
     @Override
     public void run() {
         while (running) {
+
+            Collectible spawnedPower = spawnPowerUp();
+
+            if (spawnedPower != null){
+                spawnedPowerUps.add(spawnedPower);
+                spawnedPower.onCollect();
+            }
+
             for (Entity entity : gameEntities) {
                 entity.tick();
                 if (entity instanceof Collidable){
@@ -113,6 +125,45 @@ public class Board implements Runnable {
         running = true;
         Thread thread = new Thread(this);
         thread.start();
+    }
+
+    private Collectible spawnPowerUp(){
+        double spawnOutcome = Math.random()*100;
+
+        double spawnThreshold = 99.9;
+
+        float yRange = (float) Math.random()*(BOARD_HEIGHT-2*POWER_UP_RADIUS)+POWER_UP_RADIUS;
+
+        float xRange = (float) Math.random()*(BOARD_WIDTH-(2*PADDLE_DISTANCE_FROM_THE_EDGE+rightPaddle.getWidth()
+                +leftPaddle.getWidth()+2*POWER_UP_RADIUS))
+                +PADDLE_DISTANCE_FROM_THE_EDGE+leftPaddle.getWidth()+POWER_UP_RADIUS;
+        Point spawnPoint = new Point(xRange,yRange);
+
+        if (spawnOutcome>= spawnThreshold){
+            PowerUp spawnedPowerUp;
+            double powerTypeOutcome = Math.random()*100;
+
+
+            if (powerTypeOutcome<=10){
+                spawnedPowerUp = new InvisPower(spawnPoint);
+                System.out.println("Invisible Power Up Spawned!");
+                //spawn invis power
+            } else if (powerTypeOutcome <= 40){
+                spawnedPowerUp = new ElongatePaddlePower(spawnPoint);
+                System.out.println("Elongated Paddle Power Up Spawned!");
+                //spawn elongated paddle
+            } else if (powerTypeOutcome <= 70){
+                spawnedPowerUp = new RandomSpeedPower(spawnPoint);
+                System.out.println("Random Speed Power Up Spawned!");
+                //spawn random speed power up
+            } else {
+                spawnedPowerUp = new StrengthPower(spawnPoint);
+                System.out.println("Strengthened Paddle Power Up Spawned!");
+                //spawn strengthened paddle
+            }
+            return spawnedPowerUp;
+        }
+        return null;
     }
 
     public void endGame(){

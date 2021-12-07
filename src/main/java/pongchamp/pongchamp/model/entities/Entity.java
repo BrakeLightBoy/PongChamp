@@ -11,13 +11,13 @@ public abstract class Entity {
    protected final UUID uuid;
    protected Point location;
    protected Metadata metadata;
-   protected Board board;
+
 
    public Entity(Board board,Point location) {
        this.location = location;
        this.uuid = UUID.randomUUID();
        this.metadata =  new Metadata();
-       this.board = board;
+
    }
 
    public abstract void tick();
@@ -42,7 +42,5 @@ public abstract class Entity {
         this.metadata = metadata;
     }
 
-    public Board getBoard() {
-        return board;
-    }
+
 }
