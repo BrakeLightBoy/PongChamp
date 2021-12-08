@@ -1,11 +1,17 @@
 package com.example.resizable_test;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class HelloController {
     @FXML
     BorderPane BP;
+    @FXML
+    Button button;
+
+    Stage stage;
 
     boolean isHD = true;
     int preferedWidth;
@@ -29,5 +35,9 @@ public class HelloController {
         }
         BP.setPrefHeight(preferedHeight);
         BP.setPrefWidth(preferedWidth);
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setWidth(preferedWidth);
+        stage.setHeight(preferedHeight);
+
     }
 }
