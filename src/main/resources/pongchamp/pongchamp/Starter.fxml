@@ -5,13 +5,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.StartController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="717.0" prefWidth="1267.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.StartController">
    <children>
-      <ImageView fx:id="startScreen" fitHeight="693.0" fitWidth="1028.0" layoutX="159.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="startScreen" fitHeight="717.0" fitWidth="1298.0" layoutX="-8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Images/Start.jpg" />
+            <Image url="@Images/introstart.PNG" />
          </image>
       </ImageView>
-      <Button layoutX="588.0" layoutY="377.0" mnemonicParsing="false" onAction="#switchToMain" opacity="0.0" prefHeight="169.0" prefWidth="165.0" />
+      <Button layoutX="507.0" layoutY="507.0" mnemonicParsing="false" onAction="#switchToMain" prefHeight="182.0" prefWidth="193.0" styleClass="p" stylesheets="@style.css" />
    </children>
 </AnchorPane>

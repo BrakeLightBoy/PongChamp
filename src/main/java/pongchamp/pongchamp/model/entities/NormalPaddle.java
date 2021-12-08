@@ -3,6 +3,7 @@ package pongchamp.pongchamp.model.entities;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import pongchamp.pongchamp.FX.SoundEffects;
+import pongchamp.pongchamp.SettingsController;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.LineSegment;
@@ -17,6 +18,7 @@ public class NormalPaddle extends Paddle {
     private static final int defaultPaddleWidth = 20; //todo consider whether these sizes are good sizes in a 1200x900 board or not
     private static final int defaultPaddleHeight = 100;
     SoundEffects obj = new SoundEffects();
+    SettingsController obj1 = new SettingsController();
 
     public NormalPaddle(Board board, Point initialLocation, LineSegment movementPath, PaddleController paddleController, String paddleType) { //if you don't put a height and width while making a paddle, the default sizes will be used
         this(board, initialLocation, defaultPaddleWidth, defaultPaddleHeight, movementPath, paddleController, paddleType);

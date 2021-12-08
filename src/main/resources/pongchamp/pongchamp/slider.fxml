@@ -18,9 +18,9 @@
                 <Image url="@Images/background.PNG" />
             </image>
         </ImageView>
-        <Pane fx:id="slider" prefHeight="525.0" prefWidth="226.0">
+        <Pane fx:id="slider" prefHeight="527.0" prefWidth="242.0">
             <children>
-                <VBox prefHeight="532.0" prefWidth="215.0">
+                <VBox prefHeight="527.0" prefWidth="240.0">
                     <children>
                         <Button mnemonicParsing="false" onAction="#switchToGame" prefHeight="183.0" prefWidth="324.0" styleClass="p" stylesheets="@style.css" />
                         <Button mnemonicParsing="false" onAction="#switchToSettings" prefHeight="175.0" prefWidth="195.0" styleClass="settings" stylesheets="@style.css" />

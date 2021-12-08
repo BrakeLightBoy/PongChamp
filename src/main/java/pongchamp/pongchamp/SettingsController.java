@@ -64,7 +64,7 @@ public class SettingsController extends StartController implements Initializable
     }
     @FXML
     public void playHit(ActionEvent event) throws IOException {
-        String path = "The Pharcyde-Ya Mama.mp3";
+        String path = "/Users/umair/Desktop/merge test/pongchamp/src/main/resources/pongchamp/pongchamp/Sounds/The Pharcyde-Ya Mama.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(5);
@@ -124,11 +124,10 @@ public class SettingsController extends StartController implements Initializable
     }
 
     public void sliderr(Pane slider, AnchorPane mainPane) {
-        slider.setTranslateX(-199);
 
         slider.setOnMouseEntered(mouseEvent -> {
             TranslateTransition slide = new TranslateTransition();
-            slide.setDuration(Duration.seconds(0.3));
+            slide.setDuration(Duration.seconds(0.2));
             slide.setNode(slider);
 
             slide.setToX(0);

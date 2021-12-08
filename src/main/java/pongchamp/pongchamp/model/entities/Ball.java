@@ -3,6 +3,7 @@ package pongchamp.pongchamp.model.entities;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import pongchamp.pongchamp.FX.SoundEffects;
 import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
@@ -13,6 +14,8 @@ public abstract class Ball extends Entity {
 
     private int radius;
     protected Vector speed,acceleration;
+    SoundEffects obj = new SoundEffects();
+
 
     public Ball(Board board, Point location, int radius, Vector speed, Vector acceleration) {
         super(board,location);
@@ -24,6 +27,7 @@ public abstract class Ball extends Entity {
     public void tick(){
         if (location.getX()<0){
             location.setX(600);
+            tbs1();
         }
         else if (location.getX()>1200){
             location.setX(600);
@@ -32,6 +36,9 @@ public abstract class Ball extends Entity {
         move();
     }
 
+    public void tbs1() {
+        obj.ef1();
+    }
 
     public abstract void move();
 

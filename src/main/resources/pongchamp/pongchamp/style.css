@@ -63,3 +63,9 @@
     -fx-background-radius: 95;
     -fx-background-insets: 95;
 }
+.ip{
+    -fx-background-image: url("Images/introplay.PNG");
+    -fx-background-radius: 99;
+    -fx-background-insets: 99;
+}
+
