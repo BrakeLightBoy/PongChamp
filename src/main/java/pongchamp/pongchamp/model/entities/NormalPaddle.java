@@ -37,4 +37,6 @@ public class NormalPaddle extends Paddle {
         }
     }
 
+
+
 }

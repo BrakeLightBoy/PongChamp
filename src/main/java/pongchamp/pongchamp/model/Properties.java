@@ -15,5 +15,7 @@ public class Properties {
     public static final int TICKS_PER_SECOND = 30; //TODO IS THIS REALLY THE BEST OPTION?
     public static final int FRAMES_PER_SECOND = 60; //TODO IS THIS REALLY THE BEST OPTION?
 
+    public static final int MAXNUMBEROFPOWERUPS = 3;
+
 
 }

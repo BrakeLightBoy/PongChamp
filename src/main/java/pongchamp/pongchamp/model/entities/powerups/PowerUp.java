@@ -7,18 +7,21 @@ import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.Collectible;
 
 public abstract class PowerUp extends Entity implements Collectible {
-    int duration,radius;
-
+    int activatedDuration,decayDuration,radius,currentDuration,currentDecay;
+    Board gameBoard;
 
     public PowerUp(Board gameBoard,Point location){
         super(location);
-        this.duration = 10000; //the default duration (some random number just to test it)
-        this.radius = 10; //again just random for test
+        this.gameBoard = gameBoard;
+        this.activatedDuration = 800; //the default duration (some random number just to test it)
+        this.radius = 50; //again just random for test
+        this.decayDuration = 500;
     }
 
     public PowerUp(Board gameBoard, Point location,int duration, int radius) {
         super(location);
-        this.duration = duration;
+        this.gameBoard = gameBoard;
+        this.activatedDuration = duration;
         this.radius = radius;
     }
 
@@ -73,8 +76,8 @@ public abstract class PowerUp extends Entity implements Collectible {
         }
     }
 
-    public int getDuration() {
-        return duration;
+    public int getActivatedDuration() {
+        return activatedDuration;
     }
 
     public int getRadius() {

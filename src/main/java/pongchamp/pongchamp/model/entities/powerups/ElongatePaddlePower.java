@@ -17,8 +17,26 @@ public class ElongatePaddlePower extends PowerUp{
     public ElongatePaddlePower(Board gameBoard,Point location,int duration, int radius) {
         super(gameBoard,location, duration, radius);
     }
-
-    public void onCollect(){
-        System.out.println("Picked up!");
+    public void activate(){
+        if (gameBoard.getBall().getSpeed().getX()>0){
+        //left paddle
+            player = LEFT_PADDLE;
+            leftPaddle.setHeight(leftPaddle.getHeight()*1.5f);
+        }
+        else {
+            //right paddle
+            player = RIGHT_PADDLE;
+            rightPaddle.setHeight(rightPaddle.getHeight()*1.5f);
+        }
     }
+
+    public void deactivate(){
+        if (player == LEFT_PADDLE){
+            leftPaddle.setHeight(leftPaddle.getHeight()*2/3);
+        }
+        else {
+            rightPaddle.setHeight(rightPaddle.getHeight()*2/3);
+        }
+    }
+
 }

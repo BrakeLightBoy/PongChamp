@@ -85,6 +85,8 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         g2.setColor(Color.WHITE);
     }
 
+
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         render(board,g);

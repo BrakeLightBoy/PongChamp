@@ -1,13 +1,22 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
+import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.Point;
+import pongchamp.pongchamp.model.math.Vector;
+
+import java.util.Random;
 
 public class RandomSpeedPower extends PowerUp {
-    public RandomSpeedPower(Point location){
-        super(location);
+    int extraSpeedX,extraSpeedY;
+    Ball ball = gameBoard.getBall();
+
+
+    public RandomSpeedPower(Board gameBoard, Point location){
+        super(gameBoard, location);
     }
-    public RandomSpeedPower(Point location,int duration, int radius){
-        super(location,duration,radius);
+    public RandomSpeedPower(Board gameBoard, Point location,int duration, int radius){
+        super(gameBoard, location,duration,radius);
     }
 
 //    public void onCollect(){

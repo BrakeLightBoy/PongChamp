@@ -11,9 +11,7 @@ import pongchamp.pongchamp.view.SimpleRenderEngine;
 import static pongchamp.pongchamp.model.Properties.*;
 import pongchamp.pongchamp.model.entities.powerups.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Board implements Runnable {
 
@@ -31,6 +29,8 @@ public class Board implements Runnable {
     private List<Entity> gameEntities;
     private ArrayList<Collidable> obstacles;
     private List<Collectible> spawnedPowerUps;
+    private List<PowerUp> activatedPowerUps;
+    private HashSet<Integer> toRemove;
 
 
     private RenderEngine renderEngine;
@@ -183,7 +183,7 @@ public class Board implements Runnable {
     private Collectible spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
 
-        double spawnThreshold = 99.9;
+        double spawnThreshold = 99;
 
         float yRange = (float) Math.random()*(BOARD_HEIGHT-2*POWER_UP_RADIUS)+POWER_UP_RADIUS;
 
