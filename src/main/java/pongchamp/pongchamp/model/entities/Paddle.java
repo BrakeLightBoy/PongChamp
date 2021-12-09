@@ -2,12 +2,11 @@ package pongchamp.pongchamp.model.entities;
 
 
 import pongchamp.pongchamp.controller.PaddleController;
-import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.Collidable;
-import pongchamp.pongchamp.model.Collision;
-import pongchamp.pongchamp.model.HitBox;
+import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
+import static pongchamp.pongchamp.model.ObstactleTypes.*;
+import static pongchamp.pongchamp.model.CollisionTypes.*;
 
 public abstract class Paddle extends Entity implements Collidable {
     protected LineSegment movementPath;
@@ -15,11 +14,11 @@ public abstract class Paddle extends Entity implements Collidable {
     protected float width;
     protected float height;
     protected HitBox paddleHitBox;
-    protected String paddleType;
+    protected CollisionTypes paddleType;
 
-    public Paddle(Board board, Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, String paddleType) {
-        super(board,location);
-        if (!(paddleType.equals("left")||paddleType.equals("right"))){
+    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType) {
+        super(location);
+        if (! (paddleType == LEFT || paddleType == RIGHT) ){
             throw new IllegalArgumentException("Wrong paddle type");
         }
         this.paddleType = paddleType;
@@ -31,8 +30,6 @@ public abstract class Paddle extends Entity implements Collidable {
 
 
     }
-
-    public abstract Collision checkBallCollision(Ball ball);
 
     public void setPaddleController(PaddleController paddleController) {
         this.paddleController = paddleController;

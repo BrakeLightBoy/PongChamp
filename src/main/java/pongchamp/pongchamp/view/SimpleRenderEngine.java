@@ -49,11 +49,9 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         Graphics2D g2 = ((Graphics2D) g);
         g2.setColor(Color.WHITE);
 
+        renderBall(board.getBall(),g2);
         for (Entity entity : board.getGameEntities()) {
-            if (entity instanceof Ball){
 
-                renderBall(((Ball) entity),g2);
-            }
             if (entity instanceof NormalPaddle){
 
                 renderPlatform(((NormalPaddle) entity),g2);

@@ -4,23 +4,27 @@ import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
 
+import java.util.ArrayList;
+
 public abstract class Ball extends Entity {
 
     private int radius;
     protected Vector speed,acceleration;
 
-    public Ball(Board board, Point location, int radius, Vector speed, Vector acceleration) {
-        super(board,location);
+    public Ball(Point location, int radius, Vector speed, Vector acceleration) {
+        super(location);
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
     }
 
-    public void tick(){
-        move();
+    public void tick(ArrayList<Collidable> obstacles){
+        move(obstacles);
     }
 
-    public abstract void move();
+    public void tick(){};
+
+    public abstract void move(ArrayList<Collidable> obstacles);
 
     public abstract void onCollision(Collision collision);
 

@@ -13,7 +13,7 @@ public abstract class Entity {
    protected Metadata metadata;
 
 
-   public Entity(Board board,Point location) {
+   public Entity(Point location) {
        this.location = location;
        this.uuid = UUID.randomUUID();
        this.metadata =  new Metadata();

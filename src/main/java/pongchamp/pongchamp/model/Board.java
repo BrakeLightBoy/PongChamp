@@ -13,6 +13,7 @@ import pongchamp.pongchamp.model.entities.powerups.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Board implements Runnable {
 
@@ -25,18 +26,17 @@ public class Board implements Runnable {
     private final LineSegment leftPaddleMovementPath,rightPaddleMovementPath;
     private Paddle leftPaddle,rightPaddle;
 
-    private ArrayList<Collidable> obstacles;
-
     private Ball ball;
 
     private List<Entity> gameEntities;
+    private ArrayList<Collidable> obstacles;
     private List<Collectible> spawnedPowerUps;
 
     private RenderEngine renderEngine;
 
     protected int leftScore, rightScore;
 
-
+    private Random random = new Random();
 
     public Board(SimpleRenderEngine renderEngine) {
         this.renderEngine = renderEngine;
@@ -46,34 +46,35 @@ public class Board implements Runnable {
 
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
-        lowerWall = new Wall(Wall.WallType.LOWER,wallSegment);
+        lowerWall = new Wall(CollisionTypes.LOWER,wallSegment);
 
         wallSegment = new LineSegment(new Point(0,height),new Point(width,height));
-        upperWall = new Wall(Wall.WallType.UPPER,wallSegment);
+        upperWall = new Wall(CollisionTypes.UPPER,wallSegment);
 
 //I don't think the paddle movement paths are still necessary, given the current implementation. -WP
-        this.leftPaddleMovementPath = new LineSegment(
+        leftPaddleMovementPath = new LineSegment(
                 new Point(paddleDistanceFromTheEdge,0),
                 new Point(paddleDistanceFromTheEdge,height)
         );
-        this.rightPaddleMovementPath = new LineSegment(
+        rightPaddleMovementPath = new LineSegment(
                 new Point(width-paddleDistanceFromTheEdge,0),
                 new Point(width-paddleDistanceFromTheEdge,height)
         );
 
         PaddleController emptyController = new EmptyPaddleController(); //this is for test purposes, will be removed in the future
 
-        this.leftPaddle = new NormalPaddle(this,new Point(40,450),leftPaddleMovementPath,emptyController,"left");
-        this.rightPaddle = new NormalPaddle(this,new Point(1160,450),rightPaddleMovementPath,emptyController,"right");
-        this.ball = new NormalBall(this,new Point(width/2f,height/2f),BALL_RADIUS,new Vector(2,4),new Vector(0,0));
+        leftPaddle = new NormalPaddle(new Point(40,450),leftPaddleMovementPath,emptyController,CollisionTypes.LEFT);
+        rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
+        ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,new Vector(2,4),new Vector(0,0));
 
-        this.gameEntities.add(leftPaddle);
-        this.gameEntities.add(rightPaddle);
-        this.gameEntities.add(ball);
+        gameEntities.add(leftPaddle);
+        gameEntities.add(rightPaddle);
+
+
+
 
         obstacles.add(leftPaddle);
         obstacles.add(rightPaddle);
-        obstacles.add(leftPaddle);
         obstacles.add(lowerWall);
         obstacles.add(upperWall);
     }
@@ -82,6 +83,9 @@ public class Board implements Runnable {
         return gameEntities;
     }
 
+    public Ball getBall() {
+        return ball;
+    }
 
     @Override
     public void run() {
@@ -96,15 +100,8 @@ public class Board implements Runnable {
 
             for (Entity entity : gameEntities) {
                 entity.tick();
-                if (entity instanceof Collidable){
-                     Collision collision = ((Collidable) entity).checkBallCollision(ball);
-                     ball.onCollision(collision);
-                }
             }
-            for (Collidable obstacle : obstacles){
-                Collision collision = obstacle.checkBallCollision(ball);
-                ball.onCollision(collision);
-            }
+            ball.tick(obstacles);
 
             checkScore();
 
