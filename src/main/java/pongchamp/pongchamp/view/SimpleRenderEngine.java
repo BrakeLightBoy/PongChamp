@@ -1,9 +1,12 @@
 package pongchamp.pongchamp.view;
 
-import pongchamp.pongchamp.controller.KeyHandler;
-import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.Properties;
-import pongchamp.pongchamp.model.entities.*;
+import pongchamp.pongchamp.model.*;
+import pongchamp.pongchamp.controller.*;
+import pongchamp.pongchamp.model.entities.Ball;
+import pongchamp.pongchamp.model.entities.Entity;
+import pongchamp.pongchamp.model.entities.NormalPaddle;
+import pongchamp.pongchamp.model.entities.Paddle;
+import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,10 +60,15 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
                 renderPlatform(((NormalPaddle) entity),g2);
             }
         }
+        for (Collectible collectible : board.getSpawnedPowerUps()){
+            if (collectible instanceof PowerUp){
+                renderPowerUp(((PowerUp) collectible),g2);
+            }
+        }
         g2.dispose();
     }
 
-    private void renderBall(Ball ball,Graphics2D g2){
+    private void renderBall(Ball ball, Graphics2D g2){
         int radius = ball.getRadius();
         g2.fillOval((int)(ball.getLocation().getX() - ball.getRadius()),(int)(ball.getLocation().getY()- ball.getRadius()),radius*2,radius*2);
     }
@@ -68,6 +76,13 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
 
     private void renderPlatform(Paddle paddle, Graphics2D g2){
         g2.fillRect((int)(paddle.getLocation().getX() - paddle.getWidth()/2),(int) (paddle.getLocation().getY()-paddle.getHeight()/2),(int)paddle.getWidth(),(int)paddle.getHeight());
+    }
+
+    private void renderPowerUp(PowerUp powerUp,Graphics2D g2){
+        int radius = powerUp.getRadius();
+        g2.setColor(Color.RED);
+        g2.fillOval((int)(powerUp.getLocation().getX() - powerUp.getRadius()),(int)(powerUp.getLocation().getY()- powerUp.getRadius()),radius*2,radius*2);
+        g2.setColor(Color.WHITE);
     }
 
     public void paintComponent(Graphics g){
@@ -83,7 +98,7 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         }
     }
 
-    @Override
+
     public void render(Board board) {
         this.board = board;
         repaint();

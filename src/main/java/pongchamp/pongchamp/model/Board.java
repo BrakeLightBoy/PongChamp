@@ -32,6 +32,7 @@ public class Board implements Runnable {
     private ArrayList<Collidable> obstacles;
     private List<Collectible> spawnedPowerUps;
 
+
     private RenderEngine renderEngine;
 
     protected int leftScore, rightScore;
@@ -226,4 +227,8 @@ public class Board implements Runnable {
     public int getRightScore() { return rightScore; }
 
     public void rightGoal() { ++rightScore; }
+
+    public List<Collectible> getSpawnedPowerUps() {
+        return spawnedPowerUps;
+    }
 }
