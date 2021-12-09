@@ -30,7 +30,7 @@ public class NormalBall extends Ball{
             return checkCollision((Wall) obstacle);
         }
         else {
-            return checkCollision((NormalPaddle) obstacle);
+            return checkCollision((Paddle) obstacle);
         }
     }
 
@@ -62,7 +62,7 @@ public class NormalBall extends Ball{
         return new Collision(NONE,WALL);
     }
 
-    public Collision checkCollision(NormalPaddle paddle){
+    public Collision checkCollision(Paddle paddle){
         HitBox.hitBoxCollision collidedPart = paddle.paddleHitBox.checkBallIntersect(this);
 
         if (collidedPart == HitBox.hitBoxCollision.NONE){

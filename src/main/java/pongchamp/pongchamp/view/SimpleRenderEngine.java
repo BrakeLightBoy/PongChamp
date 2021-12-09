@@ -60,10 +60,16 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
                 renderPlatform(((NormalPaddle) entity),g2);
             }
         }
-        for (Collectible collectible : board.getSpawnedPowerUps()){
-            if (collectible instanceof PowerUp){
-                renderPowerUp(((PowerUp) collectible),g2);
+        try {
+            for (Collectible collectible : board.getSpawnedPowerUps()) {
+                if (collectible instanceof PowerUp) {
+                    renderPowerUp(((PowerUp) collectible), g2);
+                }
             }
+        }
+        catch (Exception e){
+            System.err.println("Failed to render power up");
+            e.printStackTrace();
         }
         g2.dispose();
     }

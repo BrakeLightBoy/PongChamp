@@ -1,9 +1,9 @@
 package pongchamp.pongchamp.model.entities;
 
-import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.Metadata;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Entity {
@@ -42,5 +42,16 @@ public abstract class Entity {
         this.metadata = metadata;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entity entity = (Entity) o;
+        return Objects.equals(uuid, entity.uuid);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid);
+    }
 }

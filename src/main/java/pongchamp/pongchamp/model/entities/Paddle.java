@@ -5,10 +5,15 @@ import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
+import pongchamp.pongchamp.model.math.Vector;
+
 import static pongchamp.pongchamp.model.ObstactleTypes.*;
 import static pongchamp.pongchamp.model.CollisionTypes.*;
 
 public abstract class Paddle extends Entity implements Collidable {
+
+    protected static final float platformSpeed = Properties.PLATFORM_SPEED;
+
     protected LineSegment movementPath;
     protected PaddleController paddleController;
     protected float width;
@@ -49,5 +54,22 @@ public abstract class Paddle extends Entity implements Collidable {
     public void setHeight(float height) {
         this.height = height;
         adjustHitBox();
+    }
+
+    @Override
+    public void tick() {
+
+        if (paddleController.movingDown()){
+            Vector movementVector = new Vector(0,platformSpeed);
+            location.movePoint(movementVector);
+            paddleHitBox.moveHitBox(movementVector);
+
+        }
+        else if (paddleController.movingUp()){
+            Vector movementVector = new Vector(0,-platformSpeed);
+            location.movePoint(movementVector);
+            paddleHitBox.moveHitBox(movementVector);
+
+        }
     }
 }
