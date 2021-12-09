@@ -26,9 +26,12 @@ public abstract class Paddle extends Entity implements Collidable {
         this.paddleController = paddleController;
         this.width =  width;
         this.height = height;
+
+        adjustHitBox();
+    }
+
+    private void adjustHitBox(){
         paddleHitBox = new HitBox(location.getX()-width/2f,location.getY()-height/2f, location.getX()+width/2f, location.getY()+height/2f);
-
-
     }
 
     public void setPaddleController(PaddleController paddleController) {
@@ -41,5 +44,10 @@ public abstract class Paddle extends Entity implements Collidable {
 
     public float getHeight() {
         return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+        adjustHitBox();
     }
 }

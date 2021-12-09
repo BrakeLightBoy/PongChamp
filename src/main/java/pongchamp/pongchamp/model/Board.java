@@ -44,7 +44,8 @@ public class Board implements Runnable {
         gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
         spawnedPowerUps = new ArrayList<>();
-
+        activatedPowerUps = new ArrayList<>();
+        toRemove = new HashSet<>();
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
         lowerWall = new Wall(CollisionTypes.LOWER,wallSegment);
@@ -80,8 +81,16 @@ public class Board implements Runnable {
         obstacles.add(upperWall);
     }
 
+    public List<PowerUp> getActivatedPowerUps(){
+        return activatedPowerUps;
+    }
+
     public List<Entity> getGameEntities() {
         return gameEntities;
+    }
+
+    public List<Collectible> getSpawnedPowers() {
+        return spawnedPowerUps;
     }
 
     public Ball getBall() {
@@ -91,13 +100,17 @@ public class Board implements Runnable {
     @Override
     public void run() {
         while (running) {
-
-            Collectible spawnedPower = spawnPowerUp();
-
-            if (spawnedPower != null){
-                spawnedPowerUps.add(spawnedPower);
-                spawnedPower.onCollect();
+            for(int i = 0;i<activatedPowerUps.size();i++){
+                if (activatedPowerUps.get(i).agePowerUp()){
+                    toRemove.add(i);
+                }
             }
+
+            for (int remIndex : toRemove){
+//                System.out.println("Remove!");
+                activatedPowerUps.remove(remIndex);
+            }
+            toRemove.clear();
 
             for (Entity entity : gameEntities) {
                 entity.tick();
@@ -111,6 +124,32 @@ public class Board implements Runnable {
             //todo some rendering whether in this thread or a new one
             //todo some TPS/FPS syncing
 
+
+            if (spawnedPowerUps.size()<MAXNUMBEROFPOWERUPS){
+                Collectible newPower = spawnPowerUp();
+                if (newPower != null){
+                    spawnedPowerUps.add(newPower);
+                }
+            }
+
+
+
+            for (int i = 0; i<spawnedPowerUps.size();i++){
+                if (spawnedPowerUps.get(i).decay()){
+                    toRemove.add(i);
+                }
+
+                if(spawnedPowerUps.get(i).checkIfCollected(ball)){
+                    spawnedPowerUps.get(i).onCollect();
+                    toRemove.add(i);
+                }
+            }
+
+            for (int remIndex : toRemove){
+//                System.out.println("Remove!");
+                spawnedPowerUps.remove(remIndex);
+            }
+            toRemove.clear();
 
             try {
                 Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
@@ -158,21 +197,21 @@ public class Board implements Runnable {
             double powerTypeOutcome = Math.random()*100;
 
 
-            if (powerTypeOutcome<=10){
-                spawnedPowerUp = new InvisPower(spawnPoint);
-                System.out.println("Invisible Power Up Spawned!");
+            if (powerTypeOutcome<=50){
+                spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
+//                System.out.println("Invisible Power Up Spawned!");
                 //spawn invis power
-            } else if (powerTypeOutcome <= 40){
-                spawnedPowerUp = new ElongatePaddlePower(spawnPoint);
-                System.out.println("Elongated Paddle Power Up Spawned!");
-                //spawn elongated paddle
-            } else if (powerTypeOutcome <= 70){
-                spawnedPowerUp = new RandomSpeedPower(spawnPoint);
-                System.out.println("Random Speed Power Up Spawned!");
-                //spawn random speed power up
+//            } else if (powerTypeOutcome <= 40){
+//                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
+////                System.out.println("Elongated Paddle Power Up Spawned!");
+//                //spawn elongated paddle
+//            } else if (powerTypeOutcome <= 70){
+//                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
+////                System.out.println("Random Speed Power Up Spawned!");
+//                //spawn random speed power up
             } else {
-                spawnedPowerUp = new StrengthPower(spawnPoint);
-                System.out.println("Strengthened Paddle Power Up Spawned!");
+                spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
+//                System.out.println("Strengthened Paddle Power Up Spawned!");
                 //spawn strengthened paddle
             }
             return spawnedPowerUp;
