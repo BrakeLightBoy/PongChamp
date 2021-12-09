@@ -18,18 +18,6 @@ public class HelloApplication extends Application {
         stage.show();
         stage.setResizable(false);
     }
-    /*
-    public void lowerRes(){
-        stage.setWidth(1280);
-        stage.setHeight(720);
-    }
-
-    public void higherRes(){
-        stage.setWidth(1920);
-        stage.setHeight(1080);
-    }
-
-     */
 
     public static void main(String[] args) {
         launch();

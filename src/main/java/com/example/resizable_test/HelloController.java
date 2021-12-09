@@ -26,18 +26,16 @@ public class HelloController {
             preferedWidth = 1920;
             preferedHeight = 1080;
             isHD = false;
-            //HelloApplication.higherRes();
         } else {
             preferedWidth = 1280;
             preferedHeight = 720;
             isHD = true;
-            //HelloApplication.lowerRes();
         }
         BP.setPrefHeight(preferedHeight);
         BP.setPrefWidth(preferedWidth);
         Stage stage = (Stage) button.getScene().getWindow();
         stage.setWidth(preferedWidth);
         stage.setHeight(preferedHeight);
-
+        stage.centerOnScreen();
     }
 }
