@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Circle?>
 
 <AnchorPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="936.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.SettingsController">
     <children>
@@ -33,7 +33,15 @@
       <Slider fx:id="volumeSlider" layoutX="741.0" layoutY="67.0" />
       <ToggleButton fx:id="brightnessB" layoutX="319.0" layoutY="35.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="87.0" styleClass="sun" stylesheets="@style.css" />
       <Slider fx:id="brightnessSlider" layoutX="406.0" layoutY="66.0" />
-      <Ellipse fx:id="ellipse" fill="#e823c0" layoutX="718.0" layoutY="297.0" radiusX="27.0" radiusY="39.0" stroke="BLACK" strokeType="INSIDE" />
-      <ColorPicker fx:id="colorPicker" blendMode="DARKEN" layoutX="758.0" layoutY="284.0" onAction="#handleColourPicker" />
+      <ColorPicker fx:id="colorPicker" blendMode="DARKEN" layoutX="762.0" layoutY="260.0" onAction="#handleColourPicker" prefHeight="28.0" prefWidth="101.0" />
+      <Circle fill="DODGERBLUE" layoutX="715.0" layoutY="435.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+      <ColorPicker fx:id="colorPicker1" blendMode="DARKEN" layoutX="761.0" layoutY="425.0" onAction="#handleColourPicker" prefHeight="23.0" prefWidth="99.0" />
+      <ImageView fx:id="paddlempty" fitHeight="106.0" fitWidth="123.0" layoutX="666.0" layoutY="242.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/paddleempty.PNG" />
+         </image>
+      </ImageView>
+      <Circle fx:id="circle" fill="DODGERBLUE" layoutX="704.0" layoutY="282.0" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+      <ToggleButton layoutX="334.0" layoutY="186.0" mnemonicParsing="false" onAction="#soundOnOff" prefHeight="78.0" prefWidth="87.0" styleClass="sound" stylesheets="@style.css" />
     </children>
 </AnchorPane>

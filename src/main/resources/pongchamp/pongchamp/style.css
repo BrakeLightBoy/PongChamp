@@ -40,8 +40,19 @@
     -fx-background-insets: 95;
 }
 
+.music:hover{
+    -fx-background-image: url("Images/emptymusic.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}
+
 .sound{
-    -fx-background-image: url("Images/sounds.png");
+    -fx-background-image: url("Images/soundempty.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}
+.sound:hover{
+    -fx-background-image: url("Images/soundfull.PNG");
     -fx-background-radius: 95;
     -fx-background-insets: 95;
 }
@@ -58,14 +69,24 @@
     -fx-background-insets: 95;
 
 }
-.sun{
-    -fx-background-image: url("Images/sun.PNG");
+.sun {
+    -fx-background-image: url("Images/sunempty.PNG");
     -fx-background-radius: 95;
     -fx-background-insets: 95;
 }
+.sun:hover {
+    -fx-background-image: url("Images/sunfull.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}
+
 .ip{
     -fx-background-image: url("Images/introplay.PNG");
     -fx-background-radius: 99;
     -fx-background-insets: 99;
 }
 
+.paddle{
+    -fx-background-image: url("Images/paddleempty.PNG");
+
+}

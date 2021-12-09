@@ -1,15 +1,23 @@
 package pongchamp.pongchamp.FX;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 
 public class SoundEffects {
+
     @FXML
     ToggleButton sound;
+    @FXML
+    Boolean isSound = true;
+    @FXML
+    public AudioClip clip = null;
 
     public void ef1() {
         String path = "src/main/resources/pongchamp/pongchamp/Sounds/6.mp3";
@@ -22,8 +30,34 @@ public class SoundEffects {
     public void ef2() {
         String path = "src/main/resources/pongchamp/pongchamp/Sounds/Untitled4.mp3";
         Media media = new Media(new File(path).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+        MediaPlayer mediaPlayer1 = new MediaPlayer(media);
+        mediaPlayer1.play();
+
+    }
+
+    public void clip() {
+        String path = "src/main/resources/pongchamp/pongchamp/Sounds/5.mp3";
+        clip = new AudioClip(new File(path).toURI().toString());
+        clip.play();
+
 
     }
 }
+/*
+ public void soundOnOff(ActionEvent event) {
+        isSound = !isSound;
+        if (isSound) {
+            ef1();
+        } else {
+            ef2();
+
+            sound.setOnAction(e -> {
+                if (sound.isPressed()) {
+                    med.pause();
+                }else {
+                    mediaPlayer.play();
+                }
+            });
+        }
+
+ */

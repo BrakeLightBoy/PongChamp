@@ -17,14 +17,17 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import pongchamp.pongchamp.FX.SoundEffects;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,16 +35,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SettingsController extends StartController implements Initializable {
+    SoundEffects obj = new SoundEffects();
 
-     private Stage stage;
+    private Stage stage;
     private Scene scene;
     private Parent root;
     @FXML
     AnchorPane mainPane;
     @FXML
     Pane slider;
-    @FXML
-    Rectangle clip;
     @FXML
     Slider volumeSlider;
     @FXML
@@ -53,7 +55,11 @@ public class SettingsController extends StartController implements Initializable
     @FXML
     ColorPicker colorPicker;
     @FXML
-    Ellipse ellipse;
+    Circle circle;
+    @FXML
+    ImageView paddlempty;
+    @FXML
+    ToggleButton sound = null;
 
     public void switchToMain(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -62,6 +68,7 @@ public class SettingsController extends StartController implements Initializable
         stage.setScene(scene);
         stage.show();
     }
+
     @FXML
     public void playHit(ActionEvent event) throws IOException {
         String path = "/Users/umair/Desktop/merge test/pongchamp/src/main/resources/pongchamp/pongchamp/Sounds/The Pharcyde-Ya Mama.mp3";
@@ -79,22 +86,22 @@ public class SettingsController extends StartController implements Initializable
         musicB.setOnAction(e -> {
             if (musicB.isSelected()) {
                 mediaPlayer.pause();
-            }else {
+            } else {
                 mediaPlayer.play();
             }
         });
 
     }
+
     @FXML
     public void adjustBrightness(ActionEvent event) throws IOException {
-        AnchorPane root = FXMLLoader.load(getClass().getResource("slider.fxml"));
+        AnchorPane root = FXMLLoader.load(getClass().getResource("Settings.fxml"));
         ColorAdjust bright = new ColorAdjust();
         root.setEffect(bright);
         brightnessSlider.setMin(-1);
         brightnessSlider.setMax(1);
         brightnessSlider.setBlockIncrement(0.1);
         brightnessSlider.setValue(0);
-
 
 
         brightnessSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -116,7 +123,7 @@ public class SettingsController extends StartController implements Initializable
         colorPicker.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                ellipse.setFill(colorPicker.getValue());
+                circle.setFill(colorPicker.getValue());
 
 
             }
@@ -151,8 +158,16 @@ public class SettingsController extends StartController implements Initializable
 
     @FXML
     private void handleColourPicker(ActionEvent event) {
+
     }
 
 
 
+    public void soundOnOff(ActionEvent event) {
+            if (sound.isSelected()) {
+                obj.clip.stop();
+            }else{
+            obj.clip.play();
+        }
+    }
 }

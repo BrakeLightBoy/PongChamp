@@ -52,7 +52,7 @@ public class NormalPaddle extends Paddle {
             return null;
         } else {
             String data = "paddle-";
-            tbs2();
+            clip();
             if (paddleType.equals("left")) {
                 data += "left";
             } else {
@@ -86,5 +86,8 @@ public class NormalPaddle extends Paddle {
     }
     public void tbs2() {
         obj.ef2();
+    }
+    public void clip() {
+        obj.clip();
     }
 }
