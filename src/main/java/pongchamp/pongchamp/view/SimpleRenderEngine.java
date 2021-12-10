@@ -36,7 +36,7 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         board = new Board(this);
         startGameThread();
         board.getLeftPaddle().setPaddleController(keyHandlerLeft);
-        board.getRightPaddle().setPaddleController(keyHandlerRight);
+        //board.getRightPaddle().setPaddleController(keyHandlerRight); //todo remove before merge
 
     }
 
@@ -55,9 +55,9 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         renderBall(board.getBall(),g2);
         for (Entity entity : board.getGameEntities()) {
 
-            if (entity instanceof NormalPaddle){
+            if (entity instanceof Paddle){
 
-                renderPlatform(((NormalPaddle) entity),g2);
+                renderPlatform(((Paddle) entity),g2);
             }
         }
         try {
