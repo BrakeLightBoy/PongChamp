@@ -24,6 +24,8 @@ public class UnbeatableAIPaddle extends AIPaddle{
     @Override
     public void tick() {
         previousLocation = new Point(location.getX(), location.getY());
+        float targetCord = target.getLocation().getY();
+        if (targetCord < 0 + height / 2 || targetCord > 900 - height / 2)return;
         this.location.setY(target.getLocation().getY());
         Vector dif = new Vector(location.getX() -previousLocation.getX() ,location.getY()- previousLocation.getY());
         this.paddleHitBox.moveHitBox(dif);
