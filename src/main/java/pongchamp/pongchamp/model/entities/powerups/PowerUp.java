@@ -4,9 +4,9 @@ import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.entities.Entity;
 import pongchamp.pongchamp.model.math.Point;
-import pongchamp.pongchamp.model.Collectible;
+//import pongchamp.pongchamp.model.Collectible;
 
-public abstract class PowerUp extends Entity implements Collectible {
+public abstract class PowerUp extends Entity {
     int activatedDuration,decayDuration,radius,currentDuration,currentDecay;
     Board gameBoard;
 

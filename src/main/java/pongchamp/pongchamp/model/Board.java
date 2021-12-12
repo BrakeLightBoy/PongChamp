@@ -28,7 +28,7 @@ public class Board implements Runnable {
 
     private List<Entity> gameEntities;
     private ArrayList<Collidable> obstacles;
-    private List<Collectible> spawnedPowerUps;
+    private List<PowerUp> spawnedPowerUps;
     private List<PowerUp> activatedPowerUps;
     private List<PowerUp> maintainedPowerUps;
     private HashSet<PowerUp> toRemove;
@@ -46,6 +46,7 @@ public class Board implements Runnable {
         obstacles = new ArrayList<>();
         spawnedPowerUps = new ArrayList<>();
         activatedPowerUps = new ArrayList<>();
+        maintainedPowerUps = new ArrayList<>();
         toRemove = new HashSet<>();
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
@@ -213,26 +214,30 @@ public class Board implements Runnable {
             double powerTypeOutcome = Math.random()*100;
 
 
-            if (powerTypeOutcome<=50){
-                spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
-//                System.out.println("Invisible Power Up Spawned!");
+            if (powerTypeOutcome<=10){
+                spawnedPowerUp = new InvisPower(this,spawnPoint);
+                System.out.println("Invisible Power Up Spawned!");
                 //spawn invis power
-//            } else if (powerTypeOutcome <= 40){
-//                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
-////                System.out.println("Elongated Paddle Power Up Spawned!");
-//                //spawn elongated paddle
-//            } else if (powerTypeOutcome <= 70){
-//                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
-////                System.out.println("Random Speed Power Up Spawned!");
-//                //spawn random speed power up
-            } else {
+            } else if (powerTypeOutcome <= 40){
+                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
+                System.out.println("Elongated Paddle Power Up Spawned!");
+                //spawn elongated paddle
+            } else if (powerTypeOutcome <= 70){
                 spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
-//                System.out.println("Strengthened Paddle Power Up Spawned!");
+                System.out.println("Random Speed Power Up Spawned!");
+                //spawn random speed power up
+            } else {
+                spawnedPowerUp = new StrengthPower(this,spawnPoint);
+                System.out.println("Strengthened Paddle Power Up Spawned!");
                 //spawn strengthened paddle
             }
             return spawnedPowerUp;
         }
         return null;
+    }
+
+    private void powerUpType(){
+
     }
 
     public void endGame(){
@@ -283,7 +288,11 @@ public class Board implements Runnable {
 
     public void rightGoal() { ++rightScore; }
 
-    public List<Collectible> getSpawnedPowerUps() {
+    public List<PowerUp> getSpawnedPowerUps() {
         return spawnedPowerUps;
+    }
+
+    public List<PowerUp> getMaintainedPowerUps() {
+        return maintainedPowerUps;
     }
 }
