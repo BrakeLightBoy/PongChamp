@@ -30,7 +30,8 @@ public class Board implements Runnable {
     private ArrayList<Collidable> obstacles;
     private List<Collectible> spawnedPowerUps;
     private List<PowerUp> activatedPowerUps;
-    private HashSet<Integer> toRemove;
+    private List<PowerUp> maintainedPowerUps;
+    private HashSet<PowerUp> toRemove;
 
 
     private RenderEngine renderEngine;
@@ -73,8 +74,6 @@ public class Board implements Runnable {
         gameEntities.add(rightPaddle);
 
 
-
-
         obstacles.add(leftPaddle);
         obstacles.add(rightPaddle);
         obstacles.add(lowerWall);
@@ -89,7 +88,7 @@ public class Board implements Runnable {
         return gameEntities;
     }
 
-    public List<Collectible> getSpawnedPowers() {
+    public List<PowerUp> getSpawnedPowers() {
         return spawnedPowerUps;
     }
 
@@ -100,18 +99,9 @@ public class Board implements Runnable {
     @Override
     public void run() {
         while (running) {
-            for(int i = 0;i<activatedPowerUps.size();i++){
-                if (activatedPowerUps.get(i).agePowerUp()){
-                    toRemove.add(i);
-                }
-            }
 
-            for (int remIndex : toRemove){
-//                System.out.println("Remove!");
-                activatedPowerUps.remove(remIndex);
-            }
-            toRemove.clear();
-
+            handleActivePowers();
+            maintainPowerUps();
             for (Entity entity : gameEntities) {
                 entity.tick();
             }
@@ -119,37 +109,14 @@ public class Board implements Runnable {
 
             checkScore();
 
+            spawnPowerUps();
+
             renderEngine.render(this);
 
             //todo some rendering whether in this thread or a new one
             //todo some TPS/FPS syncing
 
-
-            if (spawnedPowerUps.size()<MAXNUMBEROFPOWERUPS){
-                Collectible newPower = spawnPowerUp();
-                if (newPower != null){
-                    spawnedPowerUps.add(newPower);
-                }
-            }
-
-
-
-            for (int i = 0; i<spawnedPowerUps.size();i++){
-                if (spawnedPowerUps.get(i).decay()){
-                    toRemove.add(i);
-                }
-
-                if(spawnedPowerUps.get(i).checkIfCollected(ball)){
-                    spawnedPowerUps.get(i).onCollect();
-                    toRemove.add(i);
-                }
-            }
-
-            for (int remIndex : toRemove){
-//                System.out.println("Remove!");
-                spawnedPowerUps.remove(remIndex);
-            }
-            toRemove.clear();
+            handleSpawnedPowers();
 
             try {
                 Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
@@ -158,6 +125,55 @@ public class Board implements Runnable {
             }
 
         }
+    }
+
+    private void maintainPowerUps(){
+        for (PowerUp maintainedPowerUp : maintainedPowerUps){
+            maintainedPowerUp.tick();
+        }
+    }
+
+    private void spawnPowerUps(){
+        if (spawnedPowerUps.size()<MAXNUMBEROFPOWERUPS){
+            PowerUp newPower = spawnPowerUp();
+            if (newPower != null){
+                spawnedPowerUps.add(newPower);
+            }
+        }
+    }
+
+    private void handleSpawnedPowers(){
+        for (int i = 0; i<spawnedPowerUps.size();i++){
+            if (spawnedPowerUps.get(i).decay()){
+                toRemove.add(spawnedPowerUps.get(i));
+            }
+
+            if(spawnedPowerUps.get(i).checkIfCollected(ball) && !toRemove.contains(spawnedPowerUps.get(i))){
+                spawnedPowerUps.get(i).onCollect();
+                toRemove.add(spawnedPowerUps.get(i));
+            }
+        }
+
+        for (PowerUp remPowerUp : toRemove){
+//                System.out.println("Remove!");
+            spawnedPowerUps.remove(remPowerUp);
+        }
+        toRemove.clear();
+    }
+
+    private void handleActivePowers(){
+        for(int i = 0;i<activatedPowerUps.size();i++){
+            if (activatedPowerUps.get(i).agePowerUp()){
+                toRemove.add(activatedPowerUps.get(i));
+            }
+        }
+
+        for (PowerUp remPowerUp : toRemove){
+            System.out.println("Remove!");
+            activatedPowerUps.remove(remPowerUp);
+            maintainedPowerUps.remove(remPowerUp);
+        }
+        toRemove.clear();
     }
 
     public void checkScore() {
@@ -180,7 +196,7 @@ public class Board implements Runnable {
         thread.start();
     }
 
-    private Collectible spawnPowerUp(){
+    private PowerUp spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
 
         double spawnThreshold = 99;

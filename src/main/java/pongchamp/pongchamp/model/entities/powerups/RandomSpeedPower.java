@@ -36,16 +36,10 @@ public class RandomSpeedPower extends PowerUp {
             extraSpeedY =3;
         }
 
-        float currentSpeedX = ball.getSpeed().getX();
-        float currentSpeedY = ball.getSpeed().getY();
-        Vector speedVector = new Vector(currentSpeedX+extraSpeedX,currentSpeedY+extraSpeedY);
-        ball.setSpeed(speedVector);
+        ball.speedUp(extraSpeedX,extraSpeedY);
     }
 
     public void deactivate(){
-        float currentSpeedX = ball.getSpeed().getX();
-        float currentSpeedY = ball.getSpeed().getY();
-        Vector speedVector = new Vector(currentSpeedX-extraSpeedX,currentSpeedY-extraSpeedY);
-        ball.setSpeed(speedVector);
+        ball.speedUp(-extraSpeedX,-extraSpeedY);
     }
 }

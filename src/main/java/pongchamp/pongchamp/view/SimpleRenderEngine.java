@@ -52,7 +52,12 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
         Graphics2D g2 = ((Graphics2D) g);
         g2.setColor(Color.WHITE);
 
+        if (!board.getBall().getVisibility()){
+
+            g2.setColor(Color.BLACK);
+        }
         renderBall(board.getBall(),g2);
+        g2.setColor(Color.WHITE);
         for (Entity entity : board.getGameEntities()) {
 
             if (entity instanceof NormalPaddle){
@@ -61,10 +66,8 @@ public class SimpleRenderEngine extends JPanel implements RenderEngine {
             }
         }
         try {
-            for (Collectible collectible : board.getSpawnedPowerUps()) {
-                if (collectible instanceof PowerUp) {
-                    renderPowerUp(((PowerUp) collectible), g2);
-                }
+            for (PowerUp spawnedPowerUp : board.getSpawnedPowerUps()) {
+                renderPowerUp(spawnedPowerUp, g2);
             }
         }
         catch (Exception e){

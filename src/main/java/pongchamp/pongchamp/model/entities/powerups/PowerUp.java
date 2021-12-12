@@ -52,6 +52,7 @@ public abstract class PowerUp extends Entity implements Collectible {
     }
 
     public void onCollect(){
+        System.out.println("OnCollect");
         gameBoard.getActivatedPowerUps().add(this);
         activate();
         agePowerUp();

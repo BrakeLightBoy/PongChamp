@@ -10,16 +10,45 @@ public abstract class Ball extends Entity {
 
     private int radius;
     protected Vector speed,acceleration;
+    private Boolean isVisible;
 
     public Ball(Point location, int radius, Vector speed, Vector acceleration) {
         super(location);
+        isVisible=true;
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
     }
 
+    public void speedUp(float xSpeed,float ySpeed){
+        float currentSpeedX = speed.getX();
+        float currentSpeedY = speed.getY();
+
+        float modSpeedX = Math.abs(currentSpeedX)+xSpeed;
+        if (currentSpeedX<0){
+            modSpeedX *= -1;
+        }
+
+        float modSpeedY = Math.abs(currentSpeedY)+ySpeed;
+        if (currentSpeedX<0){
+            modSpeedY *= -1;
+        }
+
+        Vector speedVector = new Vector(modSpeedX,modSpeedY);
+        setSpeed(speedVector);
+    }
+
+
     public void tick(ArrayList<Collidable> obstacles){
         move(obstacles);
+    }
+
+    public Boolean getVisibility() {
+        return isVisible;
+    }
+
+    public void setVisibility(Boolean visible) {
+        isVisible = visible;
     }
 
     public void tick(){};

@@ -34,6 +34,8 @@ public class NormalBall extends Ball{
         }
     }
 
+
+
     public Collision checkCollision(Wall wall){
         LineSegment wallLine = wall.getWallLine();
 
