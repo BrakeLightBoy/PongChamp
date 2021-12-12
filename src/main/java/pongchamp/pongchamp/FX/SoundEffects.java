@@ -42,6 +42,7 @@ public class SoundEffects {
 
 
     }
+
 }
 /*
  public void soundOnOff(ActionEvent event) {
@@ -59,5 +60,16 @@ public class SoundEffects {
                 }
             });
         }
+ @FXML
+    public void clip() {
+        obj.clip();
+    }
 
+    sound.setOnAction(e -> {
+            if (sound.isSelected()) {
+               clip.stop();
+            } else {
+                clip.play();
+            }
+        });
  */

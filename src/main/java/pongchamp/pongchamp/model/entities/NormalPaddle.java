@@ -79,13 +79,7 @@ public class NormalPaddle extends Paddle {
 
             return new Collision(data);
         }
-    }
 
-    public void tbs1() {
-        obj.ef1();
-    }
-    public void tbs2() {
-        obj.ef2();
     }
     public void clip() {
         obj.clip();

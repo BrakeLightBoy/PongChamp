@@ -90,3 +90,14 @@
     -fx-background-image: url("Images/paddleempty.PNG");
 
 }
+.return{
+    -fx-background-image: url("Images/returnempty.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}
+
+.return:hover{
+    -fx-background-image: url("Images/returnfilled.PNG");
+    -fx-background-radius: 95;
+    -fx-background-insets: 95;
+}

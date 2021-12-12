@@ -32,6 +32,15 @@ public class Board implements Runnable {
     private RenderEngine renderEngine;
 
 
+    public Ball getBall() {
+        return ball;
+    }
+    public Paddle getLeft () {
+        return leftPaddle;
+    }
+    public Paddle getRight () {
+        return rightPaddle;
+    }
 
     public Board(SimpleRenderEngine renderEngine) {
         this.renderEngine = renderEngine;
@@ -60,7 +69,6 @@ public class Board implements Runnable {
         this.leftPaddle = new NormalPaddle(this,new Point(40,450),leftPaddleMovementPath,emptyController,"left");
         this.rightPaddle = new NormalPaddle(this,new Point(1160,450),rightPaddleMovementPath,emptyController,"right");
         this.ball = new NormalBall(this,new Point(width/2f,height/2f),20,new Vector(2,4),new Vector(0,0));
-
         this.gameEntities.add(leftPaddle);
         this.gameEntities.add(rightPaddle);
         this.gameEntities.add(ball);

@@ -2,15 +2,21 @@ package pongchamp.pongchamp;
 
 import java.io.IOException;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pongchamp.pongchamp.FX.SoundEffects;
+
+import javax.swing.*;
 
 public class HelloApplication extends Application {
+    SettingsController obj = new SettingsController();
 
 
     public void start(Stage stage) throws IOException {
+        play();
         Parent root = FXMLLoader.load(getClass().getResource("Starter.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -28,7 +34,13 @@ public class HelloApplication extends Application {
 
     }
 
+    public void play() {
+        obj.play();
+    }
+
+
     public static void main(String[] args) {
         launch(new String[0]);
     }
 }
+

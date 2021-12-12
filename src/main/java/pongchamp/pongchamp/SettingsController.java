@@ -13,10 +13,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -28,6 +30,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import pongchamp.pongchamp.FX.SoundEffects;
+import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.view.SimpleRenderEngine;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +63,13 @@ public class SettingsController extends StartController implements Initializable
     @FXML
     ImageView paddlempty;
     @FXML
-    ToggleButton sound = null;
+    ToggleButton sound;
+    @FXML
+    private ImageView img;
+    @FXML
+    private boolean isLightMode = true;
+    @FXML
+    private ToggleButton darklight;
 
     public void switchToMain(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -124,11 +134,11 @@ public class SettingsController extends StartController implements Initializable
             @Override
             public void handle(ActionEvent event) {
                 circle.setFill(colorPicker.getValue());
-
-
             }
         });
+
     }
+
 
     public void sliderr(Pane slider, AnchorPane mainPane) {
 
@@ -163,11 +173,36 @@ public class SettingsController extends StartController implements Initializable
 
 
 
-    public void soundOnOff(ActionEvent event) {
-            if (sound.isSelected()) {
-                obj.clip.stop();
-            }else{
-            obj.clip.play();
+
+    public void play() {
+        String path = "src/main/resources/pongchamp/pongchamp/Sounds/Celebration by Kool and the Gang with.mp3";
+        Media media = new Media(new File(path).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+
+    }
+    public void changeMode(ActionEvent event) {
+        isLightMode = !isLightMode;
+        if (darklight.isPressed()) {
+            setLightMode();
+        } else {
+            setDarkMode();
         }
     }
+
+    private void setLightMode() {
+        mainPane.getStylesheets().remove(SettingsController.class.getResource("dark.css").toString());
+        mainPane.getStylesheets().add(SettingsController.class.getResource("light.css").toExternalForm());
+        Image image = new Image(SettingsController.class.getResource("sunfull.PNG").toExternalForm());
+        img.setImage(image);
+
+    }
+
+    private void setDarkMode() {
+      mainPane.getStylesheets().remove(SettingsController.class.getResource("light.css").toExternalForm());
+        mainPane.getStylesheets().add(SettingsController.class.getResource("dark.css").toExternalForm());
+        Image image = new Image(SettingsController.class.getResource("sunempty.PNG").toExternalForm());
+        img.setImage(image);
+    }
 }
+
