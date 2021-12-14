@@ -47,3 +47,103 @@ import pongchamp.pongchamp.Facade;
 //        launch(new String[0]);
 //    }
 //}
+
+
+public class HelloApplication extends Application {
+
+//    //variable
+//    private static final int width = 800;
+//    private static final int height = 600;
+//    private static final int PLAYER_HEIGHT = 100;
+//    private static final int PLAYER_WIDTH = 15;
+//    private static final double BALL_R = 15;
+//    private int ballYSpeed = 1;
+//    private int ballXSpeed = 1;
+//    private double playerOneYPos = height / 2;
+//    private double playerTwoYPos = height / 2;
+//    private double ballXPos = width / 2;
+//    private double ballYPos = height / 2;
+//    private int scoreP1 = 0;
+//    private int scoreP2 = 0;
+//    private boolean gameStarted;
+//    private int playerOneXPos = 0;
+//    private double playerTwoXPos = width - PLAYER_WIDTH;
+
+    public void start(Stage stage) throws Exception {
+        Facade facade = new Facade();
+        stage.setTitle("PONGCHAMP");
+        //background size
+        Canvas canvas = new Canvas(Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        //JavaFX Timeline = free form animation defined by KeyFrames and their duration
+        Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc, facade)));
+        //number of cycles in animation INDEFINITE = repeat indefinitely
+        tl.setCycleCount(Timeline.INDEFINITE);
+
+        //mouse control (move and click)
+
+
+        stage.setScene(new Scene(new StackPane(canvas)));
+        stage.show();
+        tl.play();
+    }
+
+    private void run(GraphicsContext gc, Facade facade) {
+
+
+        //set graphics
+        //set background color
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
+
+        //set text
+        gc.setFill(Color.WHITE);
+        gc.setFont(Font.font(25));
+
+
+            //set ball movement
+
+
+            //simple computer opponent who is following the ball
+
+            //draw the ball
+
+            float[] ballPos = facade.getBallPosition();
+            int ballDiameter = 2*facade.getBallRadius();
+            gc.fillOval(ballPos[0], ballPos[1], ballDiameter, ballDiameter);
+
+      //pause code
+//            //set the start text
+//            gc.setStroke(Color.WHITE);
+//            gc.setTextAlign(TextAlignment.CENTER);
+//            gc.strokeText("Click", width / 2, height / 2);
+//
+//            //reset the ball start position
+//            ballXPos = width / 2;
+//            ballYPos = height / 2;
+//
+//            //reset the ball speed and the direction
+//            ballXSpeed = new Random().nextInt(2) == 0 ? 1: -1;
+//            ballYSpeed = new Random().nextInt(2) == 0 ? 1: -1;
+
+        //draw score
+        int[] score = facade.getScore();
+        gc.fillText(score[0] + "\t\t\t\t\t\t\t\t" + score[1], Properties.BOARD_WIDTH / 2, 100);
+
+
+        //draw player paddles
+        float[] leftPaddlePos = facade.getLeftPaddlePosition();
+        float[] leftPaddleDim = facade.getLeftPaddleDimensions();
+        gc.fillRect(leftPaddlePos[0], leftPaddlePos[1], leftPaddleDim[0], leftPaddleDim[1]);
+
+        float[] rightPaddlePos = facade.getRightPaddlePosition();
+        float[] rightPaddleDim = facade.getLeftPaddleDimensions();
+        gc.fillRect(rightPaddlePos[0], rightPaddlePos[1], rightPaddleDim[0], rightPaddleDim[1]);
+    }
+
+    // start the application
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
