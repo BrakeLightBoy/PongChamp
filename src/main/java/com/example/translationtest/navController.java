@@ -7,10 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloController {
+public class navController {
     @FXML
     private Label welcomeText;
 
@@ -25,6 +26,7 @@ public class HelloController {
     @FXML
     AnchorPane ap;
 
+    Stage stage;
 
     public void gamemodesPage(MouseEvent mouseEvent) {
         loadPage("gamemodesPage");
@@ -36,6 +38,8 @@ public class HelloController {
 
     public void exitPage(MouseEvent mouseEvent) {
         bp.setCenter(ap);
+        stage = (Stage) ap.getScene().getWindow();
+        stage.close();
     }
 
     private void loadPage(String page) {
