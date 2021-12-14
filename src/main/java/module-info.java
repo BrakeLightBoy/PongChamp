@@ -1,9 +1,8 @@
-module com.example.resizable_test {
+module com.example.translationtest {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.graphics;
 
 
-    opens com.example.resizable_test to javafx.fxml;
-    exports com.example.resizable_test;
+    opens com.example.translationtest to javafx.fxml;
+    exports com.example.translationtest;
 }
