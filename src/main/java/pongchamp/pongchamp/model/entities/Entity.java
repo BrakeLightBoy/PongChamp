@@ -1,9 +1,9 @@
 package pongchamp.pongchamp.model.entities;
 
-import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.Metadata;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Entity {
@@ -11,26 +11,26 @@ public abstract class Entity {
    protected final UUID uuid;
    protected Point location;
    protected Metadata metadata;
-   protected Board board;
 
-   public Entity(Board board,Point location) {
+
+    public Entity(Point location) {
        this.location = location;
        this.uuid = UUID.randomUUID();
        this.metadata =  new Metadata();
-       this.board = board;
-   }
 
-   public abstract void tick();
+    }
 
-   public Point getLocation() {
+    public abstract void tick();
+
+    public Point getLocation() {
        return location;
    }
 
-   public void setLocation(Point location) {
+    public void setLocation(Point location) {
        this.location = location;
    }
 
-   public UUID getUuid() {
+    public UUID getUuid() {
        return uuid;
    }
 
@@ -42,7 +42,15 @@ public abstract class Entity {
         this.metadata = metadata;
     }
 
-    public Board getBoard() {
-        return board;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj){
+            return true;
+        }
+        if (!(obj instanceof Entity)){
+            return false;
+        }
+        Entity entity = (Entity) obj;
+        return Objects.equals(uuid, entity.uuid);
     }
 }

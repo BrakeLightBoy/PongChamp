@@ -1,13 +1,20 @@
 package pongchamp.pongchamp.model;
 
-import pongchamp.pongchamp.model.entities.Ball;
-import pongchamp.pongchamp.model.math.Point;
-import pongchamp.pongchamp.model.math.Vector;
+import pongchamp.pongchamp.model.entities.*;
+import pongchamp.pongchamp.model.math.*;
+
 
 
 public class HitBox {
     private float minX,minY,maxX,maxY,width,height;
     private Point center;
+
+    public enum hitBoxCollision {
+        VERTICAL,
+        HORIZONTAL,
+        CORNER,
+        NONE
+    }
 
     public HitBox(float minX, float minY, float maxX, float maxY) {
         this.minX = minX;
@@ -19,7 +26,7 @@ public class HitBox {
         height = maxY-minY;
     }
 
-    public String checkBallIntersect(Ball ball){
+    public hitBoxCollision checkBallIntersect(Ball ball){
         //Code inspired by "eJames" the explanation from:
         //https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
         int bRadius = ball.getRadius();
@@ -31,24 +38,24 @@ public class HitBox {
 
 
         if (distX>(width/2f)+bRadius || distY>(height/2f)+bRadius){
-            return null;
+            return hitBoxCollision.NONE;
         }
 
         if (distY<=height/2f)
         {
-            return "vertical";
+            return hitBoxCollision.VERTICAL;
         }
         else if (distX<=width/2f){
-            return "horizontal";
+            return hitBoxCollision.HORIZONTAL;
         }
 
         double cornerDistSquared = Math.pow((distX-width/2d),2) + Math.pow((distY-height/2d),2);
 
         if (cornerDistSquared <= Math.pow(bRadius,2)){
-            return "corner";
+            return hitBoxCollision.CORNER;
         }
         else {
-            return null;
+            return hitBoxCollision.NONE;
         }
     }
 
@@ -59,5 +66,4 @@ public class HitBox {
         maxY += vector.getY();
         center.movePoint(vector);
     }
-
 }

@@ -4,34 +4,56 @@ import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
 
+import java.util.ArrayList;
+
 public abstract class Ball extends Entity {
 
     private int radius;
     protected Vector speed,acceleration;
+    private Boolean isVisible;
 
-    public Ball(Board board, Point location, int radius, Vector speed, Vector acceleration) {
-        super(board,location);
+    public Ball(Point location, int radius, Vector speed, Vector acceleration) {
+        super(location);
+        isVisible=true;
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
     }
 
-    public void tick(){
-        if(!(board.getLeftScore() == 10 || board.getRightScore() == 10)) {
-            if (location.getX() < 0) {
-                location.setX(600);
-                board.rightGoal();
-                System.out.println(board.getLeftScore() + " : " + board.getRightScore());
-            } else if (location.getX() > 1200) {
-                location.setX(600);
-                board.leftGoal();
-                System.out.println(board.getLeftScore() + " : " + board.getRightScore());
-            }
-            move();
-        } else board.endGame();
+    public void speedUp(float xSpeed,float ySpeed){
+        float currentSpeedX = speed.getX();
+        float currentSpeedY = speed.getY();
+
+        float modSpeedX = Math.abs(currentSpeedX)+xSpeed;
+        if (currentSpeedX<0){
+            modSpeedX *= -1;
+        }
+
+        float modSpeedY = Math.abs(currentSpeedY)+ySpeed;
+        if (currentSpeedX<0){
+            modSpeedY *= -1;
+        }
+
+        Vector speedVector = new Vector(modSpeedX,modSpeedY);
+        setSpeed(speedVector);
     }
 
-    public abstract void move();
+
+    public void tick(ArrayList<Collidable> obstacles){
+        move(obstacles);
+    }
+
+    public Boolean getVisibility() {
+        return isVisible;
+    }
+
+    public void setVisibility(Boolean visible) {
+        isVisible = visible;
+    }
+
+    public void tick(){};
+
+    public abstract void move(ArrayList<Collidable> obstacles);
 
     public abstract void onCollision(Collision collision);
 

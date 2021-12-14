@@ -2,24 +2,28 @@ package pongchamp.pongchamp.model.entities;
 
 
 import pongchamp.pongchamp.controller.PaddleController;
-import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.Collidable;
-import pongchamp.pongchamp.model.Collision;
-import pongchamp.pongchamp.model.HitBox;
+import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
+import pongchamp.pongchamp.model.math.Vector;
+
+import static pongchamp.pongchamp.model.ObstactleTypes.*;
+import static pongchamp.pongchamp.model.CollisionTypes.*;
 
 public abstract class Paddle extends Entity implements Collidable {
+
+    protected static final float platformSpeed = Properties.PLATFORM_SPEED;
+
     protected LineSegment movementPath;
     protected PaddleController paddleController;
     protected float width;
     protected float height;
     protected HitBox paddleHitBox;
-    protected String paddleType;
+    protected CollisionTypes paddleType;
 
-    public Paddle(Board board, Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, String paddleType) {
-        super(board,location);
-        if (!(paddleType.equals("left")||paddleType.equals("right"))){
+    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType) {
+        super(location);
+        if (! (paddleType == LEFT || paddleType == RIGHT) ){
             throw new IllegalArgumentException("Wrong paddle type");
         }
         this.paddleType = paddleType;
@@ -27,12 +31,13 @@ public abstract class Paddle extends Entity implements Collidable {
         this.paddleController = paddleController;
         this.width =  width;
         this.height = height;
-        paddleHitBox = new HitBox(location.getX()-width/2f,location.getY()-height/2f, location.getX()+width/2f, location.getY()+height/2f);
 
-
+        adjustHitBox();
     }
 
-    public abstract Collision checkBallCollision(Ball ball);
+    private void adjustHitBox(){
+        paddleHitBox = new HitBox(location.getX()-width/2f,location.getY()-height/2f, location.getX()+width/2f, location.getY()+height/2f);
+    }
 
     public void setPaddleController(PaddleController paddleController) {
         this.paddleController = paddleController;
@@ -44,5 +49,27 @@ public abstract class Paddle extends Entity implements Collidable {
 
     public float getHeight() {
         return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+        adjustHitBox();
+    }
+
+    @Override
+    public void tick() {
+
+        if (paddleController.movingDown()){
+            Vector movementVector = new Vector(0,platformSpeed);
+            location.movePoint(movementVector);
+            paddleHitBox.moveHitBox(movementVector);
+
+        }
+        else if (paddleController.movingUp()){
+            Vector movementVector = new Vector(0,-platformSpeed);
+            location.movePoint(movementVector);
+            paddleHitBox.moveHitBox(movementVector);
+
+        }
     }
 }
