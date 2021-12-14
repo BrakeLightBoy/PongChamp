@@ -205,4 +205,16 @@ public class SettingsController extends StartController implements Initializable
         img.setImage(image);
     }
 }
-
+/*
+    protected void changeResolution() throws IOException {
+        preferredWidth = 1920;
+        preferredHeight = 1080;
+        Stage stage = (Stage) changeResButton.getScene().getWindow();
+        scene = new Scene(FXMLLoader.load(getClass().getResource("sliderHD.fxml")));
+        stage.setWidth(preferredWidth);
+        stage.setHeight(preferredHeight);
+        stage.centerOnScreen();
+        stage.setScene(scene);
+        stage.show();
+        
+ */
