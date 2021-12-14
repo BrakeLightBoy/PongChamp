@@ -99,32 +99,25 @@ public class Board implements Runnable {
 
     @Override
     public void run() {
-        while (running) {
+        handleActivePowers();
+        maintainPowerUps();
+        for (Entity entity : gameEntities) {
+            entity.tick();
+        }
+        ball.tick(obstacles);
 
-            handleActivePowers();
-            maintainPowerUps();
-            for (Entity entity : gameEntities) {
-                entity.tick();
-            }
-            ball.tick(obstacles);
+        checkScore();
+        spawnPowerUps();
+        
+        //todo some rendering whether in this thread or a new one
+        //todo some TPS/FPS syncing
 
-            checkScore();
+        handleSpawnedPowers();
 
-            spawnPowerUps();
-
-            renderEngine.render(this);
-
-            //todo some rendering whether in this thread or a new one
-            //todo some TPS/FPS syncing
-
-            handleSpawnedPowers();
-
-            try {
-                Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+        try {
+            Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
