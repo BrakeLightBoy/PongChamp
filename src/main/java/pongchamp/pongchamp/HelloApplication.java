@@ -3,11 +3,14 @@ package pongchamp.pongchamp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -53,7 +56,9 @@ import pongchamp.pongchamp.Facade;
  *
  */
 public class HelloApplication extends Application {
-    public Facade facade = new Facade();
+    private Facade facade = new Facade();
+    private Boolean p1Up,p1Down,p2Up,p2Down;
+
 //    //variable
 //    private static final int width = 800;
 //    private static final int height = 600;
@@ -73,10 +78,12 @@ public class HelloApplication extends Application {
 //    private double playerTwoXPos = width - PLAYER_WIDTH;
 
     public void start(Stage stage) {
-
         stage.setTitle("PONGCHAMP");
         //background size
         Canvas canvas = new Canvas(Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
+
+
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         //JavaFX Timeline = free form animation defined by KeyFrames and their duration
@@ -86,15 +93,29 @@ public class HelloApplication extends Application {
 
         //mouse control (move and click)
 
+        Scene scene = new Scene(new StackPane(canvas));
 
-        stage.setScene(new Scene(new StackPane(canvas)));
+
+
+        InGameKeyListener keyListener = new InGameKeyListener();
+        scene.setOnKeyPressed(keyListener);
+        scene.setOnKeyReleased(keyListener);
+
+        FXKeyHandler rightKeyHandler = new FXKeyHandler(KeyCode.UP,KeyCode.DOWN);
+        FXKeyHandler leftKeyHandler = new FXKeyHandler(KeyCode.W,KeyCode.S);
+
+        keyListener.registerKeyListener(rightKeyHandler);
+        keyListener.registerKeyListener(leftKeyHandler);
+
+        facade.setLeftPaddleController(leftKeyHandler);
+        facade.setRightPaddleController(rightKeyHandler);
+
+        stage.setScene(scene);
         stage.show();
         tl.play();
     }
 
     private void run(GraphicsContext gc) {
-
-
         //set graphics
         //set background color
         facade.updateBoardState();

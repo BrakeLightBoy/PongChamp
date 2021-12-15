@@ -12,7 +12,6 @@ public class Facade {
     public void updateBoardState(){
         gameBoard.run();
     }
-
     public float[] getLeftPaddlePosition(){
         float[] leftPosition = new float[2];
         leftPosition[0] = gameBoard.getLeftPaddle().getLocation().getX();
