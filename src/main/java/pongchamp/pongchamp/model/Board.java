@@ -113,11 +113,11 @@ public class Board implements Runnable {
 
         handleSpawnedPowers();
 
-        try {
+        /*try {
             Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void maintainPowerUps(){
