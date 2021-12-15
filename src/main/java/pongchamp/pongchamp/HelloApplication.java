@@ -50,7 +50,7 @@ import pongchamp.pongchamp.Facade;
 
 
 public class HelloApplication extends Application {
-
+    public Facade facade = new Facade();
 //    //variable
 //    private static final int width = 800;
 //    private static final int height = 600;
@@ -69,15 +69,15 @@ public class HelloApplication extends Application {
 //    private int playerOneXPos = 0;
 //    private double playerTwoXPos = width - PLAYER_WIDTH;
 
-    public void start(Stage stage) throws Exception {
-        Facade facade = new Facade();
+    public void start(Stage stage) {
+
         stage.setTitle("PONGCHAMP");
         //background size
         Canvas canvas = new Canvas(Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         //JavaFX Timeline = free form animation defined by KeyFrames and their duration
-        Timeline tl = new Timeline(new KeyFrame(Duration.millis(10), e -> run(gc, facade)));
+        Timeline tl = new Timeline(new KeyFrame(Duration.millis(25), e -> run(gc)));
         //number of cycles in animation INDEFINITE = repeat indefinitely
         tl.setCycleCount(Timeline.INDEFINITE);
 
@@ -89,11 +89,13 @@ public class HelloApplication extends Application {
         tl.play();
     }
 
-    private void run(GraphicsContext gc, Facade facade) {
+    private void run(GraphicsContext gc) {
 
 
         //set graphics
         //set background color
+        facade.updateBoardState();
+
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
 
@@ -110,8 +112,9 @@ public class HelloApplication extends Application {
             //draw the ball
 
             float[] ballPos = facade.getBallPosition();
-            int ballDiameter = 2*facade.getBallRadius();
-            gc.fillOval(ballPos[0], ballPos[1], ballDiameter, ballDiameter);
+            int ballRadius= facade.getBallRadius();
+            int ballDiameter = 2*ballRadius;
+            gc.fillOval(ballPos[0]-ballRadius, ballPos[1]-ballRadius, ballDiameter, ballDiameter);
 
       //pause code
 //            //set the start text
@@ -135,13 +138,12 @@ public class HelloApplication extends Application {
         //draw player paddles
         float[] leftPaddlePos = facade.getLeftPaddlePosition();
         float[] leftPaddleDim = facade.getLeftPaddleDimensions();
-        gc.fillRect(leftPaddlePos[0], leftPaddlePos[1], leftPaddleDim[0], leftPaddleDim[1]);
+        gc.fillRect(leftPaddlePos[0]-leftPaddleDim[0]/2, leftPaddlePos[1]-leftPaddleDim[1]/2, leftPaddleDim[0], leftPaddleDim[1]);
 
         float[] rightPaddlePos = facade.getRightPaddlePosition();
-        float[] rightPaddleDim = facade.getLeftPaddleDimensions();
-        gc.fillRect(rightPaddlePos[0], rightPaddlePos[1], rightPaddleDim[0], rightPaddleDim[1]);
+        float[] rightPaddleDim = facade.getRightPaddleDimensions();
+        gc.fillRect((int)(rightPaddlePos[0]-rightPaddleDim[0]/2),(int)( rightPaddlePos[1]-rightPaddleDim[1]/2), rightPaddleDim[0], rightPaddleDim[1]);
     }
-
     // start the application
     public static void main(String[] args) {
         launch(args);

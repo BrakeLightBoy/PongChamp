@@ -7,7 +7,7 @@ import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
 import pongchamp.pongchamp.view.RenderEngine;
-import pongchamp.pongchamp.view.SimpleRenderEngine;
+//import pongchamp.pongchamp.view.SimpleRenderEngine;
 import static pongchamp.pongchamp.model.Properties.*;
 import pongchamp.pongchamp.model.entities.powerups.*;
 
@@ -40,8 +40,7 @@ public class Board implements Runnable {
 
     private Random random = new Random();
 
-    public Board(SimpleRenderEngine renderEngine) {
-        this.renderEngine = renderEngine;
+    public Board() {
         gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
         spawnedPowerUps = new ArrayList<>();
