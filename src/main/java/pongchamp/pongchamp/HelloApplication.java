@@ -17,6 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import pongchamp.pongchamp.controller.FXKeyHandler;
+import pongchamp.pongchamp.controller.InGameKeyListener;
 import pongchamp.pongchamp.model.Properties;
 
 import pongchamp.pongchamp.model.Board;

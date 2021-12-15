@@ -1,4 +1,5 @@
 package pongchamp.pongchamp;
+import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
 
 public class Facade {
@@ -65,6 +66,11 @@ public class Facade {
     }
 
 
-
+    public void setRightPaddleController(PaddleController paddleController){
+        gameBoard.getRightPaddle().setPaddleController(paddleController);
+    }
+    public void setLeftPaddleController(PaddleController paddleController){
+        gameBoard.getLeftPaddle().setPaddleController(paddleController);
+    }
 
 }
