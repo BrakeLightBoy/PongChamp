@@ -1,8 +1,12 @@
 package pongchamp.pongchamp.model;
 
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import pongchamp.pongchamp.model.math.Vector;
+
 public class Properties {
     public static final float BOARD_WIDTH = 1200;
-    public static final float BOARD_HEIGHT = 900;
+    public static final float BOARD_HEIGHT = 700;
 
     public static final int BALL_RADIUS = 10;
     public static final int POWER_UP_RADIUS = 50;
@@ -17,6 +21,10 @@ public class Properties {
     public static final int FRAMES_PER_SECOND = 60; //TODO IS THIS REALLY THE BEST OPTION?
 
     public static final int MAXNUMBEROFPOWERUPS = 3;
+
+    public static final Color BALL_DEFAULT_COLOR = Color.WHITE;
+    
+    public static final Font FONT_SIZE = Font.font(25);
 
 
 }

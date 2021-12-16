@@ -68,7 +68,7 @@ public class Board implements Runnable {
 
         leftPaddle = new NormalPaddle(new Point(40,450),leftPaddleMovementPath,emptyController,CollisionTypes.LEFT);
         rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
-        ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,new Vector(2,4),new Vector(0,0));
+        ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0));
 
         gameEntities.add(leftPaddle);
         gameEntities.add(rightPaddle);
@@ -175,10 +175,11 @@ public class Board implements Runnable {
 
                 rightGoal();
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
+                newRound();
             } else if (ball.getLocation().getX() > 1200) {
-                ball.getLocation().setX(600);
                 this.leftGoal();
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
+                newRound();
             }
         } else endGame();
     }

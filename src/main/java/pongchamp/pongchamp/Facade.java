@@ -2,6 +2,12 @@ package pongchamp.pongchamp;
 import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.entities.powerups.PowerUp;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 public class Facade {
     private Board gameBoard;

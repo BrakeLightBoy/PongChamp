@@ -67,7 +67,7 @@ public abstract class PowerUp extends Entity {
 
     protected abstract void activate();
 
-    protected abstract void deactivate();
+    public abstract void deactivate();
 
     public Boolean checkIfCollected(Ball ball){
         float deltaX = ball.getLocation().getX() - location.getX();

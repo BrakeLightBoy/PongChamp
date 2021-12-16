@@ -1,8 +1,10 @@
 package pongchamp.pongchamp.model.entities;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
+
 
 import java.util.ArrayList;
 
@@ -11,6 +13,7 @@ public abstract class Ball extends Entity {
     private int radius;
     protected Vector speed,acceleration;
     private Boolean isVisible;
+    Color ballColor;
 
     public Ball(Point location, int radius, Vector speed, Vector acceleration) {
         super(location);
@@ -80,5 +83,12 @@ public abstract class Ball extends Entity {
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    public void setBallColor(Color ballColor){
+        this.ballColor = ballColor;
+    }
+    public Color getBallColor(){
+        return ballColor;
     }
 }

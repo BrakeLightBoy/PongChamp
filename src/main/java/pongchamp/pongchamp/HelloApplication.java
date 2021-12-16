@@ -24,8 +24,12 @@ import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.Board;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import pongchamp.pongchamp.Facade;
+import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
 //public class HelloApplication extends Application {
 //
@@ -61,23 +65,6 @@ public class HelloApplication extends Application {
     private Facade facade = new Facade();
     private Boolean p1Up,p1Down,p2Up,p2Down;
 
-//    //variable
-//    private static final int width = 800;
-//    private static final int height = 600;
-//    private static final int PLAYER_HEIGHT = 100;
-//    private static final int PLAYER_WIDTH = 15;
-//    private static final double BALL_R = 15;
-//    private int ballYSpeed = 1;
-//    private int ballXSpeed = 1;
-//    private double playerOneYPos = height / 2;
-//    private double playerTwoYPos = height / 2;
-//    private double ballXPos = width / 2;
-//    private double ballYPos = height / 2;
-//    private int scoreP1 = 0;
-//    private int scoreP2 = 0;
-//    private boolean gameStarted;
-//    private int playerOneXPos = 0;
-//    private double playerTwoXPos = width - PLAYER_WIDTH;
 
     public void start(Stage stage) {
         stage.setTitle("PONGCHAMP");
@@ -151,7 +138,8 @@ public class HelloApplication extends Application {
         //draw score
         gc.setFont(Properties.FONT_SIZE);
         int[] score = facade.getScore();
-        gc.fillText(score[0] + "\t\t\t\t\t\t\t\t" + score[1], Properties.BOARD_WIDTH / 2, 100);
+        gc.fillText(String.valueOf(score[0]), Properties.BOARD_WIDTH*1/4, Properties.BOARD_HEIGHT*1/10);
+        gc.fillText(String.valueOf(score[1]), Properties.BOARD_WIDTH*3/4 , Properties.BOARD_HEIGHT*1/10);
 
 
         //draw player paddles
