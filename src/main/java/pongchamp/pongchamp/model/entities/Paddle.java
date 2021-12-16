@@ -64,7 +64,7 @@ public abstract class Paddle extends Entity implements Collidable {
 
         if (paddleController.movingDown()){
             float next = location.getY();
-            if (next + platformSpeed + height / 2 > 900)return;
+            if (next + platformSpeed + height / 2 > Properties.BOARD_HEIGHT)return;
             Vector movementVector = new Vector(0,platformSpeed);
             location.movePoint(movementVector);
             paddleHitBox.moveHitBox(movementVector);
