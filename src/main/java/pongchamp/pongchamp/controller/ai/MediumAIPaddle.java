@@ -92,7 +92,6 @@ public class MediumAIPaddle extends AIPaddle{
             bounce = true;
         else if (lastYs[0] > lastYs[1] && lastYs[1] < lastYs[2])
             bounce = true;
-        if (bounce) System.out.println("bounce!");
         return bounce;
     }
 
