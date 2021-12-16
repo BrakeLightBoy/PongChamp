@@ -1,5 +1,7 @@
 package pongchamp.pongchamp.model;
 
+import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
+import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.entities.*;
 import pongchamp.pongchamp.controller.EmptyPaddleController;
 import pongchamp.pongchamp.controller.PaddleController;
