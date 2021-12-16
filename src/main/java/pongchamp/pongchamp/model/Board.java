@@ -70,7 +70,7 @@ public class Board implements Runnable {
         leftPaddle = new NormalPaddle(new Point(40,450),leftPaddleMovementPath,emptyController,CollisionTypes.LEFT);
         //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT); //todo fix before merge
         ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,new Vector(2,4),new Vector(0,0));
-        rightPaddle = new UnbeatableAIPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT,ball); //todo remove before merge
+        rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT,ball); //todo remove before merge
         gameEntities.add(leftPaddle);
         gameEntities.add(rightPaddle);
 

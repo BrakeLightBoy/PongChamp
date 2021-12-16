@@ -1,5 +1,3 @@
 package pongchamp.pongchamp.controller;
 
-public class FXKeyHandler {
-
-}
+public class FXKeyHandler  { }
