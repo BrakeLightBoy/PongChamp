@@ -18,6 +18,7 @@ public abstract class Ball extends Entity {
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
+        ballColor = Color.WHITE;
     }
 
     public void speedUp(float xSpeed,float ySpeed){

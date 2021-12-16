@@ -118,45 +118,38 @@ public class HelloApplication extends Application {
     }
 
     private void run(GraphicsContext gc) {
-        //set graphics
-        //set background color
+        //update gameBoard state
         facade.updateBoardState();
 
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
 
-        //set text
+        //draw the ball
+        gc.setFill(facade.getBallColor());
+        float[] ballPos = facade.getBallPosition();
+        int ballRadius= facade.getBallRadius();
+        int ballDiameter = 2*ballRadius;
+        gc.fillOval(ballPos[0]-ballRadius, ballPos[1]-ballRadius, ballDiameter, ballDiameter);
+
+        HashMap<Class<? extends PowerUp>, ArrayList<Float[]>> powerMap = facade.returnPowerMap();
+
+        HashMap<Class<? extends PowerUp>, Color> powerColors = facade.returnPowerColors();
+
+        int powerRadius = Properties.POWER_UP_RADIUS;
+        int powerDiameter = powerRadius*2;
+
+        gc.setFill(Color.RED);
+        powerMap.forEach((p,pm) ->{
+            gc.setFill(powerColors.get(p));
+            for (Float[] position : pm){
+                gc.fillOval(position[0]-powerRadius, position[1]-powerRadius, powerDiameter, powerDiameter);
+            }
+        });
         gc.setFill(Color.WHITE);
-        gc.setFont(Font.font(25));
 
-
-            //set ball movement
-
-
-            //simple computer opponent who is following the ball
-
-            //draw the ball
-
-            float[] ballPos = facade.getBallPosition();
-            int ballRadius= facade.getBallRadius();
-            int ballDiameter = 2*ballRadius;
-            gc.fillOval(ballPos[0]-ballRadius, ballPos[1]-ballRadius, ballDiameter, ballDiameter);
-
-      //pause code
-//            //set the start text
-//            gc.setStroke(Color.WHITE);
-//            gc.setTextAlign(TextAlignment.CENTER);
-//            gc.strokeText("Click", width / 2, height / 2);
-//
-//            //reset the ball start position
-//            ballXPos = width / 2;
-//            ballYPos = height / 2;
-//
-//            //reset the ball speed and the direction
-//            ballXSpeed = new Random().nextInt(2) == 0 ? 1: -1;
-//            ballYSpeed = new Random().nextInt(2) == 0 ? 1: -1;
 
         //draw score
+        gc.setFont(Properties.FONT_SIZE);
         int[] score = facade.getScore();
         gc.fillText(score[0] + "\t\t\t\t\t\t\t\t" + score[1], Properties.BOARD_WIDTH / 2, 100);
 

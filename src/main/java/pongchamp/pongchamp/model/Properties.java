@@ -5,7 +5,8 @@ public class Properties {
     public static final float BOARD_HEIGHT = 900;
 
     public static final int BALL_RADIUS = 10;
-    public static final int POWER_UP_RADIUS = 15;
+    public static final int POWER_UP_RADIUS = 50;
+    public static final Vector INITIAL_SPEED = new Vector(4,8);
 
     //Friction system needs to be discussed further.
     public static final float FRICTION = 0.8f;

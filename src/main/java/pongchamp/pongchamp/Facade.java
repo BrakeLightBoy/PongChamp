@@ -1,4 +1,5 @@
 package pongchamp.pongchamp;
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
 
@@ -71,6 +72,46 @@ public class Facade {
     }
     public void setLeftPaddleController(PaddleController paddleController){
         gameBoard.getLeftPaddle().setPaddleController(paddleController);
+    }
+
+    public HashMap<Class<? extends PowerUp>,ArrayList<Float[]>> returnPowerMap(){
+        HashMap<Class<? extends PowerUp>,ArrayList<Float[]>> powerUpsMap = new HashMap<>();
+
+        HashSet<Class<? extends PowerUp>> powerNames = new HashSet<>();
+        for (PowerUp power : gameBoard.getSpawnedPowers()){
+            powerNames.add(power.getClass());
+        }
+        for (Class<? extends  PowerUp> name : powerNames){
+            powerUpsMap.put(name,new ArrayList<Float[]>());
+        }
+
+        for (PowerUp spawnedPower : gameBoard.getSpawnedPowers()){
+            Float[] position = new Float[2];
+            position[0] = spawnedPower.getLocation().getX();
+            position[1] = spawnedPower.getLocation().getY();
+
+            ArrayList<Float[]> specificPowerPosition = powerUpsMap.get(spawnedPower.getClass());
+
+            specificPowerPosition.add(position);
+        }
+        return powerUpsMap;
+    }
+
+    public HashMap<Class<? extends PowerUp>,Color> returnPowerColors(){
+        HashMap<Class<? extends PowerUp>,Color> powerColors = new HashMap<>();
+
+        HashSet<Class<? extends PowerUp>> powerNames = new HashSet<>();
+        for (PowerUp power : gameBoard.getSpawnedPowers()){
+            if (!powerNames.contains(power.getClass())){
+                powerColors.put(power.getClass(),power.getPowerColor());
+            }
+            powerNames.add(power.getClass());
+        }
+        return powerColors;
+    }
+
+    public Color getBallColor(){
+        return gameBoard.getBall().getBallColor();
     }
 
 }

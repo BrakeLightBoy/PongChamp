@@ -1,5 +1,6 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.entities.Paddle;
 import pongchamp.pongchamp.model.math.Point;
@@ -12,7 +13,7 @@ public class ElongatePaddlePower extends PowerUp{
     Affected player;
 
     public ElongatePaddlePower(Board gameBoard,Point location){
-        super(gameBoard,location);
+        super(gameBoard,location, Color.GOLD);
     }
     public ElongatePaddlePower(Board gameBoard,Point location,int duration, int radius) {
         super(gameBoard,location, duration, radius);

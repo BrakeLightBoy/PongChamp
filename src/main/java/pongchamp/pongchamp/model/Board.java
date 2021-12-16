@@ -172,7 +172,7 @@ public class Board implements Runnable {
     public void checkScore() {
         if(!(this.getLeftScore() == 10 || this.getRightScore() == 10)) {
             if (ball.getLocation().getX() < 0) {
-                ball.getLocation().setX(600);
+
                 rightGoal();
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
             } else if (ball.getLocation().getX() > 1200) {
@@ -181,6 +181,21 @@ public class Board implements Runnable {
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
             }
         } else endGame();
+    }
+
+    private void newRound(){
+        clearAllPowers();
+        ball.getLocation().setX(600);
+        ball.setSpeed(INITIAL_SPEED);
+    }
+
+    private void clearAllPowers(){
+        for (PowerUp activePower : activatedPowerUps){
+            activePower.deactivate();
+        }
+        activatedPowerUps.clear();
+        spawnedPowerUps.clear();
+        maintainedPowerUps.clear();
     }
 
     public void startGame(){
