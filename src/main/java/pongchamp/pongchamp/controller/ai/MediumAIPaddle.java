@@ -25,18 +25,11 @@ public class MediumAIPaddle extends AIPaddle{
     @Override
     public boolean movingUp() {
 
-
-
-
         if (notMovedLastTick){
             notMovedLastTick = false;
             return false;
         }
         if (tick % 2 == 0)return false;
-
-
-
-
 
         boolean move = location.getY() > target.getLocation().getY();
         if (randomBoolean(0.15)){
@@ -57,10 +50,6 @@ public class MediumAIPaddle extends AIPaddle{
         }
         if (tick % 2 == 1)return false;
 
-
-
-
-      
         boolean move = location.getY() < target.getLocation().getY();
         if (randomBoolean(0.15)){
             notMovedLastTick = true;
