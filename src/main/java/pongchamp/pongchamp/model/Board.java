@@ -9,7 +9,7 @@ import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
 import pongchamp.pongchamp.view.RenderEngine;
-import pongchamp.pongchamp.view.SimpleRenderEngine;
+//import pongchamp.pongchamp.view.SimpleRenderEngine;
 import static pongchamp.pongchamp.model.Properties.*;
 import pongchamp.pongchamp.model.entities.powerups.*;
 
@@ -30,9 +30,10 @@ public class Board implements Runnable {
 
     private List<Entity> gameEntities;
     private ArrayList<Collidable> obstacles;
-    private List<Collectible> spawnedPowerUps;
+    private List<PowerUp> spawnedPowerUps;
     private List<PowerUp> activatedPowerUps;
-    private HashSet<Integer> toRemove;
+    private List<PowerUp> maintainedPowerUps;
+    private HashSet<PowerUp> toRemove;
 
 
     private RenderEngine renderEngine;
@@ -41,12 +42,12 @@ public class Board implements Runnable {
 
     private Random random = new Random();
 
-    public Board(SimpleRenderEngine renderEngine) {
-        this.renderEngine = renderEngine;
+    public Board() {
         gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
         spawnedPowerUps = new ArrayList<>();
         activatedPowerUps = new ArrayList<>();
+        maintainedPowerUps = new ArrayList<>();
         toRemove = new HashSet<>();
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
@@ -68,13 +69,11 @@ public class Board implements Runnable {
         PaddleController emptyController = new EmptyPaddleController(); //this is for test purposes, will be removed in the future
 
         leftPaddle = new NormalPaddle(new Point(40,450),leftPaddleMovementPath,emptyController,CollisionTypes.LEFT);
-        //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT); //todo fix before merge
-        ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,new Vector(2,4),new Vector(0,0));
-        rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT,ball); //todo remove before merge
+        rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
+        ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0));
+
         gameEntities.add(leftPaddle);
         gameEntities.add(rightPaddle);
-
-
 
 
         obstacles.add(leftPaddle);
@@ -91,7 +90,7 @@ public class Board implements Runnable {
         return gameEntities;
     }
 
-    public List<Collectible> getSpawnedPowers() {
+    public List<PowerUp> getSpawnedPowers() {
         return spawnedPowerUps;
     }
 
@@ -101,79 +100,105 @@ public class Board implements Runnable {
 
     @Override
     public void run() {
-        while (running) {
-            for(int i = 0;i<activatedPowerUps.size();i++){
-                if (activatedPowerUps.get(i).agePowerUp()){
-                    toRemove.add(i);
-                }
-            }
-
-            for (int remIndex : toRemove){
-//                System.out.println("Remove!");
-                activatedPowerUps.remove(remIndex);
-            }
-            toRemove.clear();
-
-            for (Entity entity : gameEntities) {
-                entity.tick();
-            }
-            ball.tick(obstacles);
-
-            checkScore();
-
-            renderEngine.render(this);
-
-            //todo some rendering whether in this thread or a new one
-            //todo some TPS/FPS syncing
-
-
-            if (spawnedPowerUps.size()<MAXNUMBEROFPOWERUPS){
-                Collectible newPower = spawnPowerUp();
-                if (newPower != null){
-                    spawnedPowerUps.add(newPower);
-                }
-            }
-
-
-
-            for (int i = 0; i<spawnedPowerUps.size();i++){
-                if (spawnedPowerUps.get(i).decay()){
-                    toRemove.add(i);
-                }
-
-                if(spawnedPowerUps.get(i).checkIfCollected(ball)){
-                    spawnedPowerUps.get(i).onCollect();
-                    toRemove.add(i);
-                }
-            }
-
-            for (int remIndex : toRemove){
-//                System.out.println("Remove!");
-                spawnedPowerUps.remove(remIndex);
-            }
-            toRemove.clear();
-
-            try {
-                Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+        handleActivePowers();
+        maintainPowerUps();
+        for (Entity entity : gameEntities) {
+            entity.tick();
         }
+        ball.tick(obstacles);
+
+        checkScore();
+        spawnPowerUps();
+        
+        //todo some rendering whether in this thread or a new one
+        //todo some TPS/FPS syncing
+
+        handleSpawnedPowers();
+
+        /*try {
+            Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    private void maintainPowerUps(){
+        for (PowerUp maintainedPowerUp : maintainedPowerUps){
+            maintainedPowerUp.tick();
+        }
+    }
+
+    private void spawnPowerUps(){
+        if (spawnedPowerUps.size()<MAXNUMBEROFPOWERUPS){
+            PowerUp newPower = spawnPowerUp();
+            if (newPower != null){
+                spawnedPowerUps.add(newPower);
+            }
+        }
+    }
+
+    private void handleSpawnedPowers(){
+        for (int i = 0; i<spawnedPowerUps.size();i++){
+            if (spawnedPowerUps.get(i).decay()){
+                toRemove.add(spawnedPowerUps.get(i));
+            }
+
+            if(spawnedPowerUps.get(i).checkIfCollected(ball) && !toRemove.contains(spawnedPowerUps.get(i))){
+                spawnedPowerUps.get(i).onCollect();
+                toRemove.add(spawnedPowerUps.get(i));
+            }
+        }
+
+        for (PowerUp remPowerUp : toRemove){
+//                System.out.println("Remove!");
+            spawnedPowerUps.remove(remPowerUp);
+        }
+        toRemove.clear();
+    }
+
+    private void handleActivePowers(){
+        for(int i = 0;i<activatedPowerUps.size();i++){
+            if (activatedPowerUps.get(i).agePowerUp()){
+                toRemove.add(activatedPowerUps.get(i));
+            }
+        }
+
+        for (PowerUp remPowerUp : toRemove){
+            System.out.println("Remove!");
+            activatedPowerUps.remove(remPowerUp);
+            maintainedPowerUps.remove(remPowerUp);
+        }
+        toRemove.clear();
     }
 
     public void checkScore() {
         if(!(this.getLeftScore() == 10 || this.getRightScore() == 10)) {
             if (ball.getLocation().getX() < 0) {
-                ball.getLocation().setX(600);
+
                 rightGoal();
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
+                newRound();
             } else if (ball.getLocation().getX() > 1200) {
-                ball.getLocation().setX(600);
                 this.leftGoal();
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
+                newRound();
             }
         } else endGame();
+    }
+
+    private void newRound(){
+        clearAllPowers();
+        ball.getLocation().setX(600);
+        ball.setSpeed(INITIAL_SPEED);
+    }
+
+    private void clearAllPowers(){
+        for (PowerUp activePower : activatedPowerUps){
+            activePower.deactivate();
+        }
+        activatedPowerUps.clear();
+        spawnedPowerUps.clear();
+        maintainedPowerUps.clear();
     }
 
     public void startGame(){
@@ -182,7 +207,7 @@ public class Board implements Runnable {
         thread.start();
     }
 
-    private Collectible spawnPowerUp(){
+    private PowerUp spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
 
         double spawnThreshold = 99;
@@ -199,26 +224,30 @@ public class Board implements Runnable {
             double powerTypeOutcome = Math.random()*100;
 
 
-            if (powerTypeOutcome<=50){
-                spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
-//                System.out.println("Invisible Power Up Spawned!");
+            if (powerTypeOutcome<=10){
+                spawnedPowerUp = new InvisPower(this,spawnPoint);
+                System.out.println("Invisible Power Up Spawned!");
                 //spawn invis power
-//            } else if (powerTypeOutcome <= 40){
-//                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
-////                System.out.println("Elongated Paddle Power Up Spawned!");
-//                //spawn elongated paddle
-//            } else if (powerTypeOutcome <= 70){
-//                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
-////                System.out.println("Random Speed Power Up Spawned!");
-//                //spawn random speed power up
-            } else {
+            } else if (powerTypeOutcome <= 40){
+                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
+                System.out.println("Elongated Paddle Power Up Spawned!");
+                //spawn elongated paddle
+            } else if (powerTypeOutcome <= 70){
                 spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
-//                System.out.println("Strengthened Paddle Power Up Spawned!");
+                System.out.println("Random Speed Power Up Spawned!");
+                //spawn random speed power up
+            } else {
+                spawnedPowerUp = new StrengthPower(this,spawnPoint);
+                System.out.println("Strengthened Paddle Power Up Spawned!");
                 //spawn strengthened paddle
             }
             return spawnedPowerUp;
         }
         return null;
+    }
+
+    private void powerUpType(){
+
     }
 
     public void endGame(){
@@ -269,7 +298,11 @@ public class Board implements Runnable {
 
     public void rightGoal() { ++rightScore; }
 
-    public List<Collectible> getSpawnedPowerUps() {
+    public List<PowerUp> getSpawnedPowerUps() {
         return spawnedPowerUps;
+    }
+
+    public List<PowerUp> getMaintainedPowerUps() {
+        return maintainedPowerUps;
     }
 }

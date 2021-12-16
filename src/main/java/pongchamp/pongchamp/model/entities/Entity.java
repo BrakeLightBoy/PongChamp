@@ -13,24 +13,24 @@ public abstract class Entity {
    protected Metadata metadata;
 
 
-   public Entity(Point location) {
+    public Entity(Point location) {
        this.location = location;
        this.uuid = UUID.randomUUID();
        this.metadata =  new Metadata();
 
-   }
+    }
 
-   public abstract void tick();
+    public abstract void tick();
 
-   public Point getLocation() {
+    public Point getLocation() {
        return location;
    }
 
-   public void setLocation(Point location) {
+    public void setLocation(Point location) {
        this.location = location;
    }
 
-   public UUID getUuid() {
+    public UUID getUuid() {
        return uuid;
    }
 
@@ -43,15 +43,14 @@ public abstract class Entity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Entity entity = (Entity) o;
+    public boolean equals(Object obj) {
+        if (this == obj){
+            return true;
+        }
+        if (!(obj instanceof Entity)){
+            return false;
+        }
+        Entity entity = (Entity) obj;
         return Objects.equals(uuid, entity.uuid);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid);
     }
 }

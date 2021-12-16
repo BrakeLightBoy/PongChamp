@@ -1,5 +1,6 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.Point;
@@ -13,7 +14,7 @@ public class RandomSpeedPower extends PowerUp {
 
 
     public RandomSpeedPower(Board gameBoard, Point location){
-        super(gameBoard, location);
+        super(gameBoard, location, Color.DARKGREEN);
     }
     public RandomSpeedPower(Board gameBoard, Point location,int duration, int radius){
         super(gameBoard, location,duration,radius);
@@ -36,16 +37,10 @@ public class RandomSpeedPower extends PowerUp {
             extraSpeedY =3;
         }
 
-        float currentSpeedX = ball.getSpeed().getX();
-        float currentSpeedY = ball.getSpeed().getY();
-        Vector speedVector = new Vector(currentSpeedX+extraSpeedX,currentSpeedY+extraSpeedY);
-        ball.setSpeed(speedVector);
+        ball.speedUp(extraSpeedX,extraSpeedY);
     }
 
     public void deactivate(){
-        float currentSpeedX = ball.getSpeed().getX();
-        float currentSpeedY = ball.getSpeed().getY();
-        Vector speedVector = new Vector(currentSpeedX-extraSpeedX,currentSpeedY-extraSpeedY);
-        ball.setSpeed(speedVector);
+        ball.speedUp(-extraSpeedX,-extraSpeedY);
     }
 }

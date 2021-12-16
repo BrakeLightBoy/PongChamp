@@ -1,20 +1,24 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.entities.Entity;
 import pongchamp.pongchamp.model.math.Point;
-import pongchamp.pongchamp.model.Collectible;
+//import pongchamp.pongchamp.model.Collectible;
 
-public abstract class PowerUp extends Entity implements Collectible {
+public abstract class PowerUp extends Entity {
     int activatedDuration,decayDuration,radius,currentDuration,currentDecay;
     Board gameBoard;
+    Color powerColor;
 
-    public PowerUp(Board gameBoard,Point location){
+    public PowerUp(Board gameBoard,Point location,Color powerColor){
         super(location);
+        this.powerColor = powerColor;
         this.gameBoard = gameBoard;
         this.activatedDuration = 800; //the default duration (some random number just to test it)
-        this.radius = 50; //again just random for test
+        this.radius = Properties.POWER_UP_RADIUS; //again just random for test
         this.decayDuration = 500;
     }
 
@@ -25,6 +29,9 @@ public abstract class PowerUp extends Entity implements Collectible {
         this.radius = radius;
     }
 
+    public Color getPowerColor(){
+        return powerColor;
+    }
     public void tick(){
 //        agePowerUp();
     }
@@ -52,6 +59,7 @@ public abstract class PowerUp extends Entity implements Collectible {
     }
 
     public void onCollect(){
+        System.out.println("OnCollect");
         gameBoard.getActivatedPowerUps().add(this);
         activate();
         agePowerUp();
@@ -59,7 +67,7 @@ public abstract class PowerUp extends Entity implements Collectible {
 
     protected abstract void activate();
 
-    protected abstract void deactivate();
+    public abstract void deactivate();
 
     public Boolean checkIfCollected(Ball ball){
         float deltaX = ball.getLocation().getX() - location.getX();

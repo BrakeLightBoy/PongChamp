@@ -22,7 +22,6 @@ public class KeyHandler implements KeyListener,PaddleController {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-
         if (code == upButton){
             upPressed = true;
         }
