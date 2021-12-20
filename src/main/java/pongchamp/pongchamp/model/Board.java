@@ -72,7 +72,7 @@ public class Board implements Runnable {
         //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
         ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0));
 
-        rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT,ball);
+        rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
 
         gameEntities.add(leftPaddle);
         gameEntities.add(rightPaddle);

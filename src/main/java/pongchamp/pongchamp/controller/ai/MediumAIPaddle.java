@@ -1,12 +1,10 @@
 package pongchamp.pongchamp.controller.ai;
 
-import javafx.util.Pair;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
-import pongchamp.pongchamp.model.math.Vector;
 
 public class MediumAIPaddle extends AIPaddle{
 
@@ -14,8 +12,11 @@ public class MediumAIPaddle extends AIPaddle{
     private boolean notMovedLastTick = false;
     private int nextTickToMove = 0;
     private final float[] lastYs = new float[3];
-    public MediumAIPaddle(Point location, LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType, Ball target) {
-        super(location, movementPath, paddleController, paddleType, target);
+    private final static double chanceOfNotMovingWithVisibleBall = 0.01;
+    private final static double chanceOfNotMovingWithInvisibleBall = 0.75;
+
+    public MediumAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target) {
+        super(location, movementPath, paddleType, target);
     }
 
     @Override
@@ -30,8 +31,7 @@ public class MediumAIPaddle extends AIPaddle{
         if (tick % 4 == 0)return false;
 
         boolean move = location.getY() > target.getLocation().getY();
-        double chanceOfNotMoving = target.getVisibility() ? 0.00:0.75;
-        if (randomBoolean(chanceOfNotMoving)){
+        if (notMoving()){
             notMovedLastTick = true;
             return false;
         }
@@ -51,8 +51,7 @@ public class MediumAIPaddle extends AIPaddle{
         if (tick % 4 == 2)return false;
 
         boolean move = location.getY() < target.getLocation().getY();
-        double chanceOfNotMoving = target.getVisibility() ? 0.00:0.75;
-        if (randomBoolean(chanceOfNotMoving)){
+        if (notMoving()){
             notMovedLastTick = true;
             return false;
         }
@@ -65,14 +64,18 @@ public class MediumAIPaddle extends AIPaddle{
     public void tick() {
         super.tick();
         if (checkBounce()){
-            nextTickToMove = tick + 17;
+            float distance = Math.abs(target.getLocation().getX() - this.location.getX());
+            if (distance < 200)
+                nextTickToMove = tick + 12;
+            else
+                nextTickToMove = tick + 16;
         }
         tick++;
     }
 
     private boolean checkBounce(){
 
-        if (tick  == 0){
+        if (tick  == 0){  //change to switch maybe
             lastYs[0] = target.getLocation().getY();
         }
         else if (tick  == 1){
@@ -93,6 +96,11 @@ public class MediumAIPaddle extends AIPaddle{
         else if (lastYs[0] > lastYs[1] && lastYs[1] < lastYs[2])
             bounce = true;
         return bounce;
+    }
+
+    private boolean notMoving(){
+        double chanceOfNotMoving = target.getVisibility() ? chanceOfNotMovingWithVisibleBall:chanceOfNotMovingWithInvisibleBall;
+        return randomBoolean(chanceOfNotMoving);
     }
 
     private static boolean oppositeSigns(float x, float y)
