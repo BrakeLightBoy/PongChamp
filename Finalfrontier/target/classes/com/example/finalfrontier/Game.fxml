@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.finalfrontier.HelloController">
+   <center>
+      <AnchorPane prefHeight="778.0" prefWidth="1273.0" styleClass="backdrop" stylesheets="@../style.css">
+         <children>
+            <Button layoutX="318.0" layoutY="129.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="292.0" text="Gamemode1" />
+            <Pane fx:id="slider" prefHeight="780.0" prefWidth="357.0" styleClass="backdrop" stylesheets="@../style.css">
+               <children>
+                  <VBox prefHeight="787.0" prefWidth="366.0">
+                     <children>
+                        <Button mnemonicParsing="false" onMouseClicked="#gameMode" prefHeight="279.0" prefWidth="278.0" styleClass="play" stylesheets="@../style.css" />
+                        <Button mnemonicParsing="false" onMouseClicked="#settingsPage" prefHeight="290.0" prefWidth="285.0" styleClass="settings" stylesheets="@../style.css" />
+                        <Button mnemonicParsing="false" onAction="#exitPage" prefHeight="270.0" prefWidth="279.0" styleClass="exit" stylesheets="@../style.css" />
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
