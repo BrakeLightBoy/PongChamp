@@ -80,6 +80,7 @@ public class SettingsController extends MainController implements Initializable 
         });
 
     }
+    // this dark/light mode test was working before but not with new changes, not priority to look at it now.
     @FXML
     public void changeMode(ActionEvent event) {
         isLightMode = !isLightMode;
@@ -104,7 +105,7 @@ public class SettingsController extends MainController implements Initializable 
         Image image = new Image(MainController.class.getResource("sunempty.PNG").toExternalForm());
         img.setImage(image);
     }
-
+// colour picker needs to be assigned to paddle/ball etc in back-end
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         colorPicker.setOnAction(new EventHandler<ActionEvent>() {
