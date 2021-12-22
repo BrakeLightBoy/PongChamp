@@ -17,14 +17,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SettingsController extends HelloController implements Initializable {
+public class SettingsController extends MainController implements Initializable {
     @FXML
     Pane slider;
     @FXML
@@ -92,17 +91,17 @@ public class SettingsController extends HelloController implements Initializable
     }
 
     private void setLightMode() {
-        mainPane.getStylesheets().remove(HelloController.class.getResource("dark.css").toString());
-        mainPane.getStylesheets().add(HelloController.class.getResource("light.css").toExternalForm());
-        Image image = new Image(HelloController.class.getResource("sunfull.PNG").toExternalForm());
+        mainPane.getStylesheets().remove(MainController.class.getResource("dark.css").toString());
+        mainPane.getStylesheets().add(MainController.class.getResource("light.css").toExternalForm());
+        Image image = new Image(MainController.class.getResource("sunfull.PNG").toExternalForm());
         img.setImage(image);
 
     }
 
     private void setDarkMode() {
-        mainPane.getStylesheets().remove(HelloController.class.getResource("light.css").toExternalForm());
-        mainPane.getStylesheets().add(HelloController.class.getResource("dark.css").toExternalForm());
-        Image image = new Image(HelloController.class.getResource("sunempty.PNG").toExternalForm());
+        mainPane.getStylesheets().remove(MainController.class.getResource("light.css").toExternalForm());
+        mainPane.getStylesheets().add(MainController.class.getResource("dark.css").toExternalForm());
+        Image image = new Image(MainController.class.getResource("sunempty.PNG").toExternalForm());
         img.setImage(image);
     }
 
