@@ -14,6 +14,7 @@ import java.io.IOException;
 public class MainController {
 
 
+
     @FXML
     BorderPane bp;
 
@@ -32,6 +33,10 @@ public class MainController {
         loadPage("Settings");
     }
 
+    public void playMode(MouseEvent mouseEvent) {
+        loadPage("Play");
+    }
+
     public void exitPage(ActionEvent event) {
         stage = (Stage) bp.getScene().getWindow();
         stage.close();
@@ -48,5 +53,4 @@ public class MainController {
         bp.setCenter(root);
 
     }
-
 }
