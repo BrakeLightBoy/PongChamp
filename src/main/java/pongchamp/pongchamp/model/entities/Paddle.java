@@ -7,7 +7,6 @@ import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
 
-import static pongchamp.pongchamp.model.ObstactleTypes.*;
 import static pongchamp.pongchamp.model.CollisionTypes.*;
 
 public abstract class Paddle extends Entity implements Collidable {
@@ -58,9 +57,6 @@ public abstract class Paddle extends Entity implements Collidable {
 
     @Override
     public void tick() {
-
-
-
 
         if (paddleController.movingDown()){
             float next = location.getY();

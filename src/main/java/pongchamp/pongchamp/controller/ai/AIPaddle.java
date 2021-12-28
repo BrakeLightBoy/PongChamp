@@ -14,13 +14,13 @@ public abstract class AIPaddle extends Paddle implements PaddleController {
 
     protected Ball target;
 
-    public AIPaddle(Point location, LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType,Ball target) {
-        this(location, defaultPaddleWidth, defaultPaddleHeight, movementPath, paddleController, paddleType,target);
+    public AIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType,Ball target) {
+        this(location, defaultPaddleWidth, defaultPaddleHeight, movementPath, paddleType,target);
 
     }
 
-    public AIPaddle(Point location, float width, float height, LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType,Ball target) {
-        super(location, width, height, movementPath, paddleController, paddleType);
+    public AIPaddle(Point location, float width, float height, LineSegment movementPath, CollisionTypes paddleType,Ball target) {
+        super(location, width, height, movementPath, null, paddleType);
         this.target = target;
         setPaddleController(this);
     }

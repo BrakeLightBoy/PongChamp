@@ -1,6 +1,5 @@
 package pongchamp.pongchamp.controller.ai;
 
-import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.Ball;
@@ -10,14 +9,10 @@ import pongchamp.pongchamp.model.math.Vector;
 
 public class UnbeatableAIPaddle extends AIPaddle{
 
-
-
-
     private Point previousLocation;
 
-
-    public UnbeatableAIPaddle(Point location, LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType, Ball target) {
-        super(location,defaultPaddleWidth , defaultPaddleHeight, movementPath, paddleController, paddleType,target);
+    public UnbeatableAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target) {
+        super(location,defaultPaddleWidth , defaultPaddleHeight, movementPath, paddleType,target);
         setPaddleController(null);
     }
 

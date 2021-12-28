@@ -97,7 +97,7 @@ public class HelloApplication extends Application {
         keyListener.registerKeyListener(leftKeyHandler);
 
         facade.setLeftPaddleController(leftKeyHandler);
-        facade.setRightPaddleController(rightKeyHandler);
+        //facade.setRightPaddleController(rightKeyHandler);
 
         stage.setScene(scene);
         stage.show();

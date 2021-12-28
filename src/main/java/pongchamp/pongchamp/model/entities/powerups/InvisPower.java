@@ -21,9 +21,11 @@ public class InvisPower extends PowerUp {
     public void activate(){
         System.out.println("The ball is invisible! Get recked bruh!");
         ball.setBallColor(Color.BLACK);
+        ball.setVisibility(false);
     }
 
     public void deactivate(){
         ball.setBallColor(Properties.BALL_DEFAULT_COLOR);
+        ball.setVisibility(true);
     }
 }

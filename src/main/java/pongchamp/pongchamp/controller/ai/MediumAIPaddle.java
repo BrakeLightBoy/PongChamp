@@ -5,41 +5,33 @@ import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
-import pongchamp.pongchamp.model.math.Vector;
 
 public class MediumAIPaddle extends AIPaddle{
 
     private int tick = 0;
     private boolean notMovedLastTick = false;
-    private Vector lastVelocity;
-
     private int nextTickToMove = 0;
+    private final float[] lastYs = new float[3];
+    private final static double chanceOfNotMovingWithVisibleBall = 0.01;
+    private final static double chanceOfNotMovingWithInvisibleBall = 0.75;
 
-    private float lastYs [] = new float[3];
-
-    public MediumAIPaddle(Point location, LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType, Ball target) {
-        super(location, movementPath, paddleController, paddleType, target);
-        lastVelocity = new Vector(0,0);
+    public MediumAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target) {
+        super(location, movementPath, paddleType, target);
     }
 
     @Override
     public boolean movingUp() {
 
-
-
+        if (tick < nextTickToMove)return false;
 
         if (notMovedLastTick){
             notMovedLastTick = false;
             return false;
         }
-        if (tick % 2 == 0)return false;
-
-
-
-
+        if (tick % 4 == 0)return false;
 
         boolean move = location.getY() > target.getLocation().getY();
-        if (randomBoolean(0.15)){
+        if (notMoving()){
             notMovedLastTick = true;
             return false;
         }
@@ -50,19 +42,16 @@ public class MediumAIPaddle extends AIPaddle{
     @Override
     public boolean movingDown() {
 
+        if (tick < nextTickToMove)return false;
 
         if (notMovedLastTick){
             notMovedLastTick = false;
             return false;
         }
-        if (tick % 2 == 1)return false;
+        if (tick % 4 == 2)return false;
 
-
-
-
-      
         boolean move = location.getY() < target.getLocation().getY();
-        if (randomBoolean(0.15)){
+        if (notMoving()){
             notMovedLastTick = true;
             return false;
         }
@@ -73,22 +62,45 @@ public class MediumAIPaddle extends AIPaddle{
 
     @Override
     public void tick() {
-
-        checkBounce();
         super.tick();
+        if (checkBounce()){
+            float distance = Math.abs(target.getLocation().getX() - this.location.getX());
+            if (distance < 200)
+                nextTickToMove = tick + 12;
+            else
+                nextTickToMove = tick + 16;
+        }
         tick++;
     }
 
     private boolean checkBounce(){
-        //?
-        float previous = lastVelocity.getY();
-        //?
-        float current = target.getSpeed().getY();
-        //System.out.println(previous + " - " + current);
-        boolean bounce = oppositeSigns(previous,current);
-        lastVelocity = target.getSpeed();
-        if (bounce) System.out.println("BOUNCE!");
+
+        if (tick  == 0){  //change to switch maybe
+            lastYs[0] = target.getLocation().getY();
+        }
+        else if (tick  == 1){
+            lastYs[1] = target.getLocation().getY();
+        }
+        else if (tick == 2){
+            lastYs[2] = target.getLocation().getY();
+        }
+        else {
+            lastYs[0] = lastYs[1];
+            lastYs[1] = lastYs[2];
+            lastYs[2] = target.getLocation().getY();
+        }
+        if (tick < 3)return false;
+        boolean bounce = false;
+        if (lastYs[0] < lastYs[1] && lastYs[1] > lastYs[2])
+            bounce = true;
+        else if (lastYs[0] > lastYs[1] && lastYs[1] < lastYs[2])
+            bounce = true;
         return bounce;
+    }
+
+    private boolean notMoving(){
+        double chanceOfNotMoving = target.getVisibility() ? chanceOfNotMovingWithVisibleBall:chanceOfNotMovingWithInvisibleBall;
+        return randomBoolean(chanceOfNotMoving);
     }
 
     private static boolean oppositeSigns(float x, float y)
