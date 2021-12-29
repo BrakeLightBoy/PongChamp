@@ -79,7 +79,7 @@ public class GameRenderer extends Application {
 
         double[] exitPosition = {(double) Properties.BOARD_WIDTH*0.55,(double) Properties.BOARD_HEIGHT*0.52};
         gameExit = createButton("ExitBtn","Exit",false
-                ,exitPosition,e -> hideButtons());
+                ,exitPosition,e -> exitGame(stage));
 
         buttons.add(gameResume);
         buttons.add(gameRestart);
@@ -95,6 +95,7 @@ public class GameRenderer extends Application {
 
         keyListener.registerKeyListener(rightKeyHandler);
         keyListener.registerKeyListener(leftKeyHandler);
+
         keyListener.registerKeyListener(keyEvent -> {
             if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED && keyEvent.getCode() == KeyCode.ESCAPE){
                 if (!facade.getGameEnd()){
@@ -208,6 +209,8 @@ public class GameRenderer extends Application {
         gameRestart.setVisible(true);
         gameExit.setVisible(true);
         facade.endGame();
+        gameExit.setLayoutX(Properties.BOARD_WIDTH*0.55);
+        gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.45);
     }
 
     private void exitGame(Stage stage){
@@ -223,7 +226,7 @@ public class GameRenderer extends Application {
         drawScore(gc);
         drawPaddles(gc);
 
-        boolean gameRunning = facade.getRunning();
+
         boolean gameEnded = facade.getGameEnd();
 
         if(gameEnded) {
@@ -232,10 +235,6 @@ public class GameRenderer extends Application {
         else {
             drawBall(gc);
             drawPowerUps(gc);
-
-            if (gamePaused){
-                gamePause(gc);
-            }
         }
 
        }

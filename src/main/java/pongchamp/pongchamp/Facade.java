@@ -124,9 +124,10 @@ public class Facade {
         return gameBoard.getBall().getBallColor();
     }
 
-    public Boolean getRunning() {
-        return gameBoard.getRunning();
+    public Boolean isPaused() {
+        return gameBoard.getPaused();
     }
+
 
     public Boolean getGameEnd() {
         return gameBoard.getHasEnded();
@@ -152,10 +153,14 @@ public class Facade {
 
     public void gameRestart(){
         gameBoard.restartGame();
+        resumeGame();
     }
+
+
     public void setBallVisibility(boolean visibility){
         gameBoard.getBall().setVisibility(visibility);
     }
+
     public void resetPaddlePositions(){
         gameBoard.getRightPaddle().setLocation(new Point(1160,450));
         gameBoard.getLeftPaddle().setLocation(new Point(40,450));
