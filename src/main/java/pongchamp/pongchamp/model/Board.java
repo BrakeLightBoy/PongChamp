@@ -3,13 +3,9 @@ package pongchamp.pongchamp.model;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.entities.*;
-import pongchamp.pongchamp.controller.EmptyPaddleController;
-import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
-import pongchamp.pongchamp.view.RenderEngine;
-//import pongchamp.pongchamp.view.SimpleRenderEngine;
 import static pongchamp.pongchamp.model.Properties.*;
 import pongchamp.pongchamp.model.entities.powerups.*;
 
@@ -42,7 +38,15 @@ public class Board implements Runnable {
 
     private Random random = new Random();
 
-    public Board() {
+    public Board(OpponentType opponentType, Boolean hasPowerUps) {
+        this.hasPowerUps = hasPowerUps;
+
+
+        spawnedPowerUps = new ArrayList<>();
+        activatedPowerUps = new ArrayList<>();
+        maintainedPowerUps = new ArrayList<>();
+
+
         gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
         spawnedPowerUps = new ArrayList<>();
@@ -66,13 +70,25 @@ public class Board implements Runnable {
                 new Point(width-paddleDistanceFromTheEdge,height)
         );
 
-        PaddleController emptyController = new EmptyPaddleController(); //this is for test purposes, will be removed in the future
 
-        leftPaddle = new NormalPaddle(new Point(40,450),leftPaddleMovementPath,emptyController,CollisionTypes.LEFT);
+        leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT);
         //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
         ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0));
 
-        rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
+        rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT);
+
+        switch (opponentType){
+
+            case BEATABLE_AI_PADDLE -> {
+                rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
+            }
+            case UNBEATABLE_AI_PADDLE -> {
+                rightPaddle = new UnbeatableAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
+            }
+            case PLAYER -> {
+                rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT);
+            }
+        }
 
         gameEntities.add(leftPaddle);
         gameEntities.add(rightPaddle);

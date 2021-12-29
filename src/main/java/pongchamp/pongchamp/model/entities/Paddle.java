@@ -9,9 +9,11 @@ import pongchamp.pongchamp.model.math.Vector;
 
 import static pongchamp.pongchamp.model.CollisionTypes.*;
 
-public abstract class Paddle extends Entity implements Collidable {
+public class Paddle extends Entity implements Collidable {
 
-    protected static final float platformSpeed = Properties.PLATFORM_SPEED;
+    protected float platformSpeed = Properties.PLATFORM_SPEED;
+    private static final int defaultPaddleWidth = 20;
+    private static final int defaultPaddleHeight = 100;
 
     protected LineSegment movementPath;
     protected PaddleController paddleController;
@@ -19,6 +21,20 @@ public abstract class Paddle extends Entity implements Collidable {
     protected float height;
     protected HitBox paddleHitBox;
     protected CollisionTypes paddleType;
+
+    public Paddle (Point initialLocation, LineSegment movementPath, CollisionTypes paddleType){
+        this(initialLocation, defaultPaddleWidth, defaultPaddleHeight, movementPath, new PaddleController() {
+            @Override
+            public boolean movingUp() {
+                return false;
+            }
+
+            @Override
+            public boolean movingDown() {
+                return false;
+            }
+        }, paddleType);
+    }
 
     public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType) {
         super(location);
@@ -74,5 +90,13 @@ public abstract class Paddle extends Entity implements Collidable {
             paddleHitBox.moveHitBox(movementVector);
 
         }
+    }
+
+    public float getPlatformSpeed() {
+        return platformSpeed;
+    }
+
+    public void setPlatformSpeed(float platformSpeed) {
+        this.platformSpeed = platformSpeed;
     }
 }

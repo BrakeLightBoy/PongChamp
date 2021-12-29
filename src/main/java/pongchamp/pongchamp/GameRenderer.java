@@ -61,10 +61,15 @@ import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 /**
  *
  */
-public class HelloApplication extends Application {
-    private Facade facade = new Facade();
-    private Boolean p1Up,p1Down,p2Up,p2Down;
+public class GameRenderer extends Application {
+    private Facade facade;
+    private Button gameRestart,gameExit,gameResume;
+    private boolean gamePaused;
+    private List<Button> buttons = new ArrayList<>();
 
+    public GameRenderer(){
+        facade = new Facade();
+    }
 
     public void start(Stage stage) {
         stage.setTitle("PONGCHAMP");
@@ -95,6 +100,23 @@ public class HelloApplication extends Application {
 
         keyListener.registerKeyListener(rightKeyHandler);
         keyListener.registerKeyListener(leftKeyHandler);
+        keyListener.registerKeyListener(keyEvent -> {
+            if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED && keyEvent.getCode() == KeyCode.ESCAPE){
+                if (gamePaused){
+                    gamePaused = false;
+
+                    gameResume.setVisible(false);
+                    gameExit.setVisible(false);
+                    gameRestart.setVisible(false);
+                    facade.resumeGame();
+
+                }
+                else {
+                    gamePaused = true;
+                    facade.pauseGame();
+                }
+            }
+        });
 
         facade.setLeftPaddleController(leftKeyHandler);
         //facade.setRightPaddleController(rightKeyHandler);
@@ -104,53 +126,36 @@ public class HelloApplication extends Application {
         tl.play();
     }
 
+    private void hideButtons(){
+        for (Button button : buttons) {
+            button.setVisible(false);
+        }
+    }
+
     private void run(GraphicsContext gc) {
         //update gameBoard state
         facade.updateBoardState();
 
-        gc.setFill(Color.BLACK);
-        gc.fillRect(0, 0, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
+        drawBoard(gc);
+        drawScore(gc);
+        drawPaddles(gc);
 
-        //draw the ball
-        gc.setFill(facade.getBallColor());
-        float[] ballPos = facade.getBallPosition();
-        int ballRadius= facade.getBallRadius();
-        int ballDiameter = 2*ballRadius;
-        gc.fillOval(ballPos[0]-ballRadius, ballPos[1]-ballRadius, ballDiameter, ballDiameter);
+        boolean gameRunning = facade.getRunning();
+        boolean gameEnded = facade.getGameEnd();
 
-        HashMap<Class<? extends PowerUp>, ArrayList<Float[]>> powerMap = facade.returnPowerMap();
+        if(gameEnded) {
+            gameEnd(gc);
+        }
+        else {
+            drawBall(gc);
+            drawPowerUps(gc);
 
-        HashMap<Class<? extends PowerUp>, Color> powerColors = facade.returnPowerColors();
-
-        int powerRadius = Properties.POWER_UP_RADIUS;
-        int powerDiameter = powerRadius*2;
-
-        gc.setFill(Color.RED);
-        powerMap.forEach((p,pm) ->{
-            gc.setFill(powerColors.get(p));
-            for (Float[] position : pm){
-                gc.fillOval(position[0]-powerRadius, position[1]-powerRadius, powerDiameter, powerDiameter);
+            if (gamePaused){
+                gamePause(gc);
             }
-        });
-        gc.setFill(Color.WHITE);
+        }
 
-
-        //draw score
-        gc.setFont(Properties.FONT_SIZE);
-        int[] score = facade.getScore();
-        gc.fillText(String.valueOf(score[0]), Properties.BOARD_WIDTH*1/4, Properties.BOARD_HEIGHT*1/10);
-        gc.fillText(String.valueOf(score[1]), Properties.BOARD_WIDTH*3/4 , Properties.BOARD_HEIGHT*1/10);
-
-
-        //draw player paddles
-        float[] leftPaddlePos = facade.getLeftPaddlePosition();
-        float[] leftPaddleDim = facade.getLeftPaddleDimensions();
-        gc.fillRect(leftPaddlePos[0]-leftPaddleDim[0]/2, leftPaddlePos[1]-leftPaddleDim[1]/2, leftPaddleDim[0], leftPaddleDim[1]);
-
-        float[] rightPaddlePos = facade.getRightPaddlePosition();
-        float[] rightPaddleDim = facade.getRightPaddleDimensions();
-        gc.fillRect((int)(rightPaddlePos[0]-rightPaddleDim[0]/2),(int)( rightPaddlePos[1]-rightPaddleDim[1]/2), rightPaddleDim[0], rightPaddleDim[1]);
-    }
+       }
     // start the application
     public static void main(String[] args) {
         launch(args);

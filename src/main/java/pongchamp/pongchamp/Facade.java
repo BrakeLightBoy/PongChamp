@@ -2,18 +2,19 @@ package pongchamp.pongchamp;
 import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.OpponentType;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
+import pongchamp.pongchamp.model.math.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 public class Facade {
     private Board gameBoard;
 
     public Facade() {
-     this.gameBoard = new Board();
+     this.gameBoard = new Board(OpponentType.BEATABLE_AI_PADDLE,false); //todo specify which game mode the user wants
     }
 
 

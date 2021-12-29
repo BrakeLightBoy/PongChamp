@@ -5,7 +5,6 @@ import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.Collision;
 import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.entities.Ball;
-import pongchamp.pongchamp.model.entities.NormalBall;
 import pongchamp.pongchamp.model.entities.Paddle;
 import pongchamp.pongchamp.model.math.Point;
 
