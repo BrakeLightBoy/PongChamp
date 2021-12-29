@@ -36,14 +36,10 @@ public class SettingsController extends MainController implements Initializable 
     ColorPicker colorPicker;
     @FXML
     Ellipse ellipse;
-    @FXML
-    ToggleButton sound;
+
     @FXML
     private boolean isLightMode = true;
-    @FXML
-    private ToggleButton darklight;
-    @FXML
-    private ImageView img;
+
 
     @Override
     public void exitPage(ActionEvent event)  {
@@ -59,7 +55,7 @@ public class SettingsController extends MainController implements Initializable 
 }
 
     @FXML
-    public void playHit(ActionEvent event)  {
+    public void playHit(ActionEvent event) {
         String path = "/Users/umair/Desktop/merge test/Finalfrontier/src/main/resources/com/example/Sounds/Celebration by Kool and the Gang with.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -78,7 +74,26 @@ public class SettingsController extends MainController implements Initializable 
                 mediaPlayer.play();
             }
         });
+    }
+// colour picker needs to be assigned to paddle/ball etc in back-end
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        colorPicker.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ellipse.setFill(colorPicker.getValue());
+            }
+        });
 
+    }
+    @FXML
+    private void handleColourPicker(ActionEvent event) {
+
+    }
+
+}
+
+/*
     }
     // this dark/light mode test was working before but not with new changes, not priority to look at it now.
     @FXML
@@ -105,21 +120,5 @@ public class SettingsController extends MainController implements Initializable 
         Image image = new Image(MainController.class.getResource("sunempty.PNG").toExternalForm());
         img.setImage(image);
     }
-// colour picker needs to be assigned to paddle/ball etc in back-end
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        colorPicker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ellipse.setFill(colorPicker.getValue());
-            }
-        });
-
-    }
-    @FXML
-    private void handleColourPicker(ActionEvent event) {
-
-    }
-
-}
+ */
 

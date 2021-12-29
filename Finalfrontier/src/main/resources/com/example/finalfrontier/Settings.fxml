@@ -27,10 +27,8 @@
             </Pane>
             <ToggleButton fx:id="musicB" layoutX="398.0" layoutY="49.0" mnemonicParsing="false" onAction="#playHit" prefHeight="180.0" prefWidth="184.0" styleClass="music" stylesheets="@../style.css" />
             <Slider fx:id="volumeSlider" layoutX="564.0" layoutY="124.0" />
-            <Ellipse fx:id="ellipse" fill="DODGERBLUE" layoutX="910.0" layoutY="387.0" radiusX="50.0" radiusY="71.0" stroke="BLACK" strokeType="INSIDE" />
-            <ColorPicker fx:id="colorPicker" layoutX="988.0" layoutY="368.0" onAction="#handleColourPicker" />
-            <ToggleButton layoutX="1173.0" layoutY="5.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="175.0" styleClass="sound" stylesheets="@../style.css" />
-            <ToggleButton layoutX="405.0" layoutY="306.0" mnemonicParsing="false" prefHeight="189.0" prefWidth="200.0" styleClass="sun" stylesheets="@../style.css" />
+            <Ellipse fx:id="ellipse" fill="DODGERBLUE" layoutX="910.0" layoutY="137.0" radiusX="50.0" radiusY="71.0" stroke="BLACK" strokeType="INSIDE" />
+            <ColorPicker fx:id="colorPicker" layoutX="991.0" layoutY="123.0" onAction="#handleColourPicker" />
          </children>
       </AnchorPane>
    </center>
