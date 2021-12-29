@@ -3,11 +3,8 @@ package pongchamp.pongchamp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -15,25 +12,17 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import pongchamp.pongchamp.controller.FXKeyHandler;
 import pongchamp.pongchamp.controller.InGameKeyListener;
 import pongchamp.pongchamp.model.Properties;
 
-import pongchamp.pongchamp.model.Board;
-
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
-import pongchamp.pongchamp.Facade;
+
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
 /**
@@ -42,7 +31,6 @@ import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 public class GameRenderer extends Application {
     private Facade facade;
     private Button gameRestart,gameExit,gameResume;
-    private boolean gamePaused;
     private List<Button> buttons = new ArrayList<>();
 
     public GameRenderer(){
@@ -72,23 +60,22 @@ public class GameRenderer extends Application {
 
         double[] restartPosition = {(double) Properties.BOARD_WIDTH*0.50,(double) Properties.BOARD_HEIGHT*0.52};
 
-        gameRestart = createButton("RestartBtn", "Restart", false, restartPosition,
-                e -> {
-                    hideButtons();
-                        facade.gameRestart();
-        });
+        gameRestart = createButton("RestartBtn", "Restart", false, restartPosition, e -> {
+                hideButtons();
+                facade.gameRestart();
+            }
+        );
 
 
         double[] resumePosition = {(double) Properties.BOARD_WIDTH*0.45,(double) Properties.BOARD_HEIGHT*0.52};
         gameResume = createButton("ResumeBtn","Resume",false,resumePosition,e -> {
 
-           hideButtons();
+            hideButtons();
 
-
-            gamePaused = false;
 
             facade.resumeGame();
-        });
+            }
+        );
 
         double[] exitPosition = {(double) Properties.BOARD_WIDTH*0.55,(double) Properties.BOARD_HEIGHT*0.52};
         gameExit = createButton("ExitBtn","Exit",false
@@ -110,18 +97,13 @@ public class GameRenderer extends Application {
         keyListener.registerKeyListener(leftKeyHandler);
         keyListener.registerKeyListener(keyEvent -> {
             if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED && keyEvent.getCode() == KeyCode.ESCAPE){
-                if (gamePaused){
-                    gamePaused = false;
-
-                    gameResume.setVisible(false);
-                    gameExit.setVisible(false);
-                    gameRestart.setVisible(false);
-                    facade.resumeGame();
-
-                }
-                else {
-                    gamePaused = true;
-                    facade.pauseGame();
+                if (!facade.getGameEnd()){
+                    if (facade.isPaused()){
+                        unPauseGame();
+                    }
+                    else {
+                        pauseGame();
+                    }
                 }
             }
         });
@@ -183,7 +165,7 @@ public class GameRenderer extends Application {
         gc.setFont(Properties.FONT_SIZE);
         int[] score = facade.getScore();
         gc.fillText(String.valueOf(score[0]), Properties.BOARD_WIDTH*1/4, Properties.BOARD_HEIGHT*1/10);
-        gc.fillText(String.valueOf(score[1]), Properties.BOARD_WIDTH*3/4 , Properties.BOARD_HEIGHT*1/10);
+        gc.fillText(String.valueOf(score[1]), Properties.BOARD_WIDTH*3/4, Properties.BOARD_HEIGHT*1/10);
     }
 
     private void drawPowerUps(GraphicsContext gc){
@@ -202,20 +184,35 @@ public class GameRenderer extends Application {
         });
     }
 
-    private void gamePause(GraphicsContext gc){
+    private void pauseGame(){
         gameExit.setVisible(true);
-        gameExit.setLayoutX(Properties.BOARD_WIDTH*0.30);
         gameResume.setVisible(true);
         gameRestart.setVisible(true);
-        gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.60);
+        gameExit.setLayoutX(Properties.BOARD_WIDTH*0.55);
+        gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.50);
+        facade.pauseGame();
+
     }
 
-    private void gameEnd(GraphicsContext gc){
+    private void unPauseGame(){
+        gameExit.setVisible(false);
+        gameResume.setVisible(false);
+        gameRestart.setVisible(false);
+
+        facade.resumeGame();
+    }
+
+    private void endGame(GraphicsContext gc){
         gc.setFill(Color.WHITE);
         gc.fillText(facade.getGameWinner() + " wins!", Properties.BOARD_WIDTH*9/20, Properties.BOARD_HEIGHT*1/2);
         gameRestart.setVisible(true);
         gameExit.setVisible(true);
         facade.endGame();
+    }
+
+    private void exitGame(Stage stage){
+        System.out.println("GAME CLOSED!");
+        stage.close();
     }
 
     private void run(GraphicsContext gc) {
@@ -230,7 +227,7 @@ public class GameRenderer extends Application {
         boolean gameEnded = facade.getGameEnd();
 
         if(gameEnded) {
-            gameEnd(gc);
+            endGame(gc);
         }
         else {
             drawBall(gc);

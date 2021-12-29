@@ -3,6 +3,7 @@ import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.OpponentType;
+import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 import pongchamp.pongchamp.model.math.Point;
 
@@ -19,7 +20,7 @@ public class Facade {
 
 
     public void updateBoardState(){
-        if (getRunning() && !getGameEnd()){
+        if (!isPaused() && !getGameEnd()){
             gameBoard.run();
         }
     }
@@ -128,7 +129,7 @@ public class Facade {
     }
 
     public Boolean getGameEnd() {
-        return gameBoard.getGameEnd();
+        return gameBoard.getHasEnded();
     }
 
     public String getGameWinner() {
@@ -136,16 +137,16 @@ public class Facade {
     }
 
     public void pauseGame(){
-        gameBoard.setRunning(false);
+        gameBoard.setPaused(true);
         setBallVisibility(false);
     }
 
     public void endGame(){
-        gameBoard.setGameEnd(true);
+        gameBoard.setHasEnded(true);
     }
 
     public void resumeGame(){
-        gameBoard.setRunning(true);
+        gameBoard.setPaused(false);
         setBallVisibility(true);
     }
 

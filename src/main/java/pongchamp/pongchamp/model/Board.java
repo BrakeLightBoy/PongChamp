@@ -16,8 +16,8 @@ public class Board implements Runnable {
     private final float width = BOARD_WIDTH;
     private final float height = BOARD_HEIGHT;
     private final float paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
-    private boolean gameEnd;
-    private boolean running;
+    private boolean hasEnded;
+    private boolean isPaused;
 
     private final Wall upperWall,lowerWall;
     private final LineSegment leftPaddleMovementPath,rightPaddleMovementPath;
@@ -52,9 +52,9 @@ public class Board implements Runnable {
         obstacles = new ArrayList<>();
         toRemove = new HashSet<>();
 
-        running = true;
+        isPaused = false;
         gameWinner = "Ongoing";
-        gameEnd = false;
+        hasEnded = false;
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
         lowerWall = new Wall(CollisionTypes.LOWER,wallSegment);
@@ -235,17 +235,13 @@ public class Board implements Runnable {
         maintainedPowerUps.clear();
     }
 
-    public void startGame(){
-        running = true;
-        Thread thread = new Thread(this);
-        thread.start();
-    }
+
 
     public void restartGame(){
         setLeftScore(0);
         setRightScore(0);
         newRound();
-        gameEnd = false;
+        hasEnded = false;
     }
 
 
@@ -293,7 +289,7 @@ public class Board implements Runnable {
     }
 
     public void endGame(){
-        gameEnd = true;
+        hasEnded = true;
     }
 
     public float getWidth() {
@@ -348,8 +344,8 @@ public class Board implements Runnable {
         return maintainedPowerUps;
     }
 
-    public Boolean getRunning() {
-        return running;
+    public Boolean getPaused() {
+        return isPaused;
     }
 
     public String getGameWinner() {
@@ -364,15 +360,15 @@ public class Board implements Runnable {
         rightScore = newRightScore;
     }
 
-    public void setRunning(boolean running){
-        this.running = running;
+    public void setPaused(boolean paused){
+        this.isPaused = paused;
     }
 
-    public void setGameEnd(boolean gameEnd){
-        this.gameEnd = gameEnd;
+    public void setHasEnded(boolean hasEnded){
+        this.hasEnded = hasEnded;
     }
 
-    public Boolean getGameEnd(){
-        return gameEnd;
+    public Boolean getHasEnded(){
+        return hasEnded;
     }
 }
