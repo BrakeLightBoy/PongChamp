@@ -21,6 +21,7 @@ public class Facade {
     public void updateBoardState(){
         gameBoard.run();
     }
+
     public float[] getLeftPaddlePosition(){
         float[] leftPosition = new float[2];
         leftPosition[0] = gameBoard.getLeftPaddle().getLocation().getX();
@@ -119,6 +120,43 @@ public class Facade {
 
     public Color getBallColor(){
         return gameBoard.getBall().getBallColor();
+    }
+
+    public Boolean getRunning() {
+        return gameBoard.getRunning();
+    }
+
+    public Boolean getGameEnd() {
+        return gameBoard.getGameEnd();
+    }
+
+    public String getGameWinner() {
+        return gameBoard.getGameWinner();
+    }
+
+    public void pauseGame(){
+        gameBoard.setRunning(false);
+        setBallVisibility(false);
+    }
+
+    public void endGame(){
+        gameBoard.setGameEnd(true);
+    }
+
+    public void resumeGame(){
+        gameBoard.setRunning(true);
+        setBallVisibility(true);
+    }
+
+    public void gameRestart(){
+        gameBoard.restartGame();
+    }
+    public void setBallVisibility(boolean visibility){
+        gameBoard.getBall().setVisibility(visibility);
+    }
+    public void resetPaddlePositions(){
+        gameBoard.getRightPaddle().setLocation(new Point(1160,450));
+        gameBoard.getLeftPaddle().setLocation(new Point(40,450));
     }
 
 }

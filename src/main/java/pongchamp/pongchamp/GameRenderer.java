@@ -9,8 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -23,6 +25,7 @@ import pongchamp.pongchamp.model.Properties;
 
 import pongchamp.pongchamp.model.Board;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,33 +33,6 @@ import java.util.List;
 import java.util.Random;
 import pongchamp.pongchamp.Facade;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
-
-//public class HelloApplication extends Application {
-//
-//
-//    public void start(Stage stage) throws IOException {
-//        Parent root = FXMLLoader.load(getClass().getResource("Starter.fxml"));
-//        Scene scene = new Scene(root);
-//        stage.setScene(scene);
-//        stage.show();
-//
-//        /*
-//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-//        Scene scene = new Scene((Parent)fxmlLoader.load());
-//        stage.setTitle("Hello!");
-//        stage.setScene(scene);
-//        String css = this.getClass().getResource("application.css").toExternalForm();
-//        scene.getStylesheets().add(css);
-//        stage.show();
-//         */
-//
-//    }
-//
-//    public static void main(String[] args) {
-//        launch(new String[0]);
-//    }
-//}
-
 
 /**
  *
@@ -74,9 +50,12 @@ public class GameRenderer extends Application {
     public void start(Stage stage) {
         stage.setTitle("PONGCHAMP");
         //background size
+
+        AnchorPane anchorPane = new AnchorPane();
+
         Canvas canvas = new Canvas(Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
 
-
+        anchorPane.getChildren().add(canvas);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
@@ -87,9 +66,36 @@ public class GameRenderer extends Application {
 
         //mouse control (move and click)
 
-        Scene scene = new Scene(new StackPane(canvas));
+        Scene scene = new Scene(anchorPane);
+
+        double[] restartPosition = {(double) Properties.BOARD_WIDTH*0.50,(double) Properties.BOARD_HEIGHT*0.52};
+
+        gameRestart = createButton("RestartBtn", "Restart", false, restartPosition,
+                e -> {
+                    hideButtons();
+                        facade.gameRestart();
+        });
 
 
+        double[] resumePosition = {(double) Properties.BOARD_WIDTH*0.45,(double) Properties.BOARD_HEIGHT*0.52};
+        gameResume = createButton("ResumeBtn","Resume",false,resumePosition,e -> {
+
+           hideButtons();
+
+
+            gamePaused = false;
+
+            facade.resumeGame();
+        });
+
+        double[] exitPosition = {(double) Properties.BOARD_WIDTH*0.55,(double) Properties.BOARD_HEIGHT*0.52};
+        gameExit = createButton("ExitBtn","Exit",false
+                ,exitPosition,e -> hideButtons());
+
+        buttons.add(gameResume);
+        buttons.add(gameRestart);
+        buttons.add(gameExit);
+        anchorPane.getChildren().addAll(gameRestart, gameResume, gameExit);
 
         InGameKeyListener keyListener = new InGameKeyListener();
         scene.setOnKeyPressed(keyListener);

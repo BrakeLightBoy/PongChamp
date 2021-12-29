@@ -16,11 +16,13 @@ public class Board implements Runnable {
     private final float width = BOARD_WIDTH;
     private final float height = BOARD_HEIGHT;
     private final float paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
+    private boolean gameEnd;
     private boolean running;
 
     private final Wall upperWall,lowerWall;
     private final LineSegment leftPaddleMovementPath,rightPaddleMovementPath;
     private Paddle leftPaddle,rightPaddle;
+    private String gameWinner;
 
     private Ball ball;
 
@@ -53,6 +55,10 @@ public class Board implements Runnable {
         activatedPowerUps = new ArrayList<>();
         maintainedPowerUps = new ArrayList<>();
         toRemove = new HashSet<>();
+
+        running = true;
+        gameWinner = "Ongoing";
+        gameEnd = false;
 
         LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
         lowerWall = new Wall(CollisionTypes.LOWER,wallSegment);
@@ -138,6 +144,7 @@ public class Board implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
+
     }
 
     private void maintainPowerUps(){
@@ -190,7 +197,7 @@ public class Board implements Runnable {
     }
 
     public void checkScore() {
-        if(!(this.getLeftScore() == 10 || this.getRightScore() == 10)) {
+        if(!(this.getLeftScore() == 1 || this.getRightScore() == 1)) {
             if (ball.getLocation().getX() < 0) {
 
                 rightGoal();
@@ -201,12 +208,19 @@ public class Board implements Runnable {
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
                 newRound();
             }
-        } else endGame();
+        } else if(getLeftScore() == 1){
+            gameWinner = "Player 1";
+            endGame();
+        } else {
+            gameWinner = "Player 2";
+            endGame();
+        }
     }
 
     private void newRound(){
         clearAllPowers();
-        ball.getLocation().setX(600);
+        ball.getLocation().setX(BOARD_WIDTH/2);
+        ball.getLocation().setY(BOARD_HEIGHT/2);
         ball.setSpeed(INITIAL_SPEED);
     }
 
@@ -224,6 +238,14 @@ public class Board implements Runnable {
         Thread thread = new Thread(this);
         thread.start();
     }
+
+    public void restartGame(){
+        setLeftScore(0);
+        setRightScore(0);
+        newRound();
+        gameEnd = false;
+    }
+
 
     private PowerUp spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
@@ -269,7 +291,7 @@ public class Board implements Runnable {
     }
 
     public void endGame(){
-        running = false;
+        gameEnd = true;
     }
 
     public float getWidth() {
@@ -322,5 +344,33 @@ public class Board implements Runnable {
 
     public List<PowerUp> getMaintainedPowerUps() {
         return maintainedPowerUps;
+    }
+
+    public Boolean getRunning() {
+        return running;
+    }
+
+    public String getGameWinner() {
+        return gameWinner;
+    }
+
+    public void setLeftScore(int newLeftScore){
+        leftScore = newLeftScore;
+    }
+
+    public void setRightScore(int newRightScore){
+        rightScore = newRightScore;
+    }
+
+    public void setRunning(boolean running){
+        this.running = running;
+    }
+
+    public void setGameEnd(boolean gameEnd){
+        this.gameEnd = gameEnd;
+    }
+
+    public Boolean getGameEnd(){
+        return gameEnd;
     }
 }
