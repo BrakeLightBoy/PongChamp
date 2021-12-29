@@ -32,6 +32,7 @@ public class GameController extends MainController {
     Canvas canvas;
     @FXML
     GraphicsContext gc;
+
     Stage stage = new Stage();
 
 

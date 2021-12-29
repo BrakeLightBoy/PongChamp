@@ -10,8 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -19,6 +17,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Ellipse;
 
+import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,18 +28,13 @@ public class SettingsController extends MainController implements Initializable 
     @FXML
     AnchorPane mainPane;
     @FXML
-    Slider volumeSlider;
+    private Slider volumeSlider;
     @FXML
-    ToggleButton musicB;
+    private ToggleButton musicB;
     @FXML
-    ColorPicker colorPicker;
+    private ColorPicker colorPicker;
     @FXML
-    Ellipse ellipse;
-
-    @FXML
-    private boolean isLightMode = true;
-
-
+    private Ellipse ellipse;
     @Override
     public void exitPage(ActionEvent event)  {
         super.exitPage(event);
@@ -53,6 +47,10 @@ public class SettingsController extends MainController implements Initializable 
     public void settingsPage(MouseEvent event) {
         super.settingsPage(event);
 }
+
+
+        Color ballColour;
+
 
     @FXML
     public void playHit(ActionEvent event) {
@@ -79,12 +77,15 @@ public class SettingsController extends MainController implements Initializable 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         colorPicker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ellipse.setFill(colorPicker.getValue());
-            }
-        });
 
+    @FXML
+
+        @Override
+        public void handle(ActionEvent event) {
+            ellipse.setFill(colorPicker.getValue());
+
+        }
+        });
     }
     @FXML
     private void handleColourPicker(ActionEvent event) {

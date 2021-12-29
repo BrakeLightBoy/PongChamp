@@ -8,10 +8,10 @@ import java.io.IOException;
 
 
 public class Application extends javafx.application.Application {
-    SettingsController obj = new SettingsController();
 
     @Override
     public void start(Stage stage) throws IOException {
+        play();
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("Start.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("PONG!");
@@ -19,7 +19,6 @@ public class Application extends javafx.application.Application {
         stage.show();
     }
     public void play() {
-
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package com.example.finalfrontier.model.entities;
 
-import com.example.finalfrontier.model.*;
-import com.example.finalfrontier.model.math.LineSegment;
+import com.example.finalfrontier.SoundEffects;
 import com.example.finalfrontier.model.*;
 import com.example.finalfrontier.model.math.LineSegment;
 import com.example.finalfrontier.model.math.Point;
@@ -10,9 +9,12 @@ import com.example.finalfrontier.model.math.Vector;
 import java.util.ArrayList;
 
 import static com.example.finalfrontier.model.CollisionTypes.*;
-import static com.example.finalfrontier.model.ObstactleTypes.*;
+import static com.example.finalfrontier.model.ObstactleTypes.PADDLE;
+import static com.example.finalfrontier.model.ObstactleTypes.WALL;
 
-public class NormalBall extends Ball{
+public class NormalBall extends Ball {
+    SoundEffects obj = new SoundEffects();
+
 
     public NormalBall(Point location, int radius, Vector speed, Vector acceleration) {
         super(location, radius, speed, acceleration);
@@ -23,90 +25,81 @@ public class NormalBall extends Ball{
         location.movePoint(speed);
         speed.addVector(acceleration);
 
-        for (Collidable obstacle : obstacles){
+        for (Collidable obstacle : obstacles) {
             Collision collision = checkCollision(obstacle);
             onCollision(collision);
         }
     }
 
-    public Collision checkCollision(Collidable obstacle){
-        if (obstacle instanceof Wall){
+    public Collision checkCollision(Collidable obstacle) {
+        if (obstacle instanceof Wall) {
             return checkCollision((Wall) obstacle);
-        }
-        else {
+        } else {
             return checkCollision((Paddle) obstacle);
         }
     }
 
 
-
-    public Collision checkCollision(Wall wall){
+    public Collision checkCollision(Wall wall) {
         LineSegment wallLine = wall.getWallLine();
 
-        switch (wall.getWallType()){
+        switch (wall.getWallType()) {
             case RIGHT:
-                if (getLocation().getX()+getRadius()>=wallLine.getStartPoint().getX()){
-                    return new Collision(RIGHT,WALL);
+                if (getLocation().getX() + getRadius() >= wallLine.getStartPoint().getX()) {
+                    return new Collision(RIGHT, WALL);
                 }
                 break;
             case LEFT:
-                if (getLocation().getX()- getRadius()<=wallLine.getStartPoint().getX()){
-                    return new Collision(LEFT,WALL);
+                if (getLocation().getX() - getRadius() <= wallLine.getStartPoint().getX()) {
+                    return new Collision(LEFT, WALL);
                 }
                 break;
             case UPPER:
-                if (getLocation().getY()+getRadius()>=wallLine.getStartPoint().getY()){
-                    return new Collision(LOWER,WALL);
+                if (getLocation().getY() + getRadius() >= wallLine.getStartPoint().getY()) {
+                    return new Collision(LOWER, WALL);
                 }
                 break;
             case LOWER:
-                if (getLocation().getY()- getRadius()<=wallLine.getStartPoint().getY()){
-                    return new Collision(UPPER,WALL);
+                if (getLocation().getY() - getRadius() <= wallLine.getStartPoint().getY()) {
+                    return new Collision(UPPER, WALL);
                 }
                 break;
         }
-        return new Collision(NONE,WALL);
+        return new Collision(NONE, WALL);
     }
 
-    public Collision checkCollision(Paddle paddle){
+    public Collision checkCollision(Paddle paddle) {
         HitBox.hitBoxCollision collidedPart = paddle.paddleHitBox.checkBallIntersect(this);
 
-        if (collidedPart == HitBox.hitBoxCollision.NONE){
-            return new Collision(NONE,PADDLE);
+        if (collidedPart == HitBox.hitBoxCollision.NONE) {
+            return new Collision(NONE, PADDLE);
         }
 
         CollisionTypes collisionType;
         if (collidedPart == HitBox.hitBoxCollision.VERTICAL) {
             if (paddle.paddleType == LEFT) {
                 collisionType = LEFT;
-            }
-            else {
+            } else {
                 collisionType = RIGHT;
             }
-        }
-        else if (collidedPart == HitBox.hitBoxCollision.HORIZONTAL) {
-            if (location.getY()< paddle.location.getY()){
+        } else if (collidedPart == HitBox.hitBoxCollision.HORIZONTAL) {
+            if (location.getY() < paddle.location.getY()) {
                 collisionType = LOWER;
-            }
-            else {
+            } else {
                 collisionType = UPPER;
             }
-        }
-        else {
-            if ( (location.getY()< paddle.location.getY() && paddle.paddleType == LEFT) ){
+        } else {
+            if ((location.getY() < paddle.location.getY() && paddle.paddleType == LEFT)) {
                 collisionType = LEFT_LOWER;
-            }
-            else if ( (location.getY()< paddle.location.getY() && paddle.paddleType == RIGHT) ){
+            } else if ((location.getY() < paddle.location.getY() && paddle.paddleType == RIGHT)) {
                 collisionType = RIGHT_LOWER;
-            }
-            else if ( (paddle.paddleType == RIGHT) ){
+            } else if ((paddle.paddleType == RIGHT)) {
                 collisionType = RIGHT_UPPER;
-            }
-            else {
+            } else {
                 collisionType = LEFT_UPPER;
             }
         }
-        return new Collision(collisionType,PADDLE);
+        return new Collision(collisionType, PADDLE);
     }
 
     @Override
@@ -114,7 +107,7 @@ public class NormalBall extends Ball{
         CollisionTypes colType = collision.getColType();
 
         //temporarily switched lower and upper because of the render engine having the inverted y-axis
-        switch (colType){
+        switch (colType) {
             case NONE:
                 return;
             case LEFT:
@@ -146,5 +139,10 @@ public class NormalBall extends Ball{
                 speed.setY(-Math.abs(speed.getY()));
                 break;
         }
+    }
+
+    public void clip() {
+        obj.clip();
+
     }
 }
