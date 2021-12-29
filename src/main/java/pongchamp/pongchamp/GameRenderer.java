@@ -3,6 +3,8 @@ package pongchamp.pongchamp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -136,6 +138,84 @@ public class GameRenderer extends Application {
         for (Button button : buttons) {
             button.setVisible(false);
         }
+    }
+
+    private Button createButton(String Id, String text, Boolean isVisible, double[] position, EventHandler<ActionEvent> action){
+        Button button = new Button();
+
+        button.setId(Id);
+        button.setText(text);
+        button.setVisible(isVisible);
+        button.setLayoutX(position[0]);
+        button.setLayoutY(position[1]);
+        button.setOnAction(action);
+
+        return button;
+    }
+
+    private void drawBoard(GraphicsContext gc){
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
+    }
+
+    private void drawBall(GraphicsContext gc){
+        gc.setFill(facade.getBallColor());
+        float[] ballPos = facade.getBallPosition();
+        int ballRadius= facade.getBallRadius();
+        int ballDiameter = 2*ballRadius;
+        gc.fillOval(ballPos[0]-ballRadius, ballPos[1]-ballRadius, ballDiameter, ballDiameter);
+    }
+
+    private void drawPaddles(GraphicsContext gc){
+        gc.setFill(Color.WHITE);
+        float[] leftPaddlePos = facade.getLeftPaddlePosition();
+        float[] leftPaddleDim = facade.getLeftPaddleDimensions();
+        gc.fillRect(leftPaddlePos[0]-leftPaddleDim[0]/2, leftPaddlePos[1]-leftPaddleDim[1]/2, leftPaddleDim[0], leftPaddleDim[1]);
+
+        float[] rightPaddlePos = facade.getRightPaddlePosition();
+        float[] rightPaddleDim = facade.getRightPaddleDimensions();
+        gc.fillRect((int)(rightPaddlePos[0]-rightPaddleDim[0]/2),(int)( rightPaddlePos[1]-rightPaddleDim[1]/2), rightPaddleDim[0], rightPaddleDim[1]);
+
+    }
+
+    private void drawScore(GraphicsContext gc){
+        gc.setFill(Color.WHITE);
+        gc.setFont(Properties.FONT_SIZE);
+        int[] score = facade.getScore();
+        gc.fillText(String.valueOf(score[0]), Properties.BOARD_WIDTH*1/4, Properties.BOARD_HEIGHT*1/10);
+        gc.fillText(String.valueOf(score[1]), Properties.BOARD_WIDTH*3/4 , Properties.BOARD_HEIGHT*1/10);
+    }
+
+    private void drawPowerUps(GraphicsContext gc){
+        HashMap<Class<? extends PowerUp>, ArrayList<Float[]>> powerMap = facade.returnPowerMap();
+        HashMap<Class<? extends PowerUp>, Color> powerColors = facade.returnPowerColors();
+
+        int powerRadius = Properties.POWER_UP_RADIUS;
+        int powerDiameter = powerRadius*2;
+
+        gc.setFill(Color.RED);
+        powerMap.forEach((p,pm) ->{
+            gc.setFill(powerColors.get(p));
+            for (Float[] position : pm){
+                gc.fillOval(position[0]-powerRadius, position[1]-powerRadius, powerDiameter, powerDiameter);
+            }
+        });
+    }
+
+    private void gamePause(GraphicsContext gc){
+        gameExit.setVisible(true);
+        gameExit.setLayoutX(Properties.BOARD_WIDTH*0.30);
+        gameResume.setVisible(true);
+        gameRestart.setVisible(true);
+        gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.60);
+    }
+
+    private void gameEnd(GraphicsContext gc){
+        gc.setFill(Color.WHITE);
+        gc.fillText(facade.getGameWinner() + " wins!", Properties.BOARD_WIDTH*9/20, Properties.BOARD_HEIGHT*1/2);
+        gameRestart.setVisible(true);
+        gameExit.setVisible(true);
+        facade.endGame();
     }
 
     private void run(GraphicsContext gc) {

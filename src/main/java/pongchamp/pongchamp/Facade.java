@@ -19,7 +19,9 @@ public class Facade {
 
 
     public void updateBoardState(){
-        gameBoard.run();
+        if (getRunning() && !getGameEnd()){
+            gameBoard.run();
+        }
     }
 
     public float[] getLeftPaddlePosition(){
@@ -74,7 +76,6 @@ public class Facade {
         return score;
     }
 
-
     public void setRightPaddleController(PaddleController paddleController){
         gameBoard.getRightPaddle().setPaddleController(paddleController);
     }
@@ -84,8 +85,8 @@ public class Facade {
 
     public HashMap<Class<? extends PowerUp>,ArrayList<Float[]>> returnPowerMap(){
         HashMap<Class<? extends PowerUp>,ArrayList<Float[]>> powerUpsMap = new HashMap<>();
-
         HashSet<Class<? extends PowerUp>> powerNames = new HashSet<>();
+
         for (PowerUp power : gameBoard.getSpawnedPowers()){
             powerNames.add(power.getClass());
         }

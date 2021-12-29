@@ -33,8 +33,7 @@ public class Board implements Runnable {
     private List<PowerUp> maintainedPowerUps;
     private HashSet<PowerUp> toRemove;
 
-
-    private RenderEngine renderEngine;
+    private boolean hasPowerUps;
 
     protected int leftScore, rightScore;
 
@@ -51,9 +50,6 @@ public class Board implements Runnable {
 
         gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
-        spawnedPowerUps = new ArrayList<>();
-        activatedPowerUps = new ArrayList<>();
-        maintainedPowerUps = new ArrayList<>();
         toRemove = new HashSet<>();
 
         running = true;
@@ -79,7 +75,7 @@ public class Board implements Runnable {
 
         leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT);
         //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
-        ball = new NormalBall(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0));
+        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0));
 
         rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT);
 
@@ -98,7 +94,6 @@ public class Board implements Runnable {
 
         gameEntities.add(leftPaddle);
         gameEntities.add(rightPaddle);
-
 
         obstacles.add(leftPaddle);
         obstacles.add(rightPaddle);
@@ -124,20 +119,27 @@ public class Board implements Runnable {
 
     @Override
     public void run() {
-        handleActivePowers();
-        maintainPowerUps();
+
+        if (hasPowerUps) {
+            handleActivePowers();
+            maintainPowerUps();
+        }
         for (Entity entity : gameEntities) {
             entity.tick();
         }
         ball.tick(obstacles);
 
         checkScore();
-        spawnPowerUps();
-        
+
+        if (hasPowerUps) {
+            spawnPowerUps();
+            handleSpawnedPowers();
+        }
+
+
         //todo some rendering whether in this thread or a new one
         //todo some TPS/FPS syncing
 
-        handleSpawnedPowers();
 
         /*try {
             Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end

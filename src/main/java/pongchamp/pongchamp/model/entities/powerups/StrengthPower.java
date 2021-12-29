@@ -20,7 +20,7 @@ public class StrengthPower extends PowerUp{
     }
 
     private Paddle affectedPaddle;
-    private NormalBall ball = (NormalBall) gameBoard.getBall();
+    private Ball ball = gameBoard.getBall();
 
     @Override
     public void tick(){
