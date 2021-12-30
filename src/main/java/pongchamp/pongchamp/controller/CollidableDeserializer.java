@@ -8,7 +8,6 @@ import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.Collidable;
 import pongchamp.pongchamp.model.Wall;
 import pongchamp.pongchamp.model.entities.Paddle;
-
 import java.lang.reflect.Type;
 
 public class CollidableDeserializer implements JsonDeserializer<Collidable> {

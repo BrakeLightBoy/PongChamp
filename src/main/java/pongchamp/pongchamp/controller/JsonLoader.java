@@ -7,11 +7,6 @@ import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.Collidable;
 import pongchamp.pongchamp.model.UserSettings;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class JsonLoader {
 

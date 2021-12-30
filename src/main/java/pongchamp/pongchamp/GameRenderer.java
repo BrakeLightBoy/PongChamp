@@ -133,7 +133,7 @@ public class GameRenderer extends Application {
 
                 JsonLoader loader = new JsonLoader();
                 //System.out.println(loader.loadBoard(bs));
-                //System.out.println(loader.loadUserSettings(setj));
+                //System.out.println(loader.loadUserSettings(set));
 
 
             } catch (InterruptedException e) {

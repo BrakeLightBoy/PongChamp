@@ -5,9 +5,7 @@ import com.google.gson.GsonBuilder;
 import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.Collidable;
-import pongchamp.pongchamp.model.OpponentType;
 import pongchamp.pongchamp.model.UserSettings;
-import pongchamp.pongchamp.model.entities.Paddle;
 
 public class JsonWriter {
 
