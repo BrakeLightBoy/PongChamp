@@ -97,7 +97,7 @@ public class SettingsController extends MainController implements Initializable 
 /*
     }
     // this dark/light mode test was working before but not with new changes, not priority to look at it now.
-    @FXML
+    @com.example.finalfrontier.FXML
     public void changeMode(ActionEvent event) {
         isLightMode = !isLightMode;
         if (darklight.isPressed()) {

@@ -58,7 +58,7 @@ public class SoundEffects {
                 }
             });
         }
- @FXML
+ @com.example.finalfrontier.FXML
     public void clip() {
         obj.clip();
     }

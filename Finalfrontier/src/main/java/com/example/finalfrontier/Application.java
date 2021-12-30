@@ -1,6 +1,7 @@
 package com.example.finalfrontier;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -12,8 +13,8 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         play();
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("Start.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Parent root = FXMLLoader.load(getClass().getResource("Start.fxml"));
+        Scene scene = new Scene(root);
         stage.setTitle("PONG!");
         stage.setScene(scene);
         stage.show();
