@@ -1,5 +1,6 @@
 package pongchamp.pongchamp;
 import javafx.scene.paint.Color;
+import pongchamp.pongchamp.controller.JsonWriter;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.OpponentType;
@@ -180,5 +181,10 @@ public class Facade {
 
     public boolean getBallVisibility(){
         return gameBoard.getBall().getVisibility();
+    }
+
+    public String saveBoardState(){
+        JsonWriter writer = new JsonWriter();
+        return writer.writeBoardState(gameBoard);
     }
 }

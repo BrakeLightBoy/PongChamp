@@ -114,6 +114,19 @@ public class GameRenderer extends Application {
         facade.setLeftPaddleController(leftKeyHandler);
         //facade.setRightPaddleController(rightKeyHandler);
 
+
+        Thread runlater = new Thread(() ->{
+            try {
+                Thread.sleep(10000);
+                System.out.println(facade.saveBoardState());
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        });
+        runlater.start();
+
         stage.setScene(scene);
         stage.show();
         tl.play();
