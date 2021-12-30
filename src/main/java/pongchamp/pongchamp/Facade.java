@@ -170,4 +170,15 @@ public class Facade {
         gameBoard.getLeftPaddle().setLocation(new Point(40,450));
     }
 
+    public Color getPaddle1Color(){
+        return gameBoard.getPaddle1Color();
+    }
+
+    public Color getPaddle2Color(){
+        return gameBoard.getPaddle2Color();
+    }
+
+    public boolean getBallVisibility(){
+        return gameBoard.getBall().getVisibility();
+    }
 }

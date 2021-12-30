@@ -221,8 +221,8 @@ public class Ball extends Entity {
         this.radius = radius;
     }
 
-    public void setBallColor(Color ballColor){
-        this.ballColor = ballColor;
+    public void setBallColor(Color newBallColor){
+        this.ballColor = newBallColor;
     }
 
     public Color getBallColor(){

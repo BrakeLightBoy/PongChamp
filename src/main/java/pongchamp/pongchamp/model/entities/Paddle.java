@@ -102,4 +102,12 @@ public class Paddle extends Entity implements Collidable {
     public void setPlatformSpeed(float platformSpeed) {
         this.platformSpeed = platformSpeed;
     }
+
+    public Color getPaddleColor() {
+        return paddleColor;
+    }
+
+    public void setPaddleColor(Color newPaddleColor){
+        this.paddleColor = newPaddleColor;
+    }
 }

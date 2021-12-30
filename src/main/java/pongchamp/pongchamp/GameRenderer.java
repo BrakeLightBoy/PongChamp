@@ -143,11 +143,12 @@ public class GameRenderer extends Application {
     }
 
     private void drawPaddles(GraphicsContext gc){
-        gc.setFill(Color.WHITE);
+        gc.setFill(facade.getPaddle1Color());
         float[] leftPaddlePos = facade.getLeftPaddlePosition();
         float[] leftPaddleDim = facade.getLeftPaddleDimensions();
         gc.fillRect(leftPaddlePos[0]-leftPaddleDim[0]/2, leftPaddlePos[1]-leftPaddleDim[1]/2, leftPaddleDim[0], leftPaddleDim[1]);
 
+        gc.setFill(facade.getPaddle2Color());
         float[] rightPaddlePos = facade.getRightPaddlePosition();
         float[] rightPaddleDim = facade.getRightPaddleDimensions();
         gc.fillRect((int)(rightPaddlePos[0]-rightPaddleDim[0]/2),(int)( rightPaddlePos[1]-rightPaddleDim[1]/2), rightPaddleDim[0], rightPaddleDim[1]);
