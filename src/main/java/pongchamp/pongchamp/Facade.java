@@ -187,4 +187,8 @@ public class Facade {
         JsonWriter writer = new JsonWriter();
         return writer.writeBoardState(gameBoard);
     }
+    public String saveUserSettings(){
+        JsonWriter writer = new JsonWriter();
+        return writer.writeSettings(gameBoard.getSettings());
+    }
 }

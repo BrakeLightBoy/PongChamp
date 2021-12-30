@@ -2,6 +2,7 @@ package pongchamp.pongchamp.controller;
 
 
 import com.google.gson.*;
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.Collidable;
@@ -18,7 +19,9 @@ public class CollidableDeserializer implements JsonDeserializer<Collidable> {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         String className = jsonObject.get("className").getAsString();
         jsonObject.remove("className");
-        Gson gson = new Gson();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Color.class, new ColorDeserializer());
+        Gson gson = builder.create();
         switch (className){
             case "Paddle" -> {
                return gson.fromJson(jsonObject.toString(), Paddle.class);

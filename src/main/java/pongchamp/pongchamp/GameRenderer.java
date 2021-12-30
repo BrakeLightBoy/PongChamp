@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import pongchamp.pongchamp.controller.FXKeyHandler;
 import pongchamp.pongchamp.controller.InGameKeyListener;
+import pongchamp.pongchamp.controller.JsonLoader;
+import pongchamp.pongchamp.controller.JsonWriter;
 import pongchamp.pongchamp.model.Properties;
 
 import java.util.ArrayList;
@@ -118,7 +120,21 @@ public class GameRenderer extends Application {
         Thread runlater = new Thread(() ->{
             try {
                 Thread.sleep(10000);
-                System.out.println(facade.saveBoardState());
+                String setj = facade.saveUserSettings();
+                String bs = facade.saveBoardState();
+
+
+                System.out.println("-----");
+
+                System.out.println(setj);
+                System.out.println(bs);
+
+                System.out.println("-----");
+
+                JsonLoader loader = new JsonLoader();
+                //System.out.println(loader.loadBoard(bs));
+                //System.out.println(loader.loadUserSettings(setj));
+
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

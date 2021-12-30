@@ -2,6 +2,7 @@ package pongchamp.pongchamp.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.Collidable;
 import pongchamp.pongchamp.model.OpponentType;
@@ -10,21 +11,31 @@ import pongchamp.pongchamp.model.entities.Paddle;
 
 public class JsonWriter {
 
+    private Gson gson;
+
+    public JsonWriter(){
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Color.class, new ColorSerializer());
+        builder.registerTypeAdapter(Collidable.class, new CollidableSerializer());
+        gson = builder.create();
+    }
+
 
 
 
 
     public String writeSettings(UserSettings userSettings){
-        Gson gson = new Gson();
+
         return gson.toJson(userSettings);
     }
     public String writeBoardState(Board board){
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Collidable.class, new CollidableSerializer());
-
-        Gson gson = builder.create();
         return gson.toJson(board);
+    }
+
+    public static void main(String[] args) {
+        JsonWriter writer = new JsonWriter();
+        System.out.println(writer.writeSettings(new UserSettings()));
     }
 
 }
