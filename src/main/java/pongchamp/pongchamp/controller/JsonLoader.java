@@ -13,15 +13,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class JsonLoader {
-    private final String json;
-    public JsonLoader (String json) throws IOException {
-        this.json = json;
+
+    public JsonLoader ()  {
+
     }
-    public UserSettings loadUserSettings(){
+    public UserSettings loadUserSettings(String json){
         Gson gson = new Gson();
        return gson.fromJson(json,UserSettings.class);
     }
-    public Board loadBoard(){
+    public Board loadBoard(String json){
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Collidable.class, new CollidableDeserializer());
         Gson gson = builder.create();
