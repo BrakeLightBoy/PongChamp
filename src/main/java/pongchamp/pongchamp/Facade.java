@@ -2,7 +2,7 @@ package pongchamp.pongchamp;
 import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.OpponentType;
+import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 import pongchamp.pongchamp.model.math.Point;
@@ -139,7 +139,6 @@ public class Facade {
 
     public void pauseGame(){
         gameBoard.setPaused(true);
-        setBallVisibility(false);
     }
 
     public void endGame(){

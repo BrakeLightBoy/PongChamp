@@ -53,7 +53,7 @@ public class GameRenderer extends Application{
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         //JavaFX Timeline = free form animation defined by KeyFrames and their duration
-        Timeline tl = new Timeline(new KeyFrame(Duration.millis(25), e -> run(gc)));
+        Timeline tl = new Timeline(new KeyFrame(Duration.millis(Properties.MILLISECONDS_PER_TICK), e -> run(gc)));
         //number of cycles in animation INDEFINITE = repeat indefinitely
         tl.setCycleCount(Timeline.INDEFINITE);
 
@@ -82,7 +82,13 @@ public class GameRenderer extends Application{
 
         double[] exitPosition = {(double) Properties.BOARD_WIDTH*0.55,(double) Properties.BOARD_HEIGHT*0.52};
         gameExit = createButton("ExitBtn","Exit",false
-                ,exitPosition,e -> exitGame(stage));
+                ,exitPosition,e -> {
+                    try {
+                        exitGame(stage);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
 
         buttons.add(gameResume);
         buttons.add(gameRestart);
@@ -164,6 +170,13 @@ public class GameRenderer extends Application{
         gc.fillText(String.valueOf(score[1]), Properties.BOARD_WIDTH*3/4, Properties.BOARD_HEIGHT*1/10);
     }
 
+    private void drawTimer(GraphicsContext gc){
+        gc.setFill(Properties.FONT_COLOR);
+        gc.setFont(Properties.FONT_SIZE);
+        String time = facade.getTime();
+        gc.fillText(time,Properties.BOARD_WIDTH*1/2,Properties.BOARD_HEIGHT*1/10);
+    }
+
     private void drawPowerUps(GraphicsContext gc){
         HashMap<Class<? extends PowerUp>, ArrayList<Float[]>> powerMap = facade.returnPowerMap();
         HashMap<Class<? extends PowerUp>, Color> powerColors = facade.returnPowerColors();
@@ -216,8 +229,9 @@ public class GameRenderer extends Application{
         facade.updateBoardState();
 
         drawBoard(gc);
-        drawScore(gc);
+
         drawPaddles(gc);
+        drawTimer(gc);
 
         boolean gameEnded = facade.getGameEnd();
 

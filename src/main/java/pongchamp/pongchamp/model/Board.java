@@ -39,6 +39,8 @@ public class Board implements Runnable {
 
     protected int leftScore, rightScore;
 
+    private Vector initialSpeed;
+
     private Random random = new Random();
 
     public Board(GameModes gameMode, Boolean hasPowerUps) {
@@ -83,8 +85,10 @@ public class Board implements Runnable {
         );
 
         leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT, settings.getPaddle1Color());
-        //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
-        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0),settings.getBallColor());
+
+        reRollSpeed();
+
+        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,initialSpeed,new Vector(0,0),settings.getBallColor());
 
         rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
 
@@ -246,7 +250,11 @@ public class Board implements Runnable {
         clearAllPowers();
         ball.getLocation().setX(BOARD_WIDTH/2);
         ball.getLocation().setY(BOARD_HEIGHT/2);
-        ball.setSpeed(INITIAL_SPEED);
+
+
+        reRollSpeed();
+
+        ball.setSpeed(initialSpeed);
     }
 
     private void clearAllPowers(){

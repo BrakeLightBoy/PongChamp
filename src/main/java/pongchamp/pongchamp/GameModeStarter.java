@@ -15,6 +15,7 @@ import pongchamp.pongchamp.model.Properties;
 
 import static pongchamp.pongchamp.util.FrontendMethods.*;
 import pongchamp.pongchamp.model.Properties;
+import pongchamp.pongchamp.util.FrontendMethods;
 
 import java.io.IOException;
 
