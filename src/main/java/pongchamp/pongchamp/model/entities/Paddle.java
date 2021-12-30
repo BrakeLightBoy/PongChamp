@@ -1,6 +1,7 @@
 package pongchamp.pongchamp.model.entities;
 
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.LineSegment;
@@ -21,8 +22,9 @@ public class Paddle extends Entity implements Collidable {
     protected float height;
     protected HitBox paddleHitBox;
     protected CollisionTypes paddleType;
+    private Color paddleColor;
 
-    public Paddle (Point initialLocation, LineSegment movementPath, CollisionTypes paddleType){
+    public Paddle (Point initialLocation, LineSegment movementPath, CollisionTypes paddleType, Color paddleColor){
         this(initialLocation, defaultPaddleWidth, defaultPaddleHeight, movementPath, new PaddleController() {
             @Override
             public boolean movingUp() {
@@ -33,10 +35,10 @@ public class Paddle extends Entity implements Collidable {
             public boolean movingDown() {
                 return false;
             }
-        }, paddleType);
+        }, paddleType, paddleColor);
     }
 
-    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType) {
+    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType, Color paddleColor) {
         super(location);
         if (! (paddleType == LEFT || paddleType == RIGHT) ){
             throw new IllegalArgumentException("Wrong paddle type");
@@ -48,6 +50,7 @@ public class Paddle extends Entity implements Collidable {
         this.height = height;
 
         adjustHitBox();
+        this.paddleColor = paddleColor;
     }
 
     private void adjustHitBox(){

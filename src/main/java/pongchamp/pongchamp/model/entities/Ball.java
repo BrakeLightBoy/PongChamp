@@ -21,13 +21,13 @@ public class Ball extends Entity {
     private Boolean isVisible;
     Color ballColor;
 
-    public Ball(Point location, int radius, Vector speed, Vector acceleration) {
+    public Ball(Point location, int radius, Vector speed, Vector acceleration,Color ballColor) {
         super(location);
         isVisible=true;
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
-        ballColor = Color.WHITE;
+        this.ballColor = ballColor;
     }
 
     public void speedUp(float xSpeed,float ySpeed){

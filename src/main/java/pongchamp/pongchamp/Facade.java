@@ -156,6 +156,10 @@ public class Facade {
         resumeGame();
     }
 
+    public Color getBackgroundColor(){
+        return gameBoard.getBackgroundColor();
+    }
+
 
     public void setBallVisibility(boolean visibility){
         gameBoard.getBall().setVisibility(visibility);

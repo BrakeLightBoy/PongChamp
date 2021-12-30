@@ -1,5 +1,6 @@
 package pongchamp.pongchamp.controller.ai;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.entities.Ball;
@@ -14,13 +15,14 @@ public abstract class AIPaddle extends Paddle implements PaddleController {
 
     protected Ball target;
 
-    public AIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType,Ball target) {
-        this(location, defaultPaddleWidth, defaultPaddleHeight, movementPath, paddleType,target);
+
+    public AIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType,Ball target, Color paddleColor) {
+        this(location, defaultPaddleWidth, defaultPaddleHeight, movementPath, paddleType,target, paddleColor);
 
     }
 
-    public AIPaddle(Point location, float width, float height, LineSegment movementPath, CollisionTypes paddleType,Ball target) {
-        super(location, width, height, movementPath, null, paddleType);
+    public AIPaddle(Point location, float width, float height, LineSegment movementPath, CollisionTypes paddleType, Ball target, Color paddleColor) {
+        super(location, width, height, movementPath, null, paddleType, paddleColor);
         this.target = target;
         setPaddleController(this);
     }

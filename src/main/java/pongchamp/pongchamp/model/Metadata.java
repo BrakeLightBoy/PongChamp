@@ -10,7 +10,7 @@ public class Metadata {
         map = new HashMap<>();
     }
 
-    public void put (String key,Object data){
+    public void put(String key,Object data){
         map.put(key,data);
     }
     public Object get(String key){

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static pongchamp.pongchamp.util.FrontendMethods.*;
+
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
 /**
@@ -123,30 +125,21 @@ public class GameRenderer extends Application {
         }
     }
 
-    private Button createButton(String Id, String text, Boolean isVisible, double[] position, EventHandler<ActionEvent> action){
-        Button button = new Button();
 
-        button.setId(Id);
-        button.setText(text);
-        button.setVisible(isVisible);
-        button.setLayoutX(position[0]);
-        button.setLayoutY(position[1]);
-        button.setOnAction(action);
-
-        return button;
-    }
 
     private void drawBoard(GraphicsContext gc){
-        gc.setFill(Color.BLACK);
+        gc.setFill(facade.getBackgroundColor());
         gc.fillRect(0, 0, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
     }
 
     private void drawBall(GraphicsContext gc){
-        gc.setFill(facade.getBallColor());
-        float[] ballPos = facade.getBallPosition();
-        int ballRadius= facade.getBallRadius();
-        int ballDiameter = 2*ballRadius;
-        gc.fillOval(ballPos[0]-ballRadius, ballPos[1]-ballRadius, ballDiameter, ballDiameter);
+        if (facade.getBallVisibility()){
+            gc.setFill(facade.getBallColor());
+            float[] ballPos = facade.getBallPosition();
+            int ballRadius= facade.getBallRadius();
+            int ballDiameter = 2*ballRadius;
+            gc.fillOval(ballPos[0]-ballRadius, ballPos[1]-ballRadius, ballDiameter, ballDiameter);
+        }
     }
 
     private void drawPaddles(GraphicsContext gc){
@@ -162,7 +155,7 @@ public class GameRenderer extends Application {
     }
 
     private void drawScore(GraphicsContext gc){
-        gc.setFill(Color.WHITE);
+        gc.setFill(Properties.FONT_COLOR);
         gc.setFont(Properties.FONT_SIZE);
         int[] score = facade.getScore();
         gc.fillText(String.valueOf(score[0]), Properties.BOARD_WIDTH*1/4, Properties.BOARD_HEIGHT*1/10);
@@ -176,7 +169,6 @@ public class GameRenderer extends Application {
         int powerRadius = Properties.POWER_UP_RADIUS;
         int powerDiameter = powerRadius*2;
 
-        gc.setFill(Color.RED);
         powerMap.forEach((p,pm) ->{
             gc.setFill(powerColors.get(p));
             for (Float[] position : pm){
@@ -204,7 +196,8 @@ public class GameRenderer extends Application {
     }
 
     private void endGame(GraphicsContext gc){
-        gc.setFill(Color.WHITE);
+        gc.setFill(Properties.FONT_COLOR);
+        gc.setFont(Properties.FONT_SIZE);
         gc.fillText(facade.getGameWinner() + " wins!", Properties.BOARD_WIDTH*9/20, Properties.BOARD_HEIGHT*1/2);
         gameRestart.setVisible(true);
         gameExit.setVisible(true);

@@ -22,9 +22,7 @@ public class Properties {
 
     public static final int MAXNUMBEROFPOWERUPS = 3;
 
-    public static final Color BALL_DEFAULT_COLOR = Color.WHITE;
-    
+    public static final Color FONT_COLOR = Color.WHITE;
     public static final Font FONT_SIZE = Font.font(25);
-
 
 }

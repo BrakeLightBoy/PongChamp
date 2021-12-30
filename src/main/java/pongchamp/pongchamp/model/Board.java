@@ -1,5 +1,6 @@
 package pongchamp.pongchamp.model;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.entities.*;
@@ -13,35 +14,42 @@ import java.util.*;
 
 public class Board implements Runnable {
 
-    private final float width = BOARD_WIDTH;
-    private final float height = BOARD_HEIGHT;
-    private final float paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
-    private boolean hasEnded;
-    private boolean isPaused;
+    private final UserSettings settings;
+
+    private final Color backgroundColor;
+
+    private final float width,height,paddleDistanceFromTheEdge;
+
+    private boolean hasEnded,isPaused;
 
     private final Wall upperWall,lowerWall;
     private final LineSegment leftPaddleMovementPath,rightPaddleMovementPath;
     private Paddle leftPaddle,rightPaddle;
     private String gameWinner;
 
-    private Ball ball;
+    private final Ball ball;
 
-    private List<Entity> gameEntities;
-    private ArrayList<Collidable> obstacles;
-    private List<PowerUp> spawnedPowerUps;
-    private List<PowerUp> activatedPowerUps;
-    private List<PowerUp> maintainedPowerUps;
-    private HashSet<PowerUp> toRemove;
+    private final List<Entity> gameEntities;
+    private final ArrayList<Collidable> obstacles;
+    private final List<PowerUp> spawnedPowerUps,activatedPowerUps,maintainedPowerUps;
+    private final HashSet<PowerUp> toRemove;
 
-    private boolean hasPowerUps;
+    private final boolean hasPowerUps;
 
     protected int leftScore, rightScore;
 
     private Random random = new Random();
 
     public Board(OpponentType opponentType, Boolean hasPowerUps) {
+        this.settings = new UserSettings();
+
+        backgroundColor = settings.getBackgroundColor();
+
         this.hasPowerUps = hasPowerUps;
 
+        width = BOARD_WIDTH;
+        height = BOARD_HEIGHT;
+        paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
 
         spawnedPowerUps = new ArrayList<>();
         activatedPowerUps = new ArrayList<>();
@@ -72,23 +80,21 @@ public class Board implements Runnable {
                 new Point(width-paddleDistanceFromTheEdge,height)
         );
 
-
-        leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT);
+        leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT, settings.getPaddle1Color());
         //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
-        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0));
+        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0),settings.getBallColor());
 
-        rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT);
+        rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
 
         switch (opponentType){
-
             case BEATABLE_AI_PADDLE -> {
-                rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
+                rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
             }
             case UNBEATABLE_AI_PADDLE -> {
                 rightPaddle = new UnbeatableAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
             }
             case PLAYER -> {
-                rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT);
+                rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
             }
         }
 
@@ -370,5 +376,21 @@ public class Board implements Runnable {
 
     public Boolean getHasEnded(){
         return hasEnded;
+    }
+
+    public Color getBackgroundColor(){
+        return backgroundColor;
+    }
+
+    public Color getPaddle1Color(){
+        return leftPaddle.getPaddleColor();
+    }
+
+    public Color getPaddle2Color(){
+        return rightPaddle.getPaddleColor();
+    }
+
+    public UserSettings getSettings(){
+        return settings;
     }
 }

@@ -1,5 +1,6 @@
 package pongchamp.pongchamp.controller.ai;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.Ball;
@@ -11,8 +12,8 @@ public class UnbeatableAIPaddle extends AIPaddle{
 
     private Point previousLocation;
 
-    public UnbeatableAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target) {
-        super(location,defaultPaddleWidth , defaultPaddleHeight, movementPath, paddleType,target);
+    public UnbeatableAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target, Color paddleColor) {
+        super(location,defaultPaddleWidth , defaultPaddleHeight, movementPath, paddleType,target, paddleColor);
         setPaddleController(null);
     }
 
