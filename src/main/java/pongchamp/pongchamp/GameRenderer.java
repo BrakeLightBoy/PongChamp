@@ -3,8 +3,6 @@ package pongchamp.pongchamp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import pongchamp.pongchamp.controller.FXKeyHandler;
 import pongchamp.pongchamp.controller.InGameKeyListener;
+import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.Properties;
 
 import java.util.ArrayList;
@@ -27,16 +26,18 @@ import static pongchamp.pongchamp.util.FrontendMethods.*;
 
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
-/**
- *
- */
-public class GameRenderer extends Application {
+
+public class GameRenderer extends Application{
     private Facade facade;
     private Button gameRestart,gameExit,gameResume;
     private List<Button> buttons = new ArrayList<>();
+    GameModeStarter gameModeStarter;
+    GameModes chosenGameMode;
 
-    public GameRenderer(){
-        facade = new Facade();
+    public GameRenderer(GameModeStarter gameModeStarter,GameModes gameMode,boolean withPowerUps){
+        facade = new Facade(gameMode, withPowerUps);
+        this.gameModeStarter = gameModeStarter;
+        this.chosenGameMode = gameMode;
     }
 
     public void start(Stage stage) {
@@ -112,7 +113,7 @@ public class GameRenderer extends Application {
         });
 
         facade.setLeftPaddleController(leftKeyHandler);
-        //facade.setRightPaddleController(rightKeyHandler);
+        facade.setRightPaddleController(rightKeyHandler);
 
         stage.setScene(scene);
         stage.show();
@@ -185,7 +186,6 @@ public class GameRenderer extends Application {
         gameExit.setLayoutX(Properties.BOARD_WIDTH*0.55);
         gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.50);
         facade.pauseGame();
-
     }
 
     private void unPauseGame(){
@@ -207,9 +207,8 @@ public class GameRenderer extends Application {
         gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.45);
     }
 
-    private void exitGame(Stage stage){
-        System.out.println("GAME CLOSED!");
-        stage.close();
+    private void exitGame(Stage stage) throws Exception{
+        gameModeStarter.start(stage);
     }
 
     private void run(GraphicsContext gc) {
@@ -219,7 +218,6 @@ public class GameRenderer extends Application {
         drawBoard(gc);
         drawScore(gc);
         drawPaddles(gc);
-
 
         boolean gameEnded = facade.getGameEnd();
 
@@ -231,7 +229,11 @@ public class GameRenderer extends Application {
             drawPowerUps(gc);
         }
 
-       }
+        if(chosenGameMode != GameModes.END){
+            drawScore(gc);
+        }
+
+   }
     // start the application
     public static void main(String[] args) {
         launch(args);

@@ -2,7 +2,8 @@ package pongchamp.pongchamp.controller;
 
 import com.google.gson.Gson;
 import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.OpponentType;
+
+import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.UserSettings;
 
 public class JsonWriter {
@@ -28,7 +29,7 @@ public class JsonWriter {
 
     public static void main(String[] args) throws Exception { //this is just for testing stuff
         JsonWriter writer = new JsonWriter(null);
-        writer.writeBoardState(new Board(OpponentType.BEATABLE_AI_PADDLE,true));
+        writer.writeBoardState(new Board(GameModes.V_AI,true));
 
 
     }

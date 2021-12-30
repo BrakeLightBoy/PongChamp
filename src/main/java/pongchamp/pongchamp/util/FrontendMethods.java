@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 
 public class FrontendMethods {
 
-    public static Button createButton(String Id, String text, Boolean isVisible, double[] position, EventHandler<ActionEvent> action){
+    public static Button createButton(String Id, String text, boolean isVisible, double[] position, EventHandler<ActionEvent> action){
         Button button = new Button();
 
         button.setId(Id);

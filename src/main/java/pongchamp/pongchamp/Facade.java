@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Facade {
-    private Board gameBoard;
+    private final Board gameBoard;
 
-    public Facade() {
-     this.gameBoard = new Board(OpponentType.BEATABLE_AI_PADDLE,false); //todo specify which game mode the user wants
+    public Facade(GameModes gameMode, boolean withPowerUps) {
+        this.gameBoard = new Board(gameMode,withPowerUps); //todo specify which game mode the user wants
     }
 
 
@@ -154,6 +154,7 @@ public class Facade {
     public void gameRestart(){
         gameBoard.restartGame();
         resumeGame();
+        gameBoard.setTime(0);
     }
 
     public Color getBackgroundColor(){
@@ -181,4 +182,26 @@ public class Facade {
     public boolean getBallVisibility(){
         return gameBoard.getBall().getVisibility();
     }
+
+    public String getTime(){
+        int seconds = (int) gameBoard.getTime();
+
+        int minutes = seconds/60;
+
+        int secondsLeftover = seconds - minutes*60;
+
+        String strMinutes = ""+minutes;
+        String strSecondsLeftover = ""+secondsLeftover;
+
+        if (strMinutes.length() == 1){
+            strMinutes = "0"+strMinutes;
+        }
+        if(strSecondsLeftover.length() == 1){
+            strSecondsLeftover = "0"+strSecondsLeftover;
+        }
+
+        return  strMinutes+":"+strSecondsLeftover;
+    }
+
+
 }

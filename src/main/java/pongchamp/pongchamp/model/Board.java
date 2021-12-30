@@ -13,7 +13,6 @@ import pongchamp.pongchamp.model.entities.powerups.*;
 import java.util.*;
 
 public class Board implements Runnable {
-
     private final UserSettings settings;
 
     private final Color backgroundColor;
@@ -34,13 +33,16 @@ public class Board implements Runnable {
     private final List<PowerUp> spawnedPowerUps,activatedPowerUps,maintainedPowerUps;
     private final HashSet<PowerUp> toRemove;
 
+    private float time;
+
     private final boolean hasPowerUps;
 
     protected int leftScore, rightScore;
 
     private Random random = new Random();
 
-    public Board(OpponentType opponentType, Boolean hasPowerUps) {
+    public Board(GameModes gameMode, Boolean hasPowerUps) {
+        time = 0;
         this.settings = new UserSettings();
 
         backgroundColor = settings.getBackgroundColor();
@@ -86,14 +88,14 @@ public class Board implements Runnable {
 
         rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
 
-        switch (opponentType){
-            case BEATABLE_AI_PADDLE -> {
+        switch (gameMode){
+            case V_AI -> {
                 rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
             }
-            case UNBEATABLE_AI_PADDLE -> {
+            case END -> {
                 rightPaddle = new UnbeatableAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
             }
-            case PLAYER -> {
+            case V_1 -> {
                 rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
             }
         }
@@ -125,6 +127,7 @@ public class Board implements Runnable {
 
     @Override
     public void run() {
+        time += MILLISECONDS_PER_TICK/1000f;
 
         if (hasPowerUps) {
             handleActivePowers();
@@ -225,6 +228,20 @@ public class Board implements Runnable {
         }
     }
 
+    private void reRollSpeed(){
+        float initialX = 7*random.nextInt(2);
+        float initialY = 2*(random.nextInt(8)-4);
+
+        if (initialX == 0){
+            initialX = -7;
+        }
+        if (initialY == 0){
+            initialY = 2;
+        }
+
+        initialSpeed = new Vector(initialX,initialY);
+    }
+
     private void newRound(){
         clearAllPowers();
         ball.getLocation().setX(BOARD_WIDTH/2);
@@ -263,10 +280,10 @@ public class Board implements Runnable {
                 +PADDLE_DISTANCE_FROM_THE_EDGE+leftPaddle.getWidth()+POWER_UP_RADIUS;
         Point spawnPoint = new Point(xRange,yRange);
 
+
         if (spawnOutcome>= spawnThreshold){
             PowerUp spawnedPowerUp;
             double powerTypeOutcome = Math.random()*100;
-
 
             if (powerTypeOutcome<=10){
                 spawnedPowerUp = new InvisPower(this,spawnPoint);
@@ -392,5 +409,13 @@ public class Board implements Runnable {
 
     public UserSettings getSettings(){
         return settings;
+    }
+
+    public float getTime(){
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
     }
 }
