@@ -1,7 +1,9 @@
 package pongchamp.pongchamp.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.Collidable;
 import pongchamp.pongchamp.model.UserSettings;
 
 import java.io.File;
@@ -11,15 +13,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class JsonLoader {
-    private String json;
-    public JsonLoader (String path) throws IOException {
-        this.json = Files.readString(Paths.get(path));
+    private final String json;
+    public JsonLoader (String json) throws IOException {
+        this.json = json;
     }
     public UserSettings loadUserSettings(){
         Gson gson = new Gson();
        return gson.fromJson(json,UserSettings.class);
     }
     public Board loadBoard(){
-        return null;
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Collidable.class, new CollidableDeserializer());
+        Gson gson = builder.create();
+        return gson.fromJson(json,Board.class);
     }
 }

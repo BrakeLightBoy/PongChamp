@@ -29,7 +29,7 @@ public class Board implements Runnable {
 
     private final Ball ball;
 
-    private final List<Entity> gameEntities;
+    private final List<Paddle> gameEntities;
     private final ArrayList<Collidable> obstacles;
     private final List<PowerUp> spawnedPowerUps,activatedPowerUps,maintainedPowerUps;
     private final HashSet<PowerUp> toRemove;
@@ -38,7 +38,6 @@ public class Board implements Runnable {
 
     protected int leftScore, rightScore;
 
-    private Random random = new Random();
 
     public Board(OpponentType opponentType, Boolean hasPowerUps) {
         this.settings = new UserSettings();
@@ -111,7 +110,7 @@ public class Board implements Runnable {
         return activatedPowerUps;
     }
 
-    public List<Entity> getGameEntities() {
+    public List<Paddle> getGameEntities() {
         return gameEntities;
     }
 
@@ -392,5 +391,35 @@ public class Board implements Runnable {
 
     public UserSettings getSettings(){
         return settings;
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "settings=" + settings +
+                ", backgroundColor=" + backgroundColor +
+                ", width=" + width +
+                ", height=" + height +
+                ", paddleDistanceFromTheEdge=" + paddleDistanceFromTheEdge +
+                ", hasEnded=" + hasEnded +
+                ", isPaused=" + isPaused +
+                ", upperWall=" + upperWall +
+                ", lowerWall=" + lowerWall +
+                ", leftPaddleMovementPath=" + leftPaddleMovementPath +
+                ", rightPaddleMovementPath=" + rightPaddleMovementPath +
+                ", leftPaddle=" + leftPaddle +
+                ", rightPaddle=" + rightPaddle +
+                ", gameWinner='" + gameWinner + '\'' +
+                ", ball=" + ball +
+                ", gameEntities=" + gameEntities +
+                ", obstacles=" + obstacles +
+                ", spawnedPowerUps=" + spawnedPowerUps +
+                ", activatedPowerUps=" + activatedPowerUps +
+                ", maintainedPowerUps=" + maintainedPowerUps +
+                ", toRemove=" + toRemove +
+                ", hasPowerUps=" + hasPowerUps +
+                ", leftScore=" + leftScore +
+                ", rightScore=" + rightScore +
+                '}';
     }
 }
