@@ -1,5 +1,6 @@
 package com.example.finalfrontier.model;
 import com.example.finalfrontier.model.entities.powerups.*;
+import com.example.finalfrontier.model.entities.powerups.*;
 import com.example.finalfrontier.model.math.Vector;
 import com.example.finalfrontier.controller.ai.MediumAIPaddle;
 import com.example.finalfrontier.controller.ai.UnbeatableAIPaddle;

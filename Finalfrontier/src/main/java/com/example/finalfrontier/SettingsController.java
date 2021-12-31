@@ -15,7 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
 import java.io.File;
@@ -32,9 +34,17 @@ public class SettingsController extends MainController implements Initializable 
     @FXML
     private ToggleButton musicB;
     @FXML
-    private ColorPicker colorPicker;
+    private ColorPicker ballColour;
     @FXML
-    private Ellipse ellipse;
+    private ColorPicker paddle1Colour;
+    @FXML
+    private ColorPicker paddle2Colour;
+    @FXML
+    private Circle ballPreview;
+    @FXML
+    private Rectangle paddle1Preview;
+    @FXML
+    private Rectangle paddle2Preview;
     @Override
     public void exitPage(ActionEvent event)  {
         super.exitPage(event);
@@ -49,7 +59,6 @@ public class SettingsController extends MainController implements Initializable 
 }
 
 
-        Color ballColour;
 
 
     @FXML
@@ -76,15 +85,24 @@ public class SettingsController extends MainController implements Initializable 
 // colour picker needs to be assigned to paddle/ball etc in back-end
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        colorPicker.setOnAction(new EventHandler<ActionEvent>() {
-
-    @FXML
-
-        @Override
-        public void handle(ActionEvent event) {
-            ellipse.setFill(colorPicker.getValue());
-
-        }
+        paddle2Colour.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                paddle2Preview.setFill(paddle2Colour.getValue());
+            }
+        });
+        paddle1Colour.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                paddle1Preview.setFill(paddle1Colour.getValue());
+            }
+        });
+        ballColour.setOnAction(new EventHandler<ActionEvent>() {
+            @FXML
+            @Override
+            public void handle(ActionEvent event) {
+                ballPreview.setFill(ballColour.getValue());
+            }
         });
     }
     @FXML

@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Finalfrontier" />
+        <module name="PongChamp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Finalfrontier" target="16" />
+      <module name="PongChamp" target="16" />
     </bytecodeTargetLevel>
   </component>
 </project>

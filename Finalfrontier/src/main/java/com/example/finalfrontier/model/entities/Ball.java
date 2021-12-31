@@ -5,6 +5,7 @@ import com.example.finalfrontier.model.math.Vector;
 import javafx.scene.paint.Color;
 import com.example.finalfrontier.model.math.LineSegment;
 import com.example.finalfrontier.model.math.Point;
+import com.example.finalfrontier.model.*;
 
 import java.util.ArrayList;
 
