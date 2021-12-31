@@ -77,6 +77,12 @@ public class Paddle extends Entity implements Collidable {
     @Override
     public void tick() {
 
+
+        if (paddleController == null){ //this line will prevent NullPointerException when the board is loaded from a Json file
+            setEmptyPaddleController();
+        }
+
+
         if (paddleController.movingDown()){
             float next = location.getY();
             if (next + platformSpeed + height / 2 > Properties.BOARD_HEIGHT)return;
@@ -109,5 +115,19 @@ public class Paddle extends Entity implements Collidable {
 
     public void setPaddleColor(Color newPaddleColor){
         this.paddleColor = newPaddleColor;
+    }
+
+    private void setEmptyPaddleController(){
+        this.paddleController = new PaddleController() {
+            @Override
+            public boolean movingUp() {
+                return false;
+            }
+
+            @Override
+            public boolean movingDown() {
+                return false;
+            }
+        };
     }
 }

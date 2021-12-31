@@ -1,4 +1,4 @@
-package pongchamp.pongchamp.controller;
+package pongchamp.pongchamp.controller.json;
 
 import com.google.gson.*;
 import javafx.scene.paint.Color;
@@ -11,6 +11,7 @@ public class CollidableSerializer implements JsonSerializer<Collidable> {
 
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Color.class, new ColorSerializer());
+        builder.registerTypeAdapter(Color.class, new ColorDeserializer());
         Gson gson = builder.create();
         String json = gson.toJson(collidable);
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();

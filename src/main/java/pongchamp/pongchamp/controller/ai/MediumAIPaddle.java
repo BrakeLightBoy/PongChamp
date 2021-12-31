@@ -1,7 +1,6 @@
 package pongchamp.pongchamp.controller.ai;
 
 import javafx.scene.paint.Color;
-import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.LineSegment;
@@ -102,12 +101,6 @@ public class MediumAIPaddle extends AIPaddle{
     private boolean notMoving(){
         double chanceOfNotMoving = target.getVisibility() ? chanceOfNotMovingWithVisibleBall:chanceOfNotMovingWithInvisibleBall;
         return randomBoolean(chanceOfNotMoving);
-    }
-
-    private static boolean oppositeSigns(float x, float y)
-    {
-        return (x > 0 && y < 0 || x < 0 && y > 0);
-        //return ((x ^ y) < 0);
     }
 
 }

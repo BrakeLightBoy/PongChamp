@@ -1,29 +1,14 @@
-package pongchamp.pongchamp.controller;
+package pongchamp.pongchamp.controller.json;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.Collidable;
 import pongchamp.pongchamp.model.UserSettings;
 
 public class JsonWriter {
 
-    private Gson gson;
-
-    public JsonWriter(){
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Color.class, new ColorSerializer());
-        builder.registerTypeAdapter(Collidable.class, new CollidableSerializer());
-        gson = builder.create();
-    }
-
-
-
-
+    private final Gson gson = GsonUtil.getGson();
 
     public String writeSettings(UserSettings userSettings){
-
         return gson.toJson(userSettings);
     }
     public String writeBoardState(Board board){

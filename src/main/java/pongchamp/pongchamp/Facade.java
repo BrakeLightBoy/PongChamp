@@ -1,10 +1,10 @@
 package pongchamp.pongchamp;
 import javafx.scene.paint.Color;
-import pongchamp.pongchamp.controller.JsonWriter;
+import pongchamp.pongchamp.controller.json.JsonLoader;
+import pongchamp.pongchamp.controller.json.JsonWriter;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.OpponentType;
-import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 import pongchamp.pongchamp.model.math.Point;
 
@@ -17,6 +17,13 @@ public class Facade {
 
     public Facade() {
      this.gameBoard = new Board(OpponentType.BEATABLE_AI_PADDLE,false); //todo specify which game mode the user wants
+    }
+
+    public Facade(String json){
+        System.out.println(json);
+        JsonLoader loader = new JsonLoader();
+        this.gameBoard = loader.loadBoard(json);
+        this.gameBoard.syncCollidables();
     }
 
 
@@ -166,10 +173,6 @@ public class Facade {
         gameBoard.getBall().setVisibility(visibility);
     }
 
-    public void resetPaddlePositions(){
-        gameBoard.getRightPaddle().setLocation(new Point(1160,450));
-        gameBoard.getLeftPaddle().setLocation(new Point(40,450));
-    }
 
     public Color getPaddle1Color(){
         return gameBoard.getPaddle1Color();

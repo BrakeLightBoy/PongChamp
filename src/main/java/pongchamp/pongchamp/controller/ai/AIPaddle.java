@@ -30,4 +30,12 @@ public abstract class AIPaddle extends Paddle implements PaddleController {
     protected boolean randomBoolean(double chance){ //number should be between 0 and 1
         return Math.random() < chance;
     }
+
+    public Ball getTarget() {
+        return target;
+    }
+
+    public void setTarget(Ball target) {
+        this.target = target;
+    }
 }

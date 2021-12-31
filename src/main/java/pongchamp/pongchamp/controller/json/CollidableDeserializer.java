@@ -1,4 +1,4 @@
-package pongchamp.pongchamp.controller;
+package pongchamp.pongchamp.controller.json;
 
 
 import com.google.gson.*;
@@ -19,6 +19,7 @@ public class CollidableDeserializer implements JsonDeserializer<Collidable> {
         String className = jsonObject.get("className").getAsString();
         jsonObject.remove("className");
         GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Color.class, new ColorSerializer());
         builder.registerTypeAdapter(Color.class, new ColorDeserializer());
         Gson gson = builder.create();
         switch (className){
@@ -26,7 +27,9 @@ public class CollidableDeserializer implements JsonDeserializer<Collidable> {
                return gson.fromJson(jsonObject.toString(), Paddle.class);
             }
             case "MediumAIPaddle" -> {
-                return gson.fromJson(jsonObject.toString(), MediumAIPaddle.class);
+                MediumAIPaddle mediumAIPaddle = gson.fromJson(jsonObject.toString(), MediumAIPaddle.class);
+                mediumAIPaddle.setPaddleController(mediumAIPaddle);
+                return mediumAIPaddle;
             }
             case "UnbeatableAIPaddle" -> {
                 return gson.fromJson(jsonObject.toString(), UnbeatableAIPaddle.class);

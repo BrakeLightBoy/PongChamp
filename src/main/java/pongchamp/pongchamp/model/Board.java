@@ -1,6 +1,7 @@
 package pongchamp.pongchamp.model;
 
 import javafx.scene.paint.Color;
+import pongchamp.pongchamp.controller.ai.AIPaddle;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.entities.*;
@@ -29,8 +30,8 @@ public class Board implements Runnable {
 
     private final Ball ball;
 
-    private final List<Paddle> gameEntities;
-    private final ArrayList<Collidable> obstacles;
+    private List<Paddle> paddles;
+    private ArrayList<Collidable> obstacles;
     private final List<PowerUp> spawnedPowerUps,activatedPowerUps,maintainedPowerUps;
     private final HashSet<PowerUp> toRemove;
 
@@ -55,7 +56,7 @@ public class Board implements Runnable {
         maintainedPowerUps = new ArrayList<>();
 
 
-        gameEntities = new ArrayList<>();
+        paddles = new ArrayList<>();
         obstacles = new ArrayList<>();
         toRemove = new HashSet<>();
 
@@ -97,8 +98,8 @@ public class Board implements Runnable {
             }
         }
 
-        gameEntities.add(leftPaddle);
-        gameEntities.add(rightPaddle);
+        paddles.add(leftPaddle);
+        paddles.add(rightPaddle);
 
         obstacles.add(leftPaddle);
         obstacles.add(rightPaddle);
@@ -110,9 +111,6 @@ public class Board implements Runnable {
         return activatedPowerUps;
     }
 
-    public List<Paddle> getGameEntities() {
-        return gameEntities;
-    }
 
     public List<PowerUp> getSpawnedPowers() {
         return spawnedPowerUps;
@@ -129,9 +127,10 @@ public class Board implements Runnable {
             handleActivePowers();
             maintainPowerUps();
         }
-        for (Entity entity : gameEntities) {
+        for (Entity entity : paddles) {
             entity.tick();
         }
+
         ball.tick(obstacles);
 
         checkScore();
@@ -393,6 +392,23 @@ public class Board implements Runnable {
         return settings;
     }
 
+    public void syncCollidables(){
+        this.paddles = new ArrayList<>();
+        paddles.add(rightPaddle);
+        paddles.add(leftPaddle);
+
+        obstacles = new ArrayList<>();
+       obstacles.add(leftPaddle);
+       obstacles.add(rightPaddle);
+       obstacles.add(lowerWall);
+       obstacles.add(upperWall);
+
+        if (rightPaddle instanceof AIPaddle){
+            ((AIPaddle) rightPaddle).setTarget(ball);
+        }
+
+    }
+
     @Override
     public String toString() {
         return "Board{" +
@@ -411,7 +427,7 @@ public class Board implements Runnable {
                 ", rightPaddle=" + rightPaddle +
                 ", gameWinner='" + gameWinner + '\'' +
                 ", ball=" + ball +
-                ", gameEntities=" + gameEntities +
+                ", paddles=" + paddles +
                 ", obstacles=" + obstacles +
                 ", spawnedPowerUps=" + spawnedPowerUps +
                 ", activatedPowerUps=" + activatedPowerUps +
