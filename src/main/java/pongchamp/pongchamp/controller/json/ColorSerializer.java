@@ -8,8 +8,6 @@ import java.lang.reflect.Type;
 public class ColorSerializer implements JsonSerializer<Color> {
     @Override
     public JsonElement serialize(Color color, Type type, JsonSerializationContext jsonSerializationContext) {
-        JsonElement jsonElement = JsonParser.parseString(color.toString());
-        return jsonElement;
-
+        return JsonParser.parseString(color.toString());
     }
 }

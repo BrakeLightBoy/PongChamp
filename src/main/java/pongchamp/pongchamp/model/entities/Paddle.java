@@ -130,4 +130,5 @@ public class Paddle extends Entity implements Collidable {
             }
         };
     }
+
 }

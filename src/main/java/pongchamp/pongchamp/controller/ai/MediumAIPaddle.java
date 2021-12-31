@@ -19,6 +19,10 @@ public class MediumAIPaddle extends AIPaddle{
         super(location, movementPath, paddleType, target, paddleColor);
     }
 
+    public MediumAIPaddle(Point location, float width, float height, LineSegment movementPath, CollisionTypes paddleType, Ball target, Color paddleColor){
+        super(location,width,height,movementPath,paddleType,target,paddleColor);
+    }
+
     @Override
     public boolean movingUp() {
 

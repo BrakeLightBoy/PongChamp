@@ -32,7 +32,9 @@ public class Point {
 
     @Override
     public String toString() {
-        return "X:" + x
-                + "\n" + "Y:" + y;
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

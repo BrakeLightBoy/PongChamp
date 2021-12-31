@@ -50,16 +50,12 @@ public class Board implements Runnable {
         width = BOARD_WIDTH;
         height = BOARD_HEIGHT;
         paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
-
         spawnedPowerUps = new ArrayList<>();
         activatedPowerUps = new ArrayList<>();
         maintainedPowerUps = new ArrayList<>();
-
-
         paddles = new ArrayList<>();
         obstacles = new ArrayList<>();
         toRemove = new HashSet<>();
-
         isPaused = false;
         gameWinner = "Ongoing";
         hasEnded = false;
@@ -106,6 +102,72 @@ public class Board implements Runnable {
         obstacles.add(lowerWall);
         obstacles.add(upperWall);
     }
+
+    public Board(BoardState state){
+        settings = state.getSettings();
+        backgroundColor = settings.getBackgroundColor();
+        hasPowerUps = state.hasPowerUps();
+
+        width = BOARD_WIDTH;
+        height = BOARD_HEIGHT;
+        paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
+        spawnedPowerUps = new ArrayList<>();
+        activatedPowerUps = new ArrayList<>();
+        maintainedPowerUps = new ArrayList<>();
+        paddles = new ArrayList<>();
+        obstacles = new ArrayList<>();
+        toRemove = new HashSet<>();
+        isPaused = false;
+        gameWinner = "Ongoing";
+        hasEnded = false;
+
+        LineSegment wallSegment =  new LineSegment(new Point(0,0), new Point(width,0));
+        lowerWall = new Wall(CollisionTypes.LOWER,wallSegment);
+
+        wallSegment = new LineSegment(new Point(0,height),new Point(width,height));
+        upperWall = new Wall(CollisionTypes.UPPER,wallSegment);
+
+        leftPaddleMovementPath = new LineSegment(
+                new Point(paddleDistanceFromTheEdge,0),
+                new Point(paddleDistanceFromTheEdge,height)
+        );
+        rightPaddleMovementPath = new LineSegment(
+                new Point(width-paddleDistanceFromTheEdge,0),
+                new Point(width-paddleDistanceFromTheEdge,height)
+        );
+
+        BoardState.PaddleState leftPaddleState = state.getLeftPaddleState();
+        leftPaddle = new Paddle(leftPaddleState.getLocation(),leftPaddleState.getWidth(),leftPaddleState.getHeight(),leftPaddleMovementPath,null,CollisionTypes.LEFT ,settings.getPaddle1Color());
+        //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
+        BoardState.BallState ballState = state.getBallState();
+        ball = new Ball(ballState.getLocation(), ballState.getRadius(), ballState.getSpeed(), ballState.getAcceleration(), settings.getBallColor());
+
+        rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
+
+        BoardState.PaddleState rightPaddleState = state.getRightPaddleState();
+        switch (state.getRightPaddleState().getType()){
+            case BEATABLE_AI -> {
+                rightPaddle = new MediumAIPaddle(rightPaddleState.getLocation(), rightPaddleState.getWidth(),rightPaddleState.getHeight(),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
+            }
+            case UNBEATABLE_AI -> {
+                rightPaddle = new UnbeatableAIPaddle(rightPaddleState.getLocation(), rightPaddleState.getWidth(),rightPaddleState.getHeight(),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
+            }
+            case PLAYER -> {
+                rightPaddle = new Paddle(rightPaddleState.getLocation(),rightPaddleState.getWidth(),rightPaddleState.getHeight(),rightPaddleMovementPath,null,CollisionTypes.RIGHT,settings.getPaddle2Color());
+            }
+
+        }
+
+        paddles.add(leftPaddle);
+        paddles.add(rightPaddle);
+
+        obstacles.add(leftPaddle);
+        obstacles.add(rightPaddle);
+        obstacles.add(lowerWall);
+        obstacles.add(upperWall);
+
+    }
+
 
     public List<PowerUp> getActivatedPowerUps(){
         return activatedPowerUps;
@@ -392,22 +454,10 @@ public class Board implements Runnable {
         return settings;
     }
 
-    public void syncCollidables(){
-        this.paddles = new ArrayList<>();
-        paddles.add(rightPaddle);
-        paddles.add(leftPaddle);
-
-        obstacles = new ArrayList<>();
-       obstacles.add(leftPaddle);
-       obstacles.add(rightPaddle);
-       obstacles.add(lowerWall);
-       obstacles.add(upperWall);
-
-        if (rightPaddle instanceof AIPaddle){
-            ((AIPaddle) rightPaddle).setTarget(ball);
-        }
-
+    public boolean isPowerUpsEnabled(){
+        return hasPowerUps;
     }
+
 
     @Override
     public String toString() {

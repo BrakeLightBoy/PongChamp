@@ -17,21 +17,6 @@ public class GsonUtil {
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(Color.class, new ColorSerializer());
             builder.registerTypeAdapter(Color.class, new ColorDeserializer());
-            builder.registerTypeAdapter(Collidable.class, new CollidableSerializer());
-            builder.registerTypeAdapter(Collidable.class, new CollidableDeserializer());
-            builder.registerTypeAdapter(Paddle.class, new PaddleSerializer());
-            builder.registerTypeAdapter(Paddle.class, new PaddleDeserializer());
-            builder.setExclusionStrategies(new ExclusionStrategy() {
-                @Override
-                public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-                    return false;
-                }
-
-                @Override
-                public boolean shouldSkipClass(Class<?> aClass) {
-                    return aClass.isAssignableFrom(PaddleController.class);
-                }
-            });
             gson = builder.create();
         }
         return gson;

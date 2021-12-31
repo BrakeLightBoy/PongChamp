@@ -16,14 +16,12 @@ public class Facade {
     private Board gameBoard;
 
     public Facade() {
-     this.gameBoard = new Board(OpponentType.BEATABLE_AI_PADDLE,false); //todo specify which game mode the user wants
+     this.gameBoard = new Board(OpponentType.BEATABLE_AI_PADDLE,true); //todo specify which game mode the user wants
     }
 
     public Facade(String json){
-        System.out.println(json);
         JsonLoader loader = new JsonLoader();
         this.gameBoard = loader.loadBoard(json);
-        this.gameBoard.syncCollidables();
     }
 
 

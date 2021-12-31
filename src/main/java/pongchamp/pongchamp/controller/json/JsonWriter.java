@@ -2,6 +2,7 @@ package pongchamp.pongchamp.controller.json;
 
 import com.google.gson.Gson;
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.BoardState;
 import pongchamp.pongchamp.model.UserSettings;
 
 public class JsonWriter {
@@ -13,12 +14,8 @@ public class JsonWriter {
     }
     public String writeBoardState(Board board){
 
-        return gson.toJson(board);
+        return gson.toJson(new BoardState(board));
     }
 
-    public static void main(String[] args) {
-        JsonWriter writer = new JsonWriter();
-        System.out.println(writer.writeSettings(new UserSettings()));
-    }
 
 }

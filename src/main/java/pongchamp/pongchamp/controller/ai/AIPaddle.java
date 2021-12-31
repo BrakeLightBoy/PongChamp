@@ -21,6 +21,7 @@ public abstract class AIPaddle extends Paddle implements PaddleController {
 
     }
 
+
     public AIPaddle(Point location, float width, float height, LineSegment movementPath, CollisionTypes paddleType, Ball target, Color paddleColor) {
         super(location, width, height, movementPath, null, paddleType, paddleColor);
         this.target = target;
