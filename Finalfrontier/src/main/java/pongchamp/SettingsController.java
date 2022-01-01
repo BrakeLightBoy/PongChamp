@@ -61,7 +61,7 @@ public class SettingsController extends MainController implements Initializable 
 
     @FXML
     public void playHit(ActionEvent event) {
-        String path = "/Users/umair/Desktop/merge test/Finalfrontier/src/main/resources/com/example/Sounds/Celebration by Kool and the Gang with.mp3";
+        String path = "src/main/resources/pongchamp/Sounds/Celebration by Kool and the Gang with.mp3";
         Media media = new Media(new File(path).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();

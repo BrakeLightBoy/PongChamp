@@ -9,7 +9,7 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
 public class SoundEffects {
-// to be implemented in back-end again due to new changes, button functionality is currently off
+// to be implemented in back-end again due to new changes
     @FXML
     ToggleButton sound;
     @FXML
@@ -37,7 +37,6 @@ public class SoundEffects {
         String path = "src/main/resources/pongchamp/pongchamp/Sounds/untitled4.mp3";
         clip = new AudioClip(new File(path).toURI().toString());
         clip.play();
-
 
     }
 
