@@ -9,7 +9,7 @@ module Pongchamp {
 
     requires java.desktop;
     requires javafx.media;
-    opens com.example.finalfrontier to javafx.fxml;
-    exports com.example.finalfrontier;
+    opens pongchamp to javafx.fxml;
+    exports pongchamp;
 }
 
