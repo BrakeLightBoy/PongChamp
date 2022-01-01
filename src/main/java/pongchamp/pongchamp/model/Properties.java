@@ -9,7 +9,7 @@ public class Properties {
     public static final float BOARD_HEIGHT = 700;
 
     public static final int BALL_RADIUS = 10;
-    public static final int POWER_UP_RADIUS = 200;
+    public static final int POWER_UP_RADIUS = 50;
 
     //Friction system needs to be discussed further.
     public static final float FRICTION = 0.8f;
@@ -22,7 +22,13 @@ public class Properties {
 
     public static final int MAXNUMBEROFPOWERUPS = 3;
 
+    public static final double POWERUPSPAWNTHRESHOLD = 0.99;
+
+    public static final int MATCHPOINT = 5;
+
     public static final Color FONT_COLOR = Color.WHITE;
     public static final Font FONT_SIZE = Font.font(25);
+
+
 
 }

@@ -189,11 +189,13 @@ public class Board implements Runnable {
     private void handleSpawnedPowers(){
         for (int i = 0; i<spawnedPowerUps.size();i++){
             if (spawnedPowerUps.get(i).decay()){
+                freeSpawningSpace(spawnedPowerUps.get(i).getLocation());
                 toRemove.add(spawnedPowerUps.get(i));
             }
 
             if(spawnedPowerUps.get(i).checkIfCollected(ball) && !toRemove.contains(spawnedPowerUps.get(i))){
                 spawnedPowerUps.get(i).onCollect();
+                freeSpawningSpace(spawnedPowerUps.get(i).getLocation());
                 toRemove.add(spawnedPowerUps.get(i));
             }
         }
@@ -221,7 +223,7 @@ public class Board implements Runnable {
     }
 
     public void checkScore() {
-        if(!(this.getLeftScore() == 1 || this.getRightScore() == 1)) {
+        if(!(this.getLeftScore() == MATCHPOINT || this.getRightScore() == MATCHPOINT)) {
             if (ball.getLocation().getX() < 0) {
 
                 rightGoal();
@@ -232,7 +234,7 @@ public class Board implements Runnable {
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
                 newRound();
             }
-        } else if(getLeftScore() == 1){
+        } else if(getLeftScore() == MATCHPOINT){
             gameWinner = "Player 1";
             endGame();
         } else {
@@ -260,6 +262,7 @@ public class Board implements Runnable {
         ball.getLocation().setX(BOARD_WIDTH/2);
         ball.getLocation().setY(BOARD_HEIGHT/2);
 
+        purgeAllSpawningSpaces();
 
         reRollSpeed();
 
