@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.SettingsController">
+   <center>
+      <AnchorPane prefHeight="811.0" prefWidth="1358.0" styleClass="backdrop" stylesheets="@CSS/style.css">
+         <children>
+            <Pane fx:id="slider" prefHeight="780.0" prefWidth="357.0" styleClass="backdrop" stylesheets="@CSS/style.css">
+               <children>
+                  <VBox prefHeight="787.0" prefWidth="366.0">
+                     <children>
+                        <Button mnemonicParsing="false" onMouseClicked="#gameMode" prefHeight="279.0" prefWidth="278.0" styleClass="play" stylesheets="@CSS/style.css" />
+                        <Button mnemonicParsing="false" onMouseClicked="#settingsPage" prefHeight="290.0" prefWidth="285.0" styleClass="settings" stylesheets="@CSS/style.css" />
+                        <Button mnemonicParsing="false" onAction="#exitPage" prefHeight="270.0" prefWidth="279.0" styleClass="exit" stylesheets="@CSS/style.css" />
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <ToggleButton fx:id="musicB" layoutX="398.0" layoutY="49.0" mnemonicParsing="false" onAction="#playHit" prefHeight="180.0" prefWidth="184.0" styleClass="music" stylesheets="@CSS/style.css" />
+            <Slider fx:id="volumeSlider" layoutX="564.0" layoutY="124.0" />
+            <ColorPicker fx:id="ballColour" layoutX="934.0" layoutY="126.0" onAction="#handleColourPicker" />
+            <Rectangle fx:id="paddle1Preview" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="180.0" layoutX="867.0" layoutY="273.0" stroke="BLACK" strokeType="INSIDE" width="41.0" />
+            <ColorPicker fx:id="paddle1Colour" layoutX="917.0" layoutY="273.0" onAction="#handleColourPicker" />
+            <Circle fx:id="ballPreview" fill="WHITE" layoutX="888.0" layoutY="140.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" />
+            <Rectangle fx:id="paddle2Preview" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="180.0" layoutX="868.0" layoutY="497.0" stroke="BLACK" strokeType="INSIDE" width="41.0" />
+            <ColorPicker fx:id="paddle2Colour" layoutX="915.0" layoutY="498.0" onAction="#handleColourPicker" />
+            <Text layoutX="854.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ball Colour" wrappingWidth="66.421875" />
+            <Text layoutX="841.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paddle1 Colour" />
+            <Text layoutX="840.0" layoutY="484.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Paddle2 Colour" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
