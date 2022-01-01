@@ -116,3 +116,7 @@
 .backdrop{
     -fx-background-image: url("../Images/background.PNG");
 }
+
+#InfoCard{
+    -fx-background-color: #282a36;
+}
