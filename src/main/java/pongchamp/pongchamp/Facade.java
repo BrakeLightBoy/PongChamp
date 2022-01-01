@@ -202,5 +202,9 @@ public class Facade {
         return  strMinutes+":"+strSecondsLeftover;
     }
 
+    public GameModes getGameMode(){
+        return gameBoard.getGameMode();
+    }
+
 
 }

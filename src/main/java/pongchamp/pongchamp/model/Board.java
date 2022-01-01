@@ -36,6 +36,8 @@ public class Board implements Runnable {
     private final Point[] powerPoints;
     private final boolean[] takenPoints;
 
+    private GameModes gameMode;
+
 
     private float time;
 
@@ -50,6 +52,7 @@ public class Board implements Runnable {
     public Board(GameModes gameMode, Boolean hasPowerUps) {
         time = 0;
         this.settings = new UserSettings();
+        this.gameMode = gameMode;
 
         powerPoints = new Point[]{ new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .25f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .25f)};
         takenPoints = new boolean[]{false, false, false, false};
@@ -220,6 +223,10 @@ public class Board implements Runnable {
             maintainedPowerUps.remove(remPowerUp);
         }
         toRemove.clear();
+    }
+
+    public GameModes getGameMode() {
+        return gameMode;
     }
 
     public void checkScore() {

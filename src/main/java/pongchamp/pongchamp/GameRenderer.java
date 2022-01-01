@@ -120,7 +120,8 @@ public class GameRenderer extends Application{
         });
 
         facade.setLeftPaddleController(leftKeyHandler);
-        facade.setRightPaddleController(rightKeyHandler);
+        if (facade.getGameMode() == GameModes.V_1)
+            facade.setRightPaddleController(rightKeyHandler);
 
         stage.setScene(scene);
         stage.show();
