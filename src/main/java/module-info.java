@@ -9,6 +9,7 @@ module Pongchamp {
 
     requires java.desktop;
     requires javafx.media;
+    requires com.google.gson;
     opens pongchamp.pongchamp to javafx.fxml;
     exports pongchamp.pongchamp;
 }

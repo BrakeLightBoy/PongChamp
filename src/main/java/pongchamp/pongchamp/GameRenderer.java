@@ -31,13 +31,14 @@ public class GameRenderer extends Application{
     private Facade facade;
     private Button gameRestart,gameExit,gameResume;
     private List<Button> buttons = new ArrayList<>();
-    GameModeStarter gameModeStarter;
+//    GameModeStarter gameModeStarter;
+    MainController mainController;
     GameModes chosenGameMode;
 
-    public GameRenderer(GameModeStarter gameModeStarter,GameModes gameMode,boolean withPowerUps){
+    public GameRenderer(GameModes gameMode,boolean withPowerUps, MainController mainController){
         facade = new Facade(gameMode, withPowerUps);
-        this.gameModeStarter = gameModeStarter;
         this.chosenGameMode = gameMode;
+        this.mainController = mainController;
     }
 
     public void start(Stage stage) {
@@ -221,7 +222,7 @@ public class GameRenderer extends Application{
     }
 
     private void exitGame(Stage stage) throws Exception{
-        gameModeStarter.start(stage);
+        mainController.startMode();
     }
 
     private void run(GraphicsContext gc) {
