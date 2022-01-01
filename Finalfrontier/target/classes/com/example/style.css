@@ -19,8 +19,6 @@
 
 }
 
-
-
 .exit {
     -fx-background-image: url("Images/EX.PNG");
     -fx-background-radius: 200;
@@ -115,4 +113,8 @@
 }
 .backdrop{
     -fx-background-image: url("Images/background.PNG");
+}
+
+#InfoCard{
+    -fx-background-color: #282a36;
 }

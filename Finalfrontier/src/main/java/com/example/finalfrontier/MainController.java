@@ -26,6 +26,10 @@ public class MainController {
     }
 
     public void gameMode(MouseEvent mouseEvent) {
+        loadPage("GameModeSelection");
+    }
+
+    public void Start1v1Local(MouseEvent mouseEvent) {
         loadPage("Game");
     }
 
