@@ -1,7 +1,10 @@
 package pongchamp.pongchamp.model;
 
 
+import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.LineSegment;
+import static pongchamp.pongchamp.model.ObstactleTypes.*;
+import static pongchamp.pongchamp.model.CollisionTypes.*;
 
 public class Wall implements Collidable {
     private final CollisionTypes wallType;
@@ -11,7 +14,7 @@ public class Wall implements Collidable {
 
     public Wall(CollisionTypes wallType, LineSegment wallLine) {
 
-        if (! (wallType == CollisionTypes.RIGHT || wallType == CollisionTypes.LEFT || wallType == CollisionTypes.UPPER || wallType == CollisionTypes.LOWER) ){
+        if (! (wallType == RIGHT || wallType == LEFT || wallType == UPPER || wallType == LOWER) ){
                 throw new IllegalArgumentException("invalid wall type");
         }
         this.wallType = wallType;

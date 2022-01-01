@@ -1,10 +1,16 @@
 package pongchamp.pongchamp.model.entities;
 
-import pongchamp.pongchamp.model.*;
-import pongchamp.pongchamp.model.math.Vector;
 import javafx.scene.paint.Color;
+import pongchamp.pongchamp.model.*;
+import pongchamp.pongchamp.model.math.Point;
+import pongchamp.pongchamp.model.math.Vector;
+
+import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
+import pongchamp.pongchamp.model.math.Vector;
+import static pongchamp.pongchamp.model.ObstactleTypes.*;
+import static pongchamp.pongchamp.model.CollisionTypes.*;
 
 import java.util.ArrayList;
 
@@ -15,13 +21,13 @@ public class Ball extends Entity {
     private Boolean isVisible;
     Color ballColor;
 
-    public Ball(Point location, int radius, Vector speed, Vector acceleration) {
+    public Ball(Point location, int radius, Vector speed, Vector acceleration,Color ballColor) {
         super(location);
         isVisible=true;
         this.radius = radius;
         this.speed = speed;
         this.acceleration = acceleration;
-        ballColor = Color.WHITE;
+        this.ballColor = ballColor;
     }
 
     public void speedUp(float xSpeed,float ySpeed){
@@ -70,67 +76,67 @@ public class Ball extends Entity {
         switch (wall.getWallType()){
             case RIGHT:
                 if (getLocation().getX()+getRadius()>=wallLine.getStartPoint().getX()){
-                    return new Collision(CollisionTypes.RIGHT, ObstactleTypes.WALL);
+                    return new Collision(RIGHT,WALL);
                 }
                 break;
             case LEFT:
                 if (getLocation().getX()- getRadius()<=wallLine.getStartPoint().getX()){
-                    return new Collision(CollisionTypes.LEFT, ObstactleTypes.WALL);
+                    return new Collision(LEFT,WALL);
                 }
                 break;
             case UPPER:
                 if (getLocation().getY()+getRadius()>=wallLine.getStartPoint().getY()){
-                    return new Collision(CollisionTypes.LOWER, ObstactleTypes.WALL);
+                    return new Collision(LOWER,WALL);
                 }
                 break;
             case LOWER:
                 if (getLocation().getY()- getRadius()<=wallLine.getStartPoint().getY()){
-                    return new Collision(CollisionTypes.UPPER, ObstactleTypes.WALL);
+                    return new Collision(UPPER,WALL);
                 }
                 break;
         }
-        return new Collision(CollisionTypes.NONE, ObstactleTypes.WALL);
+        return new Collision(NONE,WALL);
     }
 
     public Collision checkCollision(Paddle paddle){
         HitBox.hitBoxCollision collidedPart = paddle.paddleHitBox.checkBallIntersect(this);
 
         if (collidedPart == HitBox.hitBoxCollision.NONE){
-            return new Collision(CollisionTypes.NONE, ObstactleTypes.PADDLE);
+            return new Collision(NONE,PADDLE);
         }
 
         CollisionTypes collisionType;
         if (collidedPart == HitBox.hitBoxCollision.VERTICAL) {
-            if (paddle.paddleType == CollisionTypes.LEFT) {
-                collisionType = CollisionTypes.LEFT;
+            if (paddle.paddleType == LEFT) {
+                collisionType = LEFT;
             }
             else {
-                collisionType = CollisionTypes.RIGHT;
+                collisionType = RIGHT;
             }
         }
         else if (collidedPart == HitBox.hitBoxCollision.HORIZONTAL) {
             if (location.getY()< paddle.location.getY()){
-                collisionType = CollisionTypes.LOWER;
+                collisionType = LOWER;
             }
             else {
-                collisionType = CollisionTypes.UPPER;
+                collisionType = UPPER;
             }
         }
         else {
-            if ( (location.getY()< paddle.location.getY() && paddle.paddleType == CollisionTypes.LEFT) ){
-                collisionType = CollisionTypes.LEFT_LOWER;
+            if ( (location.getY()< paddle.location.getY() && paddle.paddleType == LEFT) ){
+                collisionType = LEFT_LOWER;
             }
-            else if ( (location.getY()< paddle.location.getY() && paddle.paddleType == CollisionTypes.RIGHT) ){
-                collisionType = CollisionTypes.RIGHT_LOWER;
+            else if ( (location.getY()< paddle.location.getY() && paddle.paddleType == RIGHT) ){
+                collisionType = RIGHT_LOWER;
             }
-            else if ( (paddle.paddleType == CollisionTypes.RIGHT) ){
-                collisionType = CollisionTypes.RIGHT_UPPER;
+            else if ( (paddle.paddleType == RIGHT) ){
+                collisionType = RIGHT_UPPER;
             }
             else {
-                collisionType = CollisionTypes.LEFT_UPPER;
+                collisionType = LEFT_UPPER;
             }
         }
-        return new Collision(collisionType, ObstactleTypes.PADDLE);
+        return new Collision(collisionType,PADDLE);
     }
 
 
@@ -215,8 +221,8 @@ public class Ball extends Entity {
         this.radius = radius;
     }
 
-    public void setBallColor(Color ballColor){
-        this.ballColor = ballColor;
+    public void setBallColor(Color newBallColor){
+        this.ballColor = newBallColor;
     }
 
     public Color getBallColor(){

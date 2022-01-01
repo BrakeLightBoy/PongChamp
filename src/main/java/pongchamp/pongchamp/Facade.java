@@ -1,9 +1,9 @@
 package pongchamp.pongchamp;
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.UserSettings;
-import javafx.scene.paint.Color;
-import pongchamp.pongchamp.model.OpponentType;
+import pongchamp.pongchamp.model.GameModes;
+import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 import pongchamp.pongchamp.model.math.Point;
 
@@ -11,14 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-
 public class Facade {
-    private Board gameBoard;
-    private UserSettings settings;
+    private final Board gameBoard;
 
-    public Facade() {
-        this.gameBoard = new Board(OpponentType.BEATABLE_AI_PADDLE,false); //todo specify which game mode the user wants
-        this.settings = gameBoard.getSettings();
+    public Facade(GameModes gameMode, boolean withPowerUps) {
+        this.gameBoard = new Board(gameMode,withPowerUps); //todo specify which game mode the user wants
     }
 
 
@@ -142,7 +139,6 @@ public class Facade {
 
     public void pauseGame(){
         gameBoard.setPaused(true);
-        setBallVisibility(false);
     }
 
     public void endGame(){
@@ -157,6 +153,11 @@ public class Facade {
     public void gameRestart(){
         gameBoard.restartGame();
         resumeGame();
+        gameBoard.setTime(0);
+    }
+
+    public Color getBackgroundColor(){
+        return gameBoard.getBackgroundColor();
     }
 
 
@@ -169,29 +170,37 @@ public class Facade {
         gameBoard.getLeftPaddle().setLocation(new Point(40,450));
     }
 
-    public Color getBallColour(){
-        return settings.getBallColour();
-    }
-
-    public Color getPaddle1Color () {
-        return settings.getPaddle1Color();
+    public Color getPaddle1Color(){
+        return gameBoard.getPaddle1Color();
     }
 
     public Color getPaddle2Color(){
-        return settings.getPaddle2Color();
+        return gameBoard.getPaddle2Color();
     }
 
-    public void setBallColor(Color ballColor){
-        settings.setBallColor(ballColor);
+    public boolean getBallVisibility(){
+        return gameBoard.getBall().getVisibility();
     }
 
-    public void setPaddle1Color(Color paddle1Color) {
-        settings.setPaddle1Color(paddle1Color);
-    }
-    public void setPaddle2Color(Color paddle2Color) {
-        settings.setPaddle2Color(paddle2Color);
-    }
+    public String getTime(){
+        int seconds = (int) gameBoard.getTime();
 
+        int minutes = seconds/60;
+
+        int secondsLeftover = seconds - minutes*60;
+
+        String strMinutes = ""+minutes;
+        String strSecondsLeftover = ""+secondsLeftover;
+
+        if (strMinutes.length() == 1){
+            strMinutes = "0"+strMinutes;
+        }
+        if(strSecondsLeftover.length() == 1){
+            strSecondsLeftover = "0"+strSecondsLeftover;
+        }
+
+        return  strMinutes+":"+strSecondsLeftover;
+    }
 
 
 }

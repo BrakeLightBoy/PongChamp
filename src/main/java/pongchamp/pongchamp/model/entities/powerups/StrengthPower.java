@@ -1,12 +1,15 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.Collision;
 import pongchamp.pongchamp.model.CollisionTypes;
-import pongchamp.pongchamp.model.entities.Paddle;
-import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.entities.Ball;
+import pongchamp.pongchamp.model.entities.Paddle;
 import pongchamp.pongchamp.model.math.Point;
+
+import static pongchamp.pongchamp.model.entities.powerups.Affected.LEFT_PADDLE;
+import static pongchamp.pongchamp.model.entities.powerups.Affected.RIGHT_PADDLE;
 
 public class StrengthPower extends PowerUp{
     public StrengthPower(Board gameBoard, Point location){

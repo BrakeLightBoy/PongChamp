@@ -1,14 +1,14 @@
 package pongchamp.pongchamp.model.entities;
 
 
-import pongchamp.pongchamp.model.CollisionTypes;
-import pongchamp.pongchamp.model.HitBox;
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
-import pongchamp.pongchamp.model.Collidable;
-import pongchamp.pongchamp.model.Properties;
+import pongchamp.pongchamp.model.*;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
+
+import static pongchamp.pongchamp.model.CollisionTypes.*;
 
 public class Paddle extends Entity implements Collidable {
 
@@ -22,8 +22,9 @@ public class Paddle extends Entity implements Collidable {
     protected float height;
     protected HitBox paddleHitBox;
     protected CollisionTypes paddleType;
+    private Color paddleColor;
 
-    public Paddle (Point initialLocation, LineSegment movementPath, CollisionTypes paddleType){
+    public Paddle (Point initialLocation, LineSegment movementPath, CollisionTypes paddleType, Color paddleColor){
         this(initialLocation, defaultPaddleWidth, defaultPaddleHeight, movementPath, new PaddleController() {
             @Override
             public boolean movingUp() {
@@ -34,12 +35,12 @@ public class Paddle extends Entity implements Collidable {
             public boolean movingDown() {
                 return false;
             }
-        }, paddleType);
+        }, paddleType, paddleColor);
     }
 
-    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType) {
+    public Paddle(Point location, float width, float height , LineSegment movementPath, PaddleController paddleController, CollisionTypes paddleType, Color paddleColor) {
         super(location);
-        if (! (paddleType == CollisionTypes.LEFT || paddleType == CollisionTypes.RIGHT) ){
+        if (! (paddleType == LEFT || paddleType == RIGHT) ){
             throw new IllegalArgumentException("Wrong paddle type");
         }
         this.paddleType = paddleType;
@@ -49,6 +50,7 @@ public class Paddle extends Entity implements Collidable {
         this.height = height;
 
         adjustHitBox();
+        this.paddleColor = paddleColor;
     }
 
     private void adjustHitBox(){
@@ -99,5 +101,13 @@ public class Paddle extends Entity implements Collidable {
 
     public void setPlatformSpeed(float platformSpeed) {
         this.platformSpeed = platformSpeed;
+    }
+
+    public Color getPaddleColor() {
+        return paddleColor;
+    }
+
+    public void setPaddleColor(Color newPaddleColor){
+        this.paddleColor = newPaddleColor;
     }
 }

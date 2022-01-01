@@ -1,8 +1,8 @@
 package pongchamp.pongchamp.model;
 
-import pongchamp.pongchamp.model.entities.Ball;
-import pongchamp.pongchamp.model.math.Point;
-import pongchamp.pongchamp.model.math.Vector;
+import pongchamp.pongchamp.model.entities.*;
+import pongchamp.pongchamp.model.math.*;
+
 
 
 public class HitBox {

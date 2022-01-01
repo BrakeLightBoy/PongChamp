@@ -1,8 +1,7 @@
 package pongchamp.pongchamp.model.entities;
 
-import pongchamp.pongchamp.model.Metadata;
 import pongchamp.pongchamp.model.math.Point;
-
+import pongchamp.pongchamp.model.Metadata;
 
 import java.util.Objects;
 import java.util.UUID;

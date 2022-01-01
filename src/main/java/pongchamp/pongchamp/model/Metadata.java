@@ -1,7 +1,7 @@
 package pongchamp.pongchamp.model;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 public class Metadata {
     private final Map<String,Object> map;
@@ -10,7 +10,7 @@ public class Metadata {
         map = new HashMap<>();
     }
 
-    public void put (String key,Object data){
+    public void put(String key,Object data){
         map.put(key,data);
     }
     public Object get(String key){

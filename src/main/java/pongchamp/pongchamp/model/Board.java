@@ -1,53 +1,66 @@
 package pongchamp.pongchamp.model;
-import pongchamp.pongchamp.model.math.Vector;
+
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
-import pongchamp.pongchamp.model.entities.Ball;
-import pongchamp.pongchamp.model.entities.Entity;
-import pongchamp.pongchamp.model.entities.Paddle;
+import pongchamp.pongchamp.model.entities.*;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
-import pongchamp.pongchamp.model.entities.powerups.*;
+import pongchamp.pongchamp.model.math.Vector;
+import static pongchamp.pongchamp.model.Properties.*;
 import pongchamp.pongchamp.model.entities.powerups.*;
 
 import java.util.*;
 
 public class Board implements Runnable {
+    private final UserSettings settings;
 
-    private final float width = Properties.BOARD_WIDTH;
-    private final float height = Properties.BOARD_HEIGHT;
-    private final float paddleDistanceFromTheEdge = Properties.PADDLE_DISTANCE_FROM_THE_EDGE;
-    private boolean hasEnded;
-    private boolean isPaused;
+    private final Color backgroundColor;
+
+    private final float width,height,paddleDistanceFromTheEdge;
+
+    private boolean hasEnded,isPaused;
 
     private final Wall upperWall,lowerWall;
     private final LineSegment leftPaddleMovementPath,rightPaddleMovementPath;
     private Paddle leftPaddle,rightPaddle;
     private String gameWinner;
 
-    private Ball ball;
+    private final Ball ball;
 
-    private List<Entity> gameEntities;
-    private ArrayList<Collidable> obstacles;
-    private List<PowerUp> spawnedPowerUps;
-    private List<PowerUp> activatedPowerUps;
-    private List<PowerUp> maintainedPowerUps;
-    private HashSet<PowerUp> toRemove;
+    private final List<Entity> gameEntities;
+    private final ArrayList<Collidable> obstacles;
+    private final List<PowerUp> spawnedPowerUps,activatedPowerUps,maintainedPowerUps;
+    private final HashSet<PowerUp> toRemove;
 
-    private boolean hasPowerUps;
+    private final Point[] powerPoints;
+    private final boolean[] takenPoints;
 
-    private UserSettings settings;
 
+    private float time;
+
+    private final boolean hasPowerUps;
 
     protected int leftScore, rightScore;
 
+    private Vector initialSpeed;
+
     private Random random = new Random();
 
-    public Board(OpponentType opponentType, Boolean hasPowerUps) {
+    public Board(GameModes gameMode, Boolean hasPowerUps) {
+        time = 0;
         this.settings = new UserSettings();
+
+        powerPoints = new Point[]{ new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .25f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .25f)};
+        takenPoints = new boolean[]{false, false, false, false};
+
+        backgroundColor = settings.getBackgroundColor();
 
         this.hasPowerUps = hasPowerUps;
 
+        width = BOARD_WIDTH;
+        height = BOARD_HEIGHT;
+        paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
 
         spawnedPowerUps = new ArrayList<>();
         activatedPowerUps = new ArrayList<>();
@@ -78,23 +91,23 @@ public class Board implements Runnable {
                 new Point(width-paddleDistanceFromTheEdge,height)
         );
 
+        leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT, settings.getPaddle1Color());
 
-        leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT);
-        //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
-        ball = new Ball(new Point(width/2f,height/2f), Properties.BALL_RADIUS, Properties.INITIAL_SPEED,new Vector(0,0));
+        reRollSpeed();
 
-        rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT);
+        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,initialSpeed,new Vector(0,0),settings.getBallColor());
 
-        switch (opponentType){
+        rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
 
-            case BEATABLE_AI_PADDLE -> {
-                rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
+        switch (gameMode){
+            case V_AI -> {
+                rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
             }
-            case UNBEATABLE_AI_PADDLE -> {
-                rightPaddle = new UnbeatableAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball);
+            case END -> {
+                rightPaddle = new UnbeatableAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
             }
-            case PLAYER -> {
-                rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT);
+            case V_1 -> {
+                rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
             }
         }
 
@@ -125,6 +138,7 @@ public class Board implements Runnable {
 
     @Override
     public void run() {
+        time += MILLISECONDS_PER_TICK/1000f;
 
         if (hasPowerUps) {
             handleActivePowers();
@@ -141,18 +155,6 @@ public class Board implements Runnable {
             spawnPowerUps();
             handleSpawnedPowers();
         }
-
-
-        //todo some rendering whether in this thread or a new one
-        //todo some TPS/FPS syncing
-
-
-        /*try {
-            Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
     }
 
     private void maintainPowerUps(){
@@ -162,7 +164,7 @@ public class Board implements Runnable {
     }
 
     private void spawnPowerUps(){
-        if (spawnedPowerUps.size()< Properties.MAXNUMBEROFPOWERUPS){
+        if (spawnedPowerUps.size()<MAXNUMBEROFPOWERUPS){
             PowerUp newPower = spawnPowerUp();
             if (newPower != null){
                 spawnedPowerUps.add(newPower);
@@ -170,14 +172,30 @@ public class Board implements Runnable {
         }
     }
 
+    private void freeSpawningSpace(Point powerUpPoint){
+        for(int i = 0; i< takenPoints.length; i++){
+            if(powerUpPoint.equals(powerPoints[i])){
+                System.out.println("Before:"+takenPoints[i]);
+                takenPoints[i] = false;
+                System.out.println("After:"+takenPoints[i]);
+            }
+        }
+    }
+
+    private void purgeAllSpawningSpaces(){
+        Arrays.fill(takenPoints, false);
+    }
+
     private void handleSpawnedPowers(){
         for (int i = 0; i<spawnedPowerUps.size();i++){
             if (spawnedPowerUps.get(i).decay()){
+                freeSpawningSpace(spawnedPowerUps.get(i).getLocation());
                 toRemove.add(spawnedPowerUps.get(i));
             }
 
             if(spawnedPowerUps.get(i).checkIfCollected(ball) && !toRemove.contains(spawnedPowerUps.get(i))){
                 spawnedPowerUps.get(i).onCollect();
+                freeSpawningSpace(spawnedPowerUps.get(i).getLocation());
                 toRemove.add(spawnedPowerUps.get(i));
             }
         }
@@ -205,7 +223,7 @@ public class Board implements Runnable {
     }
 
     public void checkScore() {
-        if(!(this.getLeftScore() == 1 || this.getRightScore() == 1)) {
+        if(!(this.getLeftScore() == MATCHPOINT || this.getRightScore() == MATCHPOINT)) {
             if (ball.getLocation().getX() < 0) {
 
                 rightGoal();
@@ -216,7 +234,7 @@ public class Board implements Runnable {
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
                 newRound();
             }
-        } else if(getLeftScore() == 1){
+        } else if(getLeftScore() == MATCHPOINT){
             gameWinner = "Player 1";
             endGame();
         } else {
@@ -225,11 +243,30 @@ public class Board implements Runnable {
         }
     }
 
+    private void reRollSpeed(){
+        float initialX = 7*random.nextInt(2);
+        float initialY = 2*(random.nextInt(8)-4);
+
+        if (initialX == 0){
+            initialX = -7;
+        }
+        if (initialY == 0){
+            initialY = 2;
+        }
+
+        initialSpeed = new Vector(initialX,initialY);
+    }
+
     private void newRound(){
         clearAllPowers();
-        ball.getLocation().setX(Properties.BOARD_WIDTH/2);
-        ball.getLocation().setY(Properties.BOARD_HEIGHT/2);
-        ball.setSpeed(Properties.INITIAL_SPEED);
+        ball.getLocation().setX(BOARD_WIDTH/2);
+        ball.getLocation().setY(BOARD_HEIGHT/2);
+
+        purgeAllSpawningSpaces();
+
+        reRollSpeed();
+
+        ball.setSpeed(initialSpeed);
     }
 
     private void clearAllPowers(){
@@ -251,41 +288,61 @@ public class Board implements Runnable {
     }
 
 
+    private Point randomizeLocation(){
+        int locationIdentifier;
+        for (int i = 0; i<10; i++){
+            locationIdentifier = random.nextInt(4);
+
+
+
+
+//            System.out.println(!takenPoints[locationIdentifier]);
+
+            if (!takenPoints[locationIdentifier]){
+
+                takenPoints[locationIdentifier] = true;
+                return powerPoints[locationIdentifier];
+            }
+        }
+        return null;
+    }
+
+
     private PowerUp spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
 
-        double spawnThreshold = 99;
+        double spawnThreshold = POWERUPSPAWNTHRESHOLD;
 
-        float yRange = (float) Math.random()*(Properties.BOARD_HEIGHT-2* Properties.POWER_UP_RADIUS)+ Properties.POWER_UP_RADIUS;
 
-        float xRange = (float) Math.random()*(Properties.BOARD_WIDTH-(2* Properties.PADDLE_DISTANCE_FROM_THE_EDGE+rightPaddle.getWidth()
-                +leftPaddle.getWidth()+2* Properties.POWER_UP_RADIUS))
-                + Properties.PADDLE_DISTANCE_FROM_THE_EDGE+leftPaddle.getWidth()+ Properties.POWER_UP_RADIUS;
-        Point spawnPoint = new Point(xRange,yRange);
 
-        if (spawnOutcome>= spawnThreshold){
+//        System.out.println(spawnPoint);
+
+        if (spawnOutcome >= spawnThreshold)  {
+
+            Point spawnPoint = randomizeLocation();
             PowerUp spawnedPowerUp;
-            double powerTypeOutcome = Math.random()*100;
+            double powerTypeOutcome = Math.random() * 100;
 
-
-            if (powerTypeOutcome<=10){
-                spawnedPowerUp = new InvisPower(this,spawnPoint);
-                System.out.println("Invisible Power Up Spawned!");
-                //spawn invis power
-            } else if (powerTypeOutcome <= 40){
-                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
-                System.out.println("Elongated Paddle Power Up Spawned!");
-                //spawn elongated paddle
-            } else if (powerTypeOutcome <= 70){
-                spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
-                System.out.println("Random Speed Power Up Spawned!");
-                //spawn random speed power up
-            } else {
-                spawnedPowerUp = new StrengthPower(this,spawnPoint);
-                System.out.println("Strengthened Paddle Power Up Spawned!");
-                //spawn strengthened paddle
+            if ((spawnPoint != null)){
+                if (powerTypeOutcome <= 10) {
+                    spawnedPowerUp = new InvisPower(this, spawnPoint);
+                    System.out.println("Invisible Power Up Spawned!");
+                    //spawn invis power
+                } else if (powerTypeOutcome <= 40) {
+                    spawnedPowerUp = new ElongatePaddlePower(this, spawnPoint);
+                    System.out.println("Elongated Paddle Power Up Spawned!");
+                    //spawn elongated paddle
+                } else if (powerTypeOutcome <= 70) {
+                    spawnedPowerUp = new RandomSpeedPower(this, spawnPoint);
+                    System.out.println("Random Speed Power Up Spawned!");
+                    //spawn random speed power up
+                } else {
+                    spawnedPowerUp = new StrengthPower(this, spawnPoint);
+                    System.out.println("Strengthened Paddle Power Up Spawned!");
+                    //spawn strengthened paddle
+                }
+                return spawnedPowerUp;
             }
-            return spawnedPowerUp;
         }
         return null;
     }
@@ -378,7 +435,27 @@ public class Board implements Runnable {
         return hasEnded;
     }
 
+    public Color getBackgroundColor(){
+        return backgroundColor;
+    }
+
+    public Color getPaddle1Color(){
+        return leftPaddle.getPaddleColor();
+    }
+
+    public Color getPaddle2Color(){
+        return rightPaddle.getPaddleColor();
+    }
+
     public UserSettings getSettings(){
         return settings;
+    }
+
+    public float getTime(){
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
     }
 }

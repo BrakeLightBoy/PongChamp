@@ -1,10 +1,10 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.entities.Entity;
-import javafx.scene.paint.Color;
-import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.math.Point;
 //import pongchamp.pongchamp.model.Collectible;
 
@@ -13,7 +13,7 @@ public abstract class PowerUp extends Entity {
     Board gameBoard;
     Color powerColor;
 
-    public PowerUp(Board gameBoard, Point location, Color powerColor){
+    public PowerUp(Board gameBoard,Point location,Color powerColor){
         super(location);
         this.powerColor = powerColor;
         this.gameBoard = gameBoard;

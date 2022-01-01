@@ -1,10 +1,11 @@
 package pongchamp.pongchamp.controller.ai;
 
+import javafx.scene.paint.Color;
+import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.CollisionTypes;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
-
 
 public class MediumAIPaddle extends AIPaddle{
 
@@ -15,8 +16,8 @@ public class MediumAIPaddle extends AIPaddle{
     private final static double chanceOfNotMovingWithVisibleBall = 0.01;
     private final static double chanceOfNotMovingWithInvisibleBall = 0.75;
 
-    public MediumAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target) {
-        super(location, movementPath, paddleType, target);
+    public MediumAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target, Color paddleColor) {
+        super(location, movementPath, paddleType, target, paddleColor);
     }
 
     @Override

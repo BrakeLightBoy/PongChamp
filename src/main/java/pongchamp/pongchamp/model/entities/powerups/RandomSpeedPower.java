@@ -1,9 +1,10 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.entities.Ball;
-import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.math.Point;
+import pongchamp.pongchamp.model.math.Vector;
 
 import java.util.Random;
 

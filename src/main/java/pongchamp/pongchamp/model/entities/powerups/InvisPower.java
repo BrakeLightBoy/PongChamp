@@ -1,10 +1,12 @@
 package pongchamp.pongchamp.model.entities.powerups;
 
-import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.entities.Ball;
-import pongchamp.pongchamp.model.Properties;
 import javafx.scene.paint.Color;
+import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.Properties;
+import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.math.Point;
+
+import java.awt.*;
 
 public class InvisPower extends PowerUp {
     public InvisPower(Board gameBoard, Point location){
@@ -18,12 +20,10 @@ public class InvisPower extends PowerUp {
 
     public void activate(){
         System.out.println("The ball is invisible! Get recked bruh!");
-        ball.setBallColor(Color.BLACK);
         ball.setVisibility(false);
     }
 
     public void deactivate(){
-        ball.setBallColor(Properties.BALL_DEFAULT_COLOR);
         ball.setVisibility(true);
     }
 }
