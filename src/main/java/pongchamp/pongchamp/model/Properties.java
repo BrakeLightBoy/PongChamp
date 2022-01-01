@@ -22,7 +22,7 @@ public class Properties {
 
     public static final int MAXNUMBEROFPOWERUPS = 3;
 
-    public static final double POWERUPSPAWNTHRESHOLD = 0.99;
+    public static final double POWERUPSPAWNTHRESHOLD = 99;
 
     public static final int MATCHPOINT = 5;
 
