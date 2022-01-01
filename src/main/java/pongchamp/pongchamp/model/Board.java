@@ -33,6 +33,10 @@ public class Board implements Runnable {
     private final List<PowerUp> spawnedPowerUps,activatedPowerUps,maintainedPowerUps;
     private final HashSet<PowerUp> toRemove;
 
+    private final Point[] powerPoints;
+    private final boolean[] takenPoints;
+
+
     private float time;
 
     private final boolean hasPowerUps;
@@ -46,6 +50,9 @@ public class Board implements Runnable {
     public Board(GameModes gameMode, Boolean hasPowerUps) {
         time = 0;
         this.settings = new UserSettings();
+
+        powerPoints = new Point[]{ new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .25f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .25f)};
+        takenPoints = new boolean[]{false, false, false, false};
 
         backgroundColor = settings.getBackgroundColor();
 
@@ -148,18 +155,6 @@ public class Board implements Runnable {
             spawnPowerUps();
             handleSpawnedPowers();
         }
-
-
-        //todo some rendering whether in this thread or a new one
-        //todo some TPS/FPS syncing
-
-
-        /*try {
-            Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
     }
 
     private void maintainPowerUps(){
@@ -175,6 +170,20 @@ public class Board implements Runnable {
                 spawnedPowerUps.add(newPower);
             }
         }
+    }
+
+    private void freeSpawningSpace(Point powerUpPoint){
+        for(int i = 0; i< takenPoints.length; i++){
+            if(powerUpPoint.equals(powerPoints[i])){
+                System.out.println("Before:"+takenPoints[i]);
+                takenPoints[i] = false;
+                System.out.println("After:"+takenPoints[i]);
+            }
+        }
+    }
+
+    private void purgeAllSpawningSpaces(){
+        Arrays.fill(takenPoints, false);
     }
 
     private void handleSpawnedPowers(){
@@ -276,41 +285,61 @@ public class Board implements Runnable {
     }
 
 
+    private Point randomizeLocation(){
+        int locationIdentifier;
+        for (int i = 0; i<10; i++){
+            locationIdentifier = random.nextInt(4);
+
+
+
+
+//            System.out.println(!takenPoints[locationIdentifier]);
+
+            if (!takenPoints[locationIdentifier]){
+
+                takenPoints[locationIdentifier] = true;
+                return powerPoints[locationIdentifier];
+            }
+        }
+        return null;
+    }
+
+
     private PowerUp spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
 
-        double spawnThreshold = 99;
-
-        float yRange = (float) Math.random()*(BOARD_HEIGHT-2*POWER_UP_RADIUS)+POWER_UP_RADIUS;
-
-        float xRange = (float) Math.random()*(BOARD_WIDTH-(2*PADDLE_DISTANCE_FROM_THE_EDGE+rightPaddle.getWidth()
-                +leftPaddle.getWidth()+2*POWER_UP_RADIUS))
-                +PADDLE_DISTANCE_FROM_THE_EDGE+leftPaddle.getWidth()+POWER_UP_RADIUS;
-        Point spawnPoint = new Point(xRange,yRange);
+        double spawnThreshold = POWERUPSPAWNTHRESHOLD;
 
 
-        if (spawnOutcome>= spawnThreshold){
+
+//        System.out.println(spawnPoint);
+
+        if (spawnOutcome >= spawnThreshold)  {
+
+            Point spawnPoint = randomizeLocation();
             PowerUp spawnedPowerUp;
-            double powerTypeOutcome = Math.random()*100;
+            double powerTypeOutcome = Math.random() * 100;
 
-            if (powerTypeOutcome<=10){
-                spawnedPowerUp = new InvisPower(this,spawnPoint);
-                System.out.println("Invisible Power Up Spawned!");
-                //spawn invis power
-            } else if (powerTypeOutcome <= 40){
-                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
-                System.out.println("Elongated Paddle Power Up Spawned!");
-                //spawn elongated paddle
-            } else if (powerTypeOutcome <= 70){
-                spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
-                System.out.println("Random Speed Power Up Spawned!");
-                //spawn random speed power up
-            } else {
-                spawnedPowerUp = new StrengthPower(this,spawnPoint);
-                System.out.println("Strengthened Paddle Power Up Spawned!");
-                //spawn strengthened paddle
+            if ((spawnPoint != null)){
+                if (powerTypeOutcome <= 10) {
+                    spawnedPowerUp = new InvisPower(this, spawnPoint);
+                    System.out.println("Invisible Power Up Spawned!");
+                    //spawn invis power
+                } else if (powerTypeOutcome <= 40) {
+                    spawnedPowerUp = new ElongatePaddlePower(this, spawnPoint);
+                    System.out.println("Elongated Paddle Power Up Spawned!");
+                    //spawn elongated paddle
+                } else if (powerTypeOutcome <= 70) {
+                    spawnedPowerUp = new RandomSpeedPower(this, spawnPoint);
+                    System.out.println("Random Speed Power Up Spawned!");
+                    //spawn random speed power up
+                } else {
+                    spawnedPowerUp = new StrengthPower(this, spawnPoint);
+                    System.out.println("Strengthened Paddle Power Up Spawned!");
+                    //spawn strengthened paddle
+                }
+                return spawnedPowerUp;
             }
-            return spawnedPowerUp;
         }
         return null;
     }

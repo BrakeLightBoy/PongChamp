@@ -31,6 +31,19 @@ public class Point {
     }
 
     @Override
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }
+        else if (o instanceof Point){
+            Point comparedPoint = (Point) o;
+
+            return x == comparedPoint.getX() && y == comparedPoint.getY();
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "X:" + x
                 + "\n" + "Y:" + y;
