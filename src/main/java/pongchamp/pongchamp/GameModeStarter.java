@@ -16,7 +16,7 @@ import pongchamp.pongchamp.model.Properties;
 import java.io.IOException;
 
 
-    public class HelloApplication extends Application {
+    public class GameModeStarter extends Application {
 
         public static void main(String[] args) {
             launch(args);
