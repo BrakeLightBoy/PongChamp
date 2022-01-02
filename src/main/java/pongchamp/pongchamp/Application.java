@@ -12,15 +12,13 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        play();
         Parent root = FXMLLoader.load(getClass().getResource("Start.fxml"));
         Scene scene = new Scene(root);
         stage.setTitle("PONG!");
         stage.setScene(scene);
         stage.show();
     }
-    public void play() {
-    }
+
 
     public static void main(String[] args) {
         launch();

@@ -21,49 +21,17 @@ import static pongchamp.pongchamp.util.FrontendMethods.createButton;
 
 
 public class MainController {
-
-
-
     @FXML
     BorderPane bp;
 
+    @FXML
     Stage stage;
 
+    @FXML
+    RadioButton PowerUpTgl, PowerUpTgl2;
 
     public void startMode() {
-        Stage stage = new Stage();
-        stage.setTitle("PONG");
-
-        double[] gameMode1 = {(double) Properties.BOARD_WIDTH*0.40,(double) Properties.BOARD_HEIGHT*0.52};
-        double[] gameMode2 = {(double) Properties.BOARD_WIDTH*0.50,(double) Properties.BOARD_HEIGHT*0.52};
-        double[] gameMode3 = {(double) Properties.BOARD_WIDTH*0.55,(double) Properties.BOARD_HEIGHT*0.52};
-        double[] powerUpTgl = {(double) Properties.BOARD_WIDTH*0.50,(double) Properties.BOARD_HEIGHT*0.40};
-
-
-
-
-        RadioButton regularToggle = new RadioButton();
-        regularToggle.setText("Regular");
-
-        RadioButton powerUpToggle = FrontendMethods.createRadioButton("powerUpTgl", "With Power ups", true, powerUpTgl);
-
-        Button gameMode1Btn = createButton("btn1", "vs Player", true, gameMode1, e-> {
-            startGameMode(stage, GameModes.V_1,powerUpToggle.isSelected());
-        });
-        Button gameMode2Btn = createButton("btn2", "vs AI", true, gameMode2, e-> {
-            startGameMode(stage, GameModes.V_AI,powerUpToggle.isSelected());
-        });
-        Button gameMode3Btn = createButton("btn3", "Endless", true, gameMode3, e-> {
-            startGameMode(stage, GameModes.END,powerUpToggle.isSelected());
-        });
-
-
-        AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().addAll(gameMode1Btn, gameMode2Btn, gameMode3Btn, powerUpToggle);
-
-        Scene scene = new Scene(anchorPane, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
-        stage.setScene(scene);
-        stage.show();
+        loadPage("Main");
     }
 
     public void gameMode(MouseEvent mouseEvent) {
@@ -71,7 +39,15 @@ public class MainController {
     }
 
     public void Start1v1Local(MouseEvent mouseEvent) {
-        loadPage("Game");
+        startGameMode(stage, GameModes.V_1,PowerUpTgl.isSelected());
+    }
+
+    public void Start1v1AI(MouseEvent mouseEvent) {
+        startGameMode(stage, GameModes.V_AI,PowerUpTgl.isSelected());
+    }
+
+    public void StartEndless(MouseEvent mouseEvent) {
+        startGameMode(stage, GameModes.END, PowerUpTgl2.isSelected());
     }
 
     public void settingsPage(MouseEvent mouseEvent) {
@@ -96,10 +72,11 @@ public class MainController {
             e.printStackTrace();
         }
         bp.setCenter(root);
-
     }
 
     private void startGameMode(Stage stage, GameModes gameMode,boolean hasPowerUps){
+        stage = (Stage) bp.getScene().getWindow();
+        stage.setTitle("PONG");
         GameRenderer gameRenderer = new GameRenderer(gameMode,hasPowerUps, this);
         gameRenderer.start(stage);
     }

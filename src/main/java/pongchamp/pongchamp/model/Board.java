@@ -321,9 +321,6 @@ public class Board implements Runnable {
         double spawnThreshold = POWERUPSPAWNTHRESHOLD;
 
 
-
-//        System.out.println(spawnPoint);
-
         if (spawnOutcome >= spawnThreshold)  {
 
             Point spawnPoint = randomizeLocation();

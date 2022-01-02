@@ -3,6 +3,8 @@ package pongchamp.pongchamp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -94,6 +96,7 @@ public class GameRenderer extends Application{
         buttons.add(gameResume);
         buttons.add(gameRestart);
         buttons.add(gameExit);
+
         anchorPane.getChildren().addAll(gameRestart, gameResume, gameExit);
 
         InGameKeyListener keyListener = new InGameKeyListener();
@@ -223,7 +226,9 @@ public class GameRenderer extends Application{
     }
 
     private void exitGame(Stage stage) throws Exception{
-        mainController.startMode();
+        Parent root = FXMLLoader.load(getClass().getResource("GameModeSelection.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
     }
 
     private void run(GraphicsContext gc) {
