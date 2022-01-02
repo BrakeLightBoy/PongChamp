@@ -1,4 +1,4 @@
-package pongchamp.pongchamp.controller;
+package pongchamp.pongchamp.controller.json;
 
 import com.google.gson.Gson;
 import pongchamp.pongchamp.model.Board;

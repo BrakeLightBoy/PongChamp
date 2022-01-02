@@ -1,4 +1,4 @@
-package pongchamp.pongchamp.controller;
+package pongchamp.pongchamp.controller.json;
 
 import com.google.gson.Gson;
 import pongchamp.pongchamp.model.Board;
@@ -27,10 +27,5 @@ public class JsonWriter {
         System.out.println(json);
     }
 
-    public static void main(String[] args) throws Exception { //this is just for testing stuff
-        JsonWriter writer = new JsonWriter(null);
-        writer.writeBoardState(new Board(GameModes.V_AI,true));
 
-
-    }
 }
