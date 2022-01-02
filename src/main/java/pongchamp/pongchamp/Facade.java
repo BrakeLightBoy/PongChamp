@@ -15,14 +15,13 @@ public class Facade {
     private Board gameBoard;
 
     public Facade() {
-     this.gameBoard = new Board(GameModes.V_AI,true); //todo specify which game mode the user wants
+     this.gameBoard = new Board(GameModes.V_AI,true);
     }
 
     public Facade(String json){
         JsonLoader loader = new JsonLoader();
         this.gameBoard = loader.loadBoard(json);
     }
-
 
     public void updateBoardState(){
         if (!isPaused() && !getGameEnd()){
@@ -181,6 +180,26 @@ public class Facade {
 
     public boolean getBallVisibility(){
         return gameBoard.getBall().getVisibility();
+    }
+
+    public String getTime(){
+        int seconds = (int) gameBoard.getTime();
+
+        int minutes = seconds/60;
+
+        int secondsLeftover = seconds - minutes*60;
+
+        String strMinutes = ""+minutes;
+        String strSecondsLeftover = ""+secondsLeftover;
+
+        if (strMinutes.length() == 1){
+            strMinutes = "0"+strMinutes;
+        }
+        if(strSecondsLeftover.length() == 1){
+            strSecondsLeftover = "0"+strSecondsLeftover;
+        }
+
+        return  strMinutes+":"+strSecondsLeftover;
     }
 
     public String saveBoardState(){
