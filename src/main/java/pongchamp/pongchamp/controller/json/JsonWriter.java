@@ -3,17 +3,15 @@ package pongchamp.pongchamp.controller.json;
 import com.google.gson.Gson;
 import pongchamp.pongchamp.model.Board;
 
-import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.UserSettings;
 
 public class JsonWriter {
 
 
 
-    private String pathToWrite;
 
-    public JsonWriter(String pathToWrite){
-        this.pathToWrite = pathToWrite;
+    public JsonWriter(){
+
     }
 
     public void writeSettings(UserSettings userSettings){

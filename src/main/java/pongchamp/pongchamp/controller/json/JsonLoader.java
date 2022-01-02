@@ -11,15 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class JsonLoader {
-    private String json;
-    public JsonLoader (String path) throws IOException {
-        this.json = Files.readString(Paths.get(path));
-    }
+
+
     public UserSettings loadUserSettings(){
         Gson gson = new Gson();
-       return gson.fromJson(json,UserSettings.class);
+        return null;
     }
-    public Board loadBoard(){
+    public Board loadBoard(String json){
         return null;
     }
 }
