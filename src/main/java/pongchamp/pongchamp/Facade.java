@@ -2,6 +2,7 @@ package pongchamp.pongchamp;
 import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.controller.json.JsonLoader;
+import pongchamp.pongchamp.controller.json.JsonWriter;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
@@ -198,6 +199,16 @@ public class Facade {
 
         return  strMinutes+":"+strSecondsLeftover;
     }
+
+    public String saveBoardState(){
+        JsonWriter writer = new JsonWriter();
+        return writer.writeBoardState(gameBoard);
+    }
+    public String saveUserSettings(){
+        JsonWriter writer = new JsonWriter();
+        return writer.writeSettings(gameBoard.getSettings());
+    }
+
 
     public GameModes getGameMode(){
         return gameBoard.getGameMode();
