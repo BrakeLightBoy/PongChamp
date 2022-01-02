@@ -1,7 +1,6 @@
 package pongchamp.pongchamp.model;
 
 import javafx.scene.paint.Color;
-import pongchamp.pongchamp.controller.ai.AIPaddle;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.entities.*;
@@ -39,9 +38,14 @@ public class Board implements Runnable {
 
     protected int leftScore, rightScore;
 
+    private GameModes gameMode;
 
-    public Board(OpponentType opponentType, Boolean hasPowerUps) {
+
+    public Board(GameModes gameMode, Boolean hasPowerUps) {
         this.settings = new UserSettings();
+
+        this.gameMode = gameMode;
+
 
         backgroundColor = settings.getBackgroundColor();
 
@@ -82,14 +86,14 @@ public class Board implements Runnable {
 
         rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
 
-        switch (opponentType){
-            case BEATABLE_AI_PADDLE -> {
+        switch (gameMode){
+            case V_AI -> {
                 rightPaddle = new MediumAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
             }
-            case UNBEATABLE_AI_PADDLE -> {
+            case END -> {
                 rightPaddle = new UnbeatableAIPaddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,ball,settings.getPaddle2Color());
             }
-            case PLAYER -> {
+            case V_1 -> {
                 rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
             }
         }
@@ -181,6 +185,11 @@ public class Board implements Runnable {
     public Ball getBall() {
         return ball;
     }
+
+    public GameModes getGameMode() {
+        return gameMode;
+    }
+
 
     @Override
     public void run() {

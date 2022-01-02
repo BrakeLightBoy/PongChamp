@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import pongchamp.pongchamp.controller.FXKeyHandler;
 import pongchamp.pongchamp.controller.InGameKeyListener;
 import pongchamp.pongchamp.controller.json.JsonLoader;
+import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.Properties;
 
 import java.util.ArrayList;
@@ -36,7 +37,6 @@ public class GameRenderer extends Application {
 
         facade = new Facade();
 
-        facade = new Facade("{\"settings\":{\"ballColor\":\"0xffffffff\",\"paddle1Color\":\"0xffffffff\",\"paddle2Color\":\"0xffffffff\",\"backgroundColor\":\"0x000000ff\"},\"leftPaddleState\":{\"type\":\"PLAYER\",\"location\":{\"x\":40.0,\"y\":320.0},\"width\":20.0,\"height\":100.0},\"rightPaddleState\":{\"type\":\"BEATABLE_AI\",\"location\":{\"x\":1160.0,\"y\":170.0},\"width\":20.0,\"height\":100.0},\"ballState\":{\"radius\":10,\"speed\":{\"x\":4.0,\"y\":-8.0},\"acceleration\":{\"x\":0.0,\"y\":0.0},\"isVisible\":true,\"location\":{\"x\":216.0,\"y\":46.0}},\"hasPowerUps\":true,\"rightScore\":0,\"leftScore\":0}\n");
     }
 
     public void start(Stage stage) {
@@ -111,38 +111,11 @@ public class GameRenderer extends Application {
             }
         });
         facade.setLeftPaddleController(leftKeyHandler);
-        //facade.setRightPaddleController(rightKeyHandler);
 
+        facade.setRightPaddleController(rightKeyHandler);
+        if (facade.getGameMode() == GameModes.V_1)
+            facade.setRightPaddleController(rightKeyHandler);
 
-
-
-        Thread runlater = new Thread(() ->{
-            try {
-                Thread.sleep(10000);
-
-
-                String setj = facade.saveUserSettings();
-                String bs = facade.saveBoardState();
-
-
-                System.out.println("-----");
-
-                System.out.println(setj);
-                System.out.println(bs);
-
-                System.out.println("-----");
-
-                JsonLoader loader = new JsonLoader();
-                System.out.println(loader.loadBoard(bs));
-                System.out.println(loader.loadUserSettings(setj));
-
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        });
-        runlater.start();
 
         stage.setScene(scene);
         stage.show();

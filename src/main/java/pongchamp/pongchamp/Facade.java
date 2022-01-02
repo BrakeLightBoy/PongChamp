@@ -4,9 +4,8 @@ import pongchamp.pongchamp.controller.json.JsonLoader;
 import pongchamp.pongchamp.controller.json.JsonWriter;
 import pongchamp.pongchamp.controller.PaddleController;
 import pongchamp.pongchamp.model.Board;
-import pongchamp.pongchamp.model.OpponentType;
+import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
-import pongchamp.pongchamp.model.math.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +15,7 @@ public class Facade {
     private Board gameBoard;
 
     public Facade() {
-     this.gameBoard = new Board(OpponentType.BEATABLE_AI_PADDLE,true); //todo specify which game mode the user wants
+     this.gameBoard = new Board(GameModes.V_AI,true); //todo specify which game mode the user wants
     }
 
     public Facade(String json){
@@ -192,4 +191,9 @@ public class Facade {
         JsonWriter writer = new JsonWriter();
         return writer.writeSettings(gameBoard.getSettings());
     }
+
+    public GameModes getGameMode(){
+        return gameBoard.getGameMode();
+    }
+
 }
