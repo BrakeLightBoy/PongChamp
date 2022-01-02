@@ -1,23 +1,23 @@
 package pongchamp.pongchamp.controller.json;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import javafx.scene.paint.Color;
 import pongchamp.pongchamp.model.Board;
+import pongchamp.pongchamp.model.BoardState;
+import pongchamp.pongchamp.model.Collidable;
 import pongchamp.pongchamp.model.UserSettings;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class JsonLoader {
 
+    private final Gson gson = GsonUtil.getGson();
 
-    public UserSettings loadUserSettings(){
-        Gson gson = new Gson();
-        return null;
+    public UserSettings loadUserSettings(String json){
+        return gson.fromJson(json,UserSettings.class);
     }
     public Board loadBoard(String json){
-        return null;
+        BoardState boardState =  gson.fromJson(json,BoardState.class);
+        return new Board(boardState);
     }
 }

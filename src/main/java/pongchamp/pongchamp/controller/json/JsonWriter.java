@@ -2,27 +2,19 @@ package pongchamp.pongchamp.controller.json;
 
 import com.google.gson.Gson;
 import pongchamp.pongchamp.model.Board;
-
+import pongchamp.pongchamp.model.BoardState;
 import pongchamp.pongchamp.model.UserSettings;
 
 public class JsonWriter {
 
+    private final Gson gson = GsonUtil.getGson();
 
-
-
-    public JsonWriter(){
-
+    public String writeSettings(UserSettings userSettings){
+        return gson.toJson(userSettings);
     }
+    public String writeBoardState(Board board){
 
-    public void writeSettings(UserSettings userSettings){
-        Gson gson = new Gson();
-        String json = gson.toJson(userSettings);
-        System.out.println(json); //todo write to actual file somewhere
-    }
-    public void writeBoardState(Board board){
-        Gson gson = new Gson();
-        String json = gson.toJson(board);
-        System.out.println(json);
+        return gson.toJson(new BoardState(board));
     }
 
 
