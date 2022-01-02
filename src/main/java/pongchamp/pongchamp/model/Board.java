@@ -8,12 +8,13 @@ import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
 import pongchamp.pongchamp.model.math.Vector;
 import static pongchamp.pongchamp.model.Properties.*;
+import static pongchamp.pongchamp.model.Properties.MILLISECONDS_PER_TICK;
+
 import pongchamp.pongchamp.model.entities.powerups.*;
 
 import java.util.*;
 
 public class Board implements Runnable {
-
     private final UserSettings settings;
 
     private final Color backgroundColor;
@@ -29,10 +30,15 @@ public class Board implements Runnable {
 
     private final Ball ball;
 
-    private List<Paddle> paddles;
+    private List<Entity> gameEntities;
     private ArrayList<Collidable> obstacles;
     private final List<PowerUp> spawnedPowerUps,activatedPowerUps,maintainedPowerUps;
     private final HashSet<PowerUp> toRemove;
+
+    private final Point[] powerPoints;
+    private final boolean[] takenPoints;
+
+    private float time;
 
     private final boolean hasPowerUps;
 
@@ -40,12 +46,18 @@ public class Board implements Runnable {
 
     private GameModes gameMode;
 
+    private Vector initialSpeed;
+
+    private Random random = new Random();
 
     public Board(GameModes gameMode, Boolean hasPowerUps) {
+        time = 0;
         this.settings = new UserSettings();
 
         this.gameMode = gameMode;
 
+        powerPoints = new Point[]{ new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .25f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .25f)};
+        takenPoints = new boolean[]{false, false, false, false};
 
         backgroundColor = settings.getBackgroundColor();
 
@@ -54,12 +66,15 @@ public class Board implements Runnable {
         width = BOARD_WIDTH;
         height = BOARD_HEIGHT;
         paddleDistanceFromTheEdge = PADDLE_DISTANCE_FROM_THE_EDGE;
+
         spawnedPowerUps = new ArrayList<>();
         activatedPowerUps = new ArrayList<>();
         maintainedPowerUps = new ArrayList<>();
-        paddles = new ArrayList<>();
+
+        gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
         toRemove = new HashSet<>();
+
         isPaused = false;
         gameWinner = "Ongoing";
         hasEnded = false;
@@ -81,8 +96,10 @@ public class Board implements Runnable {
         );
 
         leftPaddle = new Paddle(new Point(40,450),leftPaddleMovementPath,CollisionTypes.LEFT, settings.getPaddle1Color());
-        //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
-        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,INITIAL_SPEED,new Vector(0,0),settings.getBallColor());
+
+        reRollSpeed();
+
+        ball = new Ball(new Point(width/2f,height/2f),BALL_RADIUS,initialSpeed,new Vector(0,0),settings.getBallColor());
 
         rightPaddle = new Paddle(new Point(1160,450),rightPaddleMovementPath,CollisionTypes.RIGHT,settings.getPaddle2Color());
 
@@ -98,8 +115,8 @@ public class Board implements Runnable {
             }
         }
 
-        paddles.add(leftPaddle);
-        paddles.add(rightPaddle);
+        gameEntities.add(leftPaddle);
+        gameEntities.add(rightPaddle);
 
         obstacles.add(leftPaddle);
         obstacles.add(rightPaddle);
@@ -110,7 +127,10 @@ public class Board implements Runnable {
     public Board(BoardState state){
         settings = state.getSettings();
         backgroundColor = settings.getBackgroundColor();
-        hasPowerUps = state.hasPowerUps();
+        hasPowerUps = state.hasPowerUps(); //should always be false at this moment
+
+        powerPoints = new Point[]{ new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .25f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .25f)};
+        takenPoints = new boolean[]{false, false, false, false};
 
         width = BOARD_WIDTH;
         height = BOARD_HEIGHT;
@@ -118,7 +138,7 @@ public class Board implements Runnable {
         spawnedPowerUps = new ArrayList<>();
         activatedPowerUps = new ArrayList<>();
         maintainedPowerUps = new ArrayList<>();
-        paddles = new ArrayList<>();
+        gameEntities = new ArrayList<>();
         obstacles = new ArrayList<>();
         toRemove = new HashSet<>();
         isPaused = false;
@@ -162,8 +182,8 @@ public class Board implements Runnable {
 
         }
 
-        paddles.add(leftPaddle);
-        paddles.add(rightPaddle);
+        gameEntities.add(leftPaddle);
+        gameEntities.add(rightPaddle);
 
         obstacles.add(leftPaddle);
         obstacles.add(rightPaddle);
@@ -171,7 +191,6 @@ public class Board implements Runnable {
         obstacles.add(upperWall);
 
     }
-
 
     public List<PowerUp> getActivatedPowerUps(){
         return activatedPowerUps;
@@ -193,15 +212,15 @@ public class Board implements Runnable {
 
     @Override
     public void run() {
+        time += MILLISECONDS_PER_TICK/1000f;
 
         if (hasPowerUps) {
             handleActivePowers();
             maintainPowerUps();
         }
-        for (Entity entity : paddles) {
+        for (Entity entity : gameEntities) {
             entity.tick();
         }
-
         ball.tick(obstacles);
 
         checkScore();
@@ -210,18 +229,6 @@ public class Board implements Runnable {
             spawnPowerUps();
             handleSpawnedPowers();
         }
-
-
-        //todo some rendering whether in this thread or a new one
-        //todo some TPS/FPS syncing
-
-
-        /*try {
-            Thread.sleep(10); //this is doing the tps syncing for now, but that's not how it's supposed to be done in the end
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-
     }
 
     private void maintainPowerUps(){
@@ -239,14 +246,30 @@ public class Board implements Runnable {
         }
     }
 
+    private void freeSpawningSpace(Point powerUpPoint){
+        for(int i = 0; i< takenPoints.length; i++){
+            if(powerUpPoint.equals(powerPoints[i])){
+                System.out.println("Before:"+takenPoints[i]);
+                takenPoints[i] = false;
+                System.out.println("After:"+takenPoints[i]);
+            }
+        }
+    }
+
+    private void purgeAllSpawningSpaces(){
+        Arrays.fill(takenPoints, false);
+    }
+
     private void handleSpawnedPowers(){
         for (int i = 0; i<spawnedPowerUps.size();i++){
             if (spawnedPowerUps.get(i).decay()){
+                freeSpawningSpace(spawnedPowerUps.get(i).getLocation());
                 toRemove.add(spawnedPowerUps.get(i));
             }
 
             if(spawnedPowerUps.get(i).checkIfCollected(ball) && !toRemove.contains(spawnedPowerUps.get(i))){
                 spawnedPowerUps.get(i).onCollect();
+                freeSpawningSpace(spawnedPowerUps.get(i).getLocation());
                 toRemove.add(spawnedPowerUps.get(i));
             }
         }
@@ -274,7 +297,7 @@ public class Board implements Runnable {
     }
 
     public void checkScore() {
-        if(!(this.getLeftScore() == 1 || this.getRightScore() == 1)) {
+        if(!(this.getLeftScore() == MATCHPOINT || this.getRightScore() == MATCHPOINT)) {
             if (ball.getLocation().getX() < 0) {
 
                 rightGoal();
@@ -285,7 +308,7 @@ public class Board implements Runnable {
                 System.out.println(this.getLeftScore() + " : " + this.getRightScore());
                 newRound();
             }
-        } else if(getLeftScore() == 1){
+        } else if(getLeftScore() == MATCHPOINT){
             gameWinner = "Player 1";
             endGame();
         } else {
@@ -294,11 +317,30 @@ public class Board implements Runnable {
         }
     }
 
+    private void reRollSpeed(){
+        float initialX = 7*random.nextInt(2);
+        float initialY = 2*(random.nextInt(8)-4);
+
+        if (initialX == 0){
+            initialX = -7;
+        }
+        if (initialY == 0){
+            initialY = 2;
+        }
+
+        initialSpeed = new Vector(initialX,initialY);
+    }
+
     private void newRound(){
         clearAllPowers();
         ball.getLocation().setX(BOARD_WIDTH/2);
         ball.getLocation().setY(BOARD_HEIGHT/2);
-        ball.setSpeed(INITIAL_SPEED);
+
+        purgeAllSpawningSpaces();
+
+        reRollSpeed();
+
+        ball.setSpeed(initialSpeed);
     }
 
     private void clearAllPowers(){
@@ -320,41 +362,61 @@ public class Board implements Runnable {
     }
 
 
+    private Point randomizeLocation(){
+        int locationIdentifier;
+        for (int i = 0; i<10; i++){
+            locationIdentifier = random.nextInt(4);
+
+
+
+
+//            System.out.println(!takenPoints[locationIdentifier]);
+
+            if (!takenPoints[locationIdentifier]){
+
+                takenPoints[locationIdentifier] = true;
+                return powerPoints[locationIdentifier];
+            }
+        }
+        return null;
+    }
+
+
     private PowerUp spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
 
-        double spawnThreshold = 99;
+        double spawnThreshold = POWERUPSPAWNTHRESHOLD;
 
-        float yRange = (float) Math.random()*(BOARD_HEIGHT-2*POWER_UP_RADIUS)+POWER_UP_RADIUS;
 
-        float xRange = (float) Math.random()*(BOARD_WIDTH-(2*PADDLE_DISTANCE_FROM_THE_EDGE+rightPaddle.getWidth()
-                +leftPaddle.getWidth()+2*POWER_UP_RADIUS))
-                +PADDLE_DISTANCE_FROM_THE_EDGE+leftPaddle.getWidth()+POWER_UP_RADIUS;
-        Point spawnPoint = new Point(xRange,yRange);
 
-        if (spawnOutcome>= spawnThreshold){
+//        System.out.println(spawnPoint);
+
+        if (spawnOutcome >= spawnThreshold)  {
+
+            Point spawnPoint = randomizeLocation();
             PowerUp spawnedPowerUp;
-            double powerTypeOutcome = Math.random()*100;
+            double powerTypeOutcome = Math.random() * 100;
 
-
-            if (powerTypeOutcome<=10){
-                spawnedPowerUp = new InvisPower(this,spawnPoint);
-                System.out.println("Invisible Power Up Spawned!");
-                //spawn invis power
-            } else if (powerTypeOutcome <= 40){
-                spawnedPowerUp = new ElongatePaddlePower(this,spawnPoint);
-                System.out.println("Elongated Paddle Power Up Spawned!");
-                //spawn elongated paddle
-            } else if (powerTypeOutcome <= 70){
-                spawnedPowerUp = new RandomSpeedPower(this,spawnPoint);
-                System.out.println("Random Speed Power Up Spawned!");
-                //spawn random speed power up
-            } else {
-                spawnedPowerUp = new StrengthPower(this,spawnPoint);
-                System.out.println("Strengthened Paddle Power Up Spawned!");
-                //spawn strengthened paddle
+            if ((spawnPoint != null)){
+                if (powerTypeOutcome <= 10) {
+                    spawnedPowerUp = new InvisPower(this, spawnPoint);
+                    System.out.println("Invisible Power Up Spawned!");
+                    //spawn invis power
+                } else if (powerTypeOutcome <= 40) {
+                    spawnedPowerUp = new ElongatePaddlePower(this, spawnPoint);
+                    System.out.println("Elongated Paddle Power Up Spawned!");
+                    //spawn elongated paddle
+                } else if (powerTypeOutcome <= 70) {
+                    spawnedPowerUp = new RandomSpeedPower(this, spawnPoint);
+                    System.out.println("Random Speed Power Up Spawned!");
+                    //spawn random speed power up
+                } else {
+                    spawnedPowerUp = new StrengthPower(this, spawnPoint);
+                    System.out.println("Strengthened Paddle Power Up Spawned!");
+                    //spawn strengthened paddle
+                }
+                return spawnedPowerUp;
             }
-            return spawnedPowerUp;
         }
         return null;
     }
@@ -463,38 +525,16 @@ public class Board implements Runnable {
         return settings;
     }
 
+    public float getTime(){
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+
     public boolean isPowerUpsEnabled(){
         return hasPowerUps;
     }
 
-
-    @Override
-    public String toString() {
-        return "Board{" +
-                "settings=" + settings +
-                ", backgroundColor=" + backgroundColor +
-                ", width=" + width +
-                ", height=" + height +
-                ", paddleDistanceFromTheEdge=" + paddleDistanceFromTheEdge +
-                ", hasEnded=" + hasEnded +
-                ", isPaused=" + isPaused +
-                ", upperWall=" + upperWall +
-                ", lowerWall=" + lowerWall +
-                ", leftPaddleMovementPath=" + leftPaddleMovementPath +
-                ", rightPaddleMovementPath=" + rightPaddleMovementPath +
-                ", leftPaddle=" + leftPaddle +
-                ", rightPaddle=" + rightPaddle +
-                ", gameWinner='" + gameWinner + '\'' +
-                ", ball=" + ball +
-                ", paddles=" + paddles +
-                ", obstacles=" + obstacles +
-                ", spawnedPowerUps=" + spawnedPowerUps +
-                ", activatedPowerUps=" + activatedPowerUps +
-                ", maintainedPowerUps=" + maintainedPowerUps +
-                ", toRemove=" + toRemove +
-                ", hasPowerUps=" + hasPowerUps +
-                ", leftScore=" + leftScore +
-                ", rightScore=" + rightScore +
-                '}';
-    }
 }

@@ -10,7 +10,7 @@ import pongchamp.pongchamp.model.math.Point;
 
 public abstract class AIPaddle extends Paddle implements PaddleController {
 
-    protected static final int defaultPaddleWidth = 20; //todo consider whether these sizes are good sizes in a 1200x900 board or not
+    protected static final int defaultPaddleWidth = 20;
     protected static final int defaultPaddleHeight = 100;
 
     protected Ball target;

@@ -1,7 +1,5 @@
 package pongchamp.pongchamp.model;
 
-import javafx.scene.paint.Color;
-import pongchamp.pongchamp.controller.ai.AIPaddle;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
 import pongchamp.pongchamp.model.entities.Ball;
@@ -146,6 +144,7 @@ public class BoardState {
             return location;
         }
     }
+
 
 
 
