@@ -1,11 +1,11 @@
 package pongchamp.pongchamp;
 import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.PaddleController;
+import pongchamp.pongchamp.controller.json.JsonLoader;
+import pongchamp.pongchamp.controller.json.JsonWriter;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.GameModes;
-import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
-import pongchamp.pongchamp.model.math.Point;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +15,13 @@ public class Facade {
     private final Board gameBoard;
 
     public Facade(GameModes gameMode, boolean withPowerUps) {
-        this.gameBoard = new Board(gameMode,withPowerUps); //todo specify which game mode the user wants
+        this.gameBoard = new Board(gameMode,withPowerUps);
     }
 
+    public Facade(String json){
+        JsonLoader loader = new JsonLoader();
+        this.gameBoard = loader.loadBoard(json);
+    }
 
     public void updateBoardState(){
         if (!isPaused() && !getGameEnd()){
@@ -160,14 +164,8 @@ public class Facade {
         return gameBoard.getBackgroundColor();
     }
 
-
     public void setBallVisibility(boolean visibility){
         gameBoard.getBall().setVisibility(visibility);
-    }
-
-    public void resetPaddlePositions(){
-        gameBoard.getRightPaddle().setLocation(new Point(1160,450));
-        gameBoard.getLeftPaddle().setLocation(new Point(40,450));
     }
 
     public Color getPaddle1Color(){
@@ -202,9 +200,18 @@ public class Facade {
         return  strMinutes+":"+strSecondsLeftover;
     }
 
+    public String saveBoardState(){
+        JsonWriter writer = new JsonWriter();
+        return writer.writeBoardState(gameBoard);
+    }
+    public String saveUserSettings(){
+        JsonWriter writer = new JsonWriter();
+        return writer.writeSettings(gameBoard.getSettings());
+    }
+
+
     public GameModes getGameMode(){
         return gameBoard.getGameMode();
     }
-
 
 }
