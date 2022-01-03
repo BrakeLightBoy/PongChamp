@@ -36,6 +36,9 @@ public class Board implements Runnable {
     private final Point[] powerPoints;
     private final boolean[] takenPoints;
 
+    private GameModes gameMode;
+
+
     private float time;
 
     private final boolean hasPowerUps;
@@ -51,6 +54,7 @@ public class Board implements Runnable {
     public Board(GameModes gameMode, Boolean hasPowerUps) {
         time = 0;
         this.settings = new UserSettings();
+        this.gameMode = gameMode;
 
         this.gameMode = gameMode;
 
@@ -292,6 +296,10 @@ public class Board implements Runnable {
         toRemove.clear();
     }
 
+    public GameModes getGameMode() {
+        return gameMode;
+    }
+
     public void checkScore() {
         if(!(this.getLeftScore() == MATCHPOINT || this.getRightScore() == MATCHPOINT)) {
             if (ball.getLocation().getX() < 0) {
@@ -383,9 +391,6 @@ public class Board implements Runnable {
 
         double spawnThreshold = POWERUPSPAWNTHRESHOLD;
 
-
-
-//        System.out.println(spawnPoint);
 
         if (spawnOutcome >= spawnThreshold)  {
 

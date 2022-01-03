@@ -3,6 +3,8 @@ package pongchamp.pongchamp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -31,13 +33,14 @@ public class GameRenderer extends Application{
     private Facade facade;
     private Button gameRestart,gameExit,gameResume;
     private List<Button> buttons = new ArrayList<>();
-    GameModeStarter gameModeStarter;
+//    GameModeStarter gameModeStarter;
+    MainController mainController;
     GameModes chosenGameMode;
 
-    public GameRenderer(GameModeStarter gameModeStarter,GameModes gameMode,boolean withPowerUps){
+    public GameRenderer(GameModes gameMode,boolean withPowerUps, MainController mainController){
         facade = new Facade(gameMode, withPowerUps);
-        this.gameModeStarter = gameModeStarter;
         this.chosenGameMode = gameMode;
+        this.mainController = mainController;
     }
 
     public void start(Stage stage) {
@@ -93,6 +96,7 @@ public class GameRenderer extends Application{
         buttons.add(gameResume);
         buttons.add(gameRestart);
         buttons.add(gameExit);
+
         anchorPane.getChildren().addAll(gameRestart, gameResume, gameExit);
 
         InGameKeyListener keyListener = new InGameKeyListener();
@@ -119,7 +123,6 @@ public class GameRenderer extends Application{
         });
 
         facade.setLeftPaddleController(leftKeyHandler);
-
         if (facade.getGameMode() == GameModes.V_1)
             facade.setRightPaddleController(rightKeyHandler);
 
@@ -223,7 +226,9 @@ public class GameRenderer extends Application{
     }
 
     private void exitGame(Stage stage) throws Exception{
-        gameModeStarter.start(stage);
+        Parent root = FXMLLoader.load(getClass().getResource("GameModeSelection.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
     }
 
     private void run(GraphicsContext gc) {
