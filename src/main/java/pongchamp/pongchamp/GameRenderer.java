@@ -41,20 +41,25 @@ public class GameRenderer extends Application{
     boolean powerUpsChosen;
     JsonAPI jsonAPI;
 
-    public GameRenderer(GameModes gameMode, boolean withPowerUps, MainController mainController){
-        facade = new Facade(gameMode, withPowerUps);
+    public GameRenderer(GameModes gameMode, boolean withPowerUps, MainController mainController) {
+        jsonAPI = new JsonAPI();
+        try {
+            facade = new Facade(gameMode, withPowerUps, jsonAPI.loadSettings());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.chosenGameMode = gameMode;
         this.powerUpsChosen = withPowerUps;
         this.mainController = mainController;
-        jsonAPI = new JsonAPI();
     }
 
     public GameRenderer(GameModes gameMode, boolean withPowerUps, MainController mainController, Board newBoard) throws IOException {
+        jsonAPI = new JsonAPI();
         facade = new Facade(newBoard);
         this.chosenGameMode = gameMode;
         this.powerUpsChosen = withPowerUps;
         this.mainController = mainController;
-        jsonAPI = new JsonAPI();
+
     }
 
     public void start(Stage stage) {

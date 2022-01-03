@@ -11,7 +11,6 @@ import pongchamp.pongchamp.model.math.Vector;
 
 public class BoardState {
 
-    private UserSettings settings;
     private PaddleState leftPaddleState;
     private PaddleState rightPaddleState;
     private BallState ballState;
@@ -20,7 +19,7 @@ public class BoardState {
     private float time;
 
     public BoardState(Board board) {
-        this.settings = board.getSettings();
+
         Paddle leftPaddle = board.getLeftPaddle();
         this.leftPaddleState = new PaddleState(PaddleState.Type.PLAYER, leftPaddle.getLocation(), leftPaddle.getWidth(), leftPaddle.getHeight());
         Paddle rightPaddle = board.getRightPaddle();
@@ -41,9 +40,6 @@ public class BoardState {
         this.time = board.getTime();
     }
 
-    public UserSettings getSettings() {
-        return settings;
-    }
 
     public PaddleState getLeftPaddleState() {
         return leftPaddleState;

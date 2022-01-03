@@ -48,10 +48,9 @@ public class Board implements Runnable {
 
     private Random random = new Random();
 
-    public Board(GameModes gameMode, Boolean hasPowerUps) {
+    public Board(GameModes gameMode, Boolean hasPowerUps,UserSettings settings) {
         time = 0;
-        this.settings = new UserSettings();
-        this.gameMode = gameMode;
+        this.settings = settings;
 
         this.gameMode = gameMode;
 
@@ -125,7 +124,7 @@ public class Board implements Runnable {
 
     public Board(BoardState state){
         time = state.getTime();
-        settings = state.getSettings();
+        settings = new UserSettings();//todo should manucall load from the actual user settngs
         backgroundColor = settings.getBackgroundColor();
         hasPowerUps = state.hasPowerUps(); //should always be false at this moment
 
@@ -512,7 +511,7 @@ public class Board implements Runnable {
     }
 
     public Color getPaddle1Color(){
-        return leftPaddle.getPaddleColor();
+        return settings.getPaddle1Color();
     }
 
     public Color getPaddle2Color(){

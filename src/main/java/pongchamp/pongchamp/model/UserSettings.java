@@ -48,4 +48,20 @@ public class UserSettings {
                 ", backgroundColor=" + backgroundColor +
                 '}';
     }
+
+    public void setBallColor(Color ballColor) {
+        this.ballColor = ballColor;
+    }
+
+    public void setPaddle1Color(Color paddle1Color) {
+        this.paddle1Color = paddle1Color;
+    }
+
+    public void setPaddle2Color(Color paddle2Color) {
+        this.paddle2Color = paddle2Color;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
 }

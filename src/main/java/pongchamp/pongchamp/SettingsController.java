@@ -15,10 +15,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import pongchamp.pongchamp.controller.json.JsonAPI;
+import pongchamp.pongchamp.model.UserSettings;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -56,6 +60,10 @@ public class SettingsController extends MainController implements Initializable 
         super.settingsPage(event);
 }
 
+    JsonAPI jsonAPI = new JsonAPI();
+
+    UserSettings userSettings = new UserSettings();
+
 
 
 
@@ -92,7 +100,15 @@ public class SettingsController extends MainController implements Initializable 
         paddle1Colour.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                System.out.println("hello");
                 paddle1Preview.setFill(paddle1Colour.getValue());
+                Color colorpickerChoice = paddle1Colour.getValue();
+                userSettings.setPaddle1Color(colorpickerChoice);
+                try {
+                    jsonAPI.saveSettings(userSettings);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ballColour.setOnAction(new EventHandler<ActionEvent>() {
@@ -104,10 +120,14 @@ public class SettingsController extends MainController implements Initializable 
         });
     }
     @FXML
-    private void handleColourPicker(ActionEvent event) {
-
+    private void handleColourPicker(ActionEvent event) throws IOException {
+        Color colorpickerChoice = paddle1Colour.getValue();
+        userSettings.setPaddle1Color(colorpickerChoice);
+        jsonAPI.saveSettings(userSettings);
 
     }
+
+
 
 }
 

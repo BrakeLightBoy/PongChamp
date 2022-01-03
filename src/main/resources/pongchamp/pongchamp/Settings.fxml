@@ -29,7 +29,7 @@
             </Pane>
             <ToggleButton fx:id="musicB" layoutX="398.0" layoutY="49.0" mnemonicParsing="false" onAction="#playHit" prefHeight="180.0" prefWidth="184.0" styleClass="music" stylesheets="@CSS/style.css" />
             <Slider fx:id="volumeSlider" layoutX="564.0" layoutY="124.0" />
-            <ColorPicker fx:id="ballColour" layoutX="934.0" layoutY="126.0" onAction="#handleColourPicker" />
+            <ColorPicker fx:id="ballColour" layoutX="934.0" layoutY="126.0"/>
             <Rectangle fx:id="paddle1Preview" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="180.0" layoutX="867.0" layoutY="273.0" stroke="BLACK" strokeType="INSIDE" width="41.0" />
             <ColorPicker fx:id="paddle1Colour" layoutX="917.0" layoutY="273.0" onAction="#handleColourPicker" />
             <Circle fx:id="ballPreview" fill="WHITE" layoutX="888.0" layoutY="140.0" radius="31.0" stroke="BLACK" strokeType="INSIDE" />

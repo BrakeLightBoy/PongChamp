@@ -5,6 +5,7 @@ import pongchamp.pongchamp.controller.json.JsonLoader;
 import pongchamp.pongchamp.controller.json.JsonWriter;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.GameModes;
+import pongchamp.pongchamp.model.UserSettings;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
 import java.io.IOException;
@@ -15,14 +16,14 @@ import java.util.HashSet;
 public class Facade {
     private final Board gameBoard;
 
-    public Facade(GameModes gameMode, boolean withPowerUps) {
-        this.gameBoard = new Board(gameMode,withPowerUps);
+    public Facade(GameModes gameMode, boolean withPowerUps, UserSettings userSettings) {
+        this.gameBoard = new Board(gameMode,withPowerUps,userSettings);
     }
 
     public Facade(Board board) throws IOException {
        this.gameBoard = board;
-
     }
+
 
     public void updateBoardState(){
         if (!isPaused() && !getGameEnd()){
