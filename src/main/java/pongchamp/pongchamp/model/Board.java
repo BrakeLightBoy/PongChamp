@@ -38,14 +38,11 @@ public class Board implements Runnable {
 
     private GameModes gameMode;
 
-
     private float time;
 
     private final boolean hasPowerUps;
 
     protected int leftScore, rightScore;
-
-    private GameModes gameMode;
 
     private Vector initialSpeed;
 
@@ -127,6 +124,7 @@ public class Board implements Runnable {
     }
 
     public Board(BoardState state){
+        time = state.getTime();
         settings = state.getSettings();
         backgroundColor = settings.getBackgroundColor();
         hasPowerUps = state.hasPowerUps(); //should always be false at this moment
@@ -161,6 +159,9 @@ public class Board implements Runnable {
                 new Point(width-paddleDistanceFromTheEdge,0),
                 new Point(width-paddleDistanceFromTheEdge,height)
         );
+
+        this.rightScore = state.getRightScore();
+        this.leftScore = state.getLeftScore();
 
         BoardState.PaddleState leftPaddleState = state.getLeftPaddleState();
         leftPaddle = new Paddle(leftPaddleState.getLocation(),leftPaddleState.getWidth(),leftPaddleState.getHeight(),leftPaddleMovementPath,null,CollisionTypes.LEFT ,settings.getPaddle1Color());
@@ -294,10 +295,6 @@ public class Board implements Runnable {
             maintainedPowerUps.remove(remPowerUp);
         }
         toRemove.clear();
-    }
-
-    public GameModes getGameMode() {
-        return gameMode;
     }
 
     public void checkScore() {

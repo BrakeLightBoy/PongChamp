@@ -5,17 +5,23 @@ import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.BoardState;
 import pongchamp.pongchamp.model.UserSettings;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public class JsonWriter {
 
     private final Gson gson = GsonUtil.getGson();
 
-    public String writeSettings(UserSettings userSettings){
-        return gson.toJson(userSettings);
+    public void writeSettings(UserSettings userSettings) throws IOException{
+        String json = gson.toJson(userSettings);
+        FileUtil.writeToFile(Paths.get("settings.json"),json);
     }
-    public String writeBoardState(Board board){
+    public void writeBoardState(Board board) throws IOException {
+        String json = gson.toJson(new BoardState(board));
+        FileUtil.writeToFile(Paths.get("board.json"),json);
+    }
 
-        return gson.toJson(new BoardState(board));
-    }
 
 
 }

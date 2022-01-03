@@ -17,9 +17,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import pongchamp.pongchamp.controller.FXKeyHandler;
 import pongchamp.pongchamp.controller.InGameKeyListener;
+import pongchamp.pongchamp.controller.json.JsonAPI;
+import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.Properties;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,16 +34,27 @@ import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
 public class GameRenderer extends Application{
     private Facade facade;
-    private Button gameRestart,gameExit,gameResume;
+    private Button gameRestart,gameExit,gameResume, gameSave, resumeSave;
     private List<Button> buttons = new ArrayList<>();
-//    GameModeStarter gameModeStarter;
     MainController mainController;
     GameModes chosenGameMode;
+    boolean powerUpsChosen;
+    JsonAPI jsonAPI;
 
-    public GameRenderer(GameModes gameMode,boolean withPowerUps, MainController mainController){
+    public GameRenderer(GameModes gameMode, boolean withPowerUps, MainController mainController){
         facade = new Facade(gameMode, withPowerUps);
         this.chosenGameMode = gameMode;
+        this.powerUpsChosen = withPowerUps;
         this.mainController = mainController;
+        jsonAPI = new JsonAPI();
+    }
+
+    public GameRenderer(GameModes gameMode, boolean withPowerUps, MainController mainController, Board newBoard) throws IOException {
+        facade = new Facade(newBoard);
+        this.chosenGameMode = gameMode;
+        this.powerUpsChosen = withPowerUps;
+        this.mainController = mainController;
+        jsonAPI = new JsonAPI();
     }
 
     public void start(Stage stage) {
@@ -60,8 +74,6 @@ public class GameRenderer extends Application{
         //number of cycles in animation INDEFINITE = repeat indefinitely
         tl.setCycleCount(Timeline.INDEFINITE);
 
-        //mouse control (move and click)
-
         Scene scene = new Scene(anchorPane);
 
         double[] restartPosition = {(double) Properties.BOARD_WIDTH*0.50,(double) Properties.BOARD_HEIGHT*0.52};
@@ -75,10 +87,7 @@ public class GameRenderer extends Application{
 
         double[] resumePosition = {(double) Properties.BOARD_WIDTH*0.45,(double) Properties.BOARD_HEIGHT*0.52};
         gameResume = createButton("ResumeBtn","Resume",false,resumePosition,e -> {
-
             hideButtons();
-
-
             facade.resumeGame();
             }
         );
@@ -93,9 +102,40 @@ public class GameRenderer extends Application{
                     }
                 });
 
+
+        if(!powerUpsChosen){
+            double[] savePosition = {(double) Properties.BOARD_WIDTH*0.60,(double) Properties.BOARD_HEIGHT*0.52};
+            gameSave = createButton("SaveBtn", "Save Game", false
+            ,savePosition, e-> {
+                        try {
+                            jsonAPI.saveGame(facade.getGameBoard());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+
+            double[] resumeSavePosition = {(double) Properties.BOARD_WIDTH*0.65,(double) Properties.BOARD_HEIGHT*0.52};
+            resumeSave = createButton("ResumeSaveBtn", "Load Save", false
+                    ,resumeSavePosition, e-> {
+                        try {
+                            GameRenderer newGameRender = new GameRenderer(chosenGameMode, false, mainController, jsonAPI.loadGame());
+                            newGameRender.start(stage);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+            resumeSave.setDisable(true);
+
+            buttons.add(gameSave);
+            buttons.add(resumeSave);
+            anchorPane.getChildren().addAll(gameSave, resumeSave);
+        }
+
+
         buttons.add(gameResume);
         buttons.add(gameRestart);
         buttons.add(gameExit);
+
 
         anchorPane.getChildren().addAll(gameRestart, gameResume, gameExit);
 
@@ -201,6 +241,11 @@ public class GameRenderer extends Application{
         gameExit.setVisible(true);
         gameResume.setVisible(true);
         gameRestart.setVisible(true);
+        gameSave.setVisible(true);
+        resumeSave.setVisible(true);
+        if(jsonAPI.savedGameDetected()){
+            resumeSave.setDisable(false);
+        }
         gameExit.setLayoutX(Properties.BOARD_WIDTH*0.55);
         gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.50);
         facade.pauseGame();
@@ -210,6 +255,8 @@ public class GameRenderer extends Application{
         gameExit.setVisible(false);
         gameResume.setVisible(false);
         gameRestart.setVisible(false);
+        gameSave.setVisible(false);
+        resumeSave.setVisible(false);
 
         facade.resumeGame();
     }

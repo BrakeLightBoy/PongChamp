@@ -3,6 +3,7 @@ package pongchamp.pongchamp;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
@@ -31,6 +32,7 @@ public class GameModeSelectionController extends MainController {
 
     @FXML
     AnchorPane InfoCard1;
+
 
     protected void animateIn(AnchorPane anchorPane){ //Animates the given anchor pane in
         anchorPane.setVisible(true);
@@ -69,4 +71,6 @@ public class GameModeSelectionController extends MainController {
     protected void onCloseWindow2Click(){
         animateOut(InfoCard1);
     }
+
+
 }

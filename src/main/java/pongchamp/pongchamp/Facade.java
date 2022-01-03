@@ -7,6 +7,7 @@ import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.entities.powerups.PowerUp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,9 +19,9 @@ public class Facade {
         this.gameBoard = new Board(gameMode,withPowerUps);
     }
 
-    public Facade(String json){
-        JsonLoader loader = new JsonLoader();
-        this.gameBoard = loader.loadBoard(json);
+    public Facade(Board board) throws IOException {
+       this.gameBoard = board;
+
     }
 
     public void updateBoardState(){
@@ -200,18 +201,14 @@ public class Facade {
         return  strMinutes+":"+strSecondsLeftover;
     }
 
-    public String saveBoardState(){
-        JsonWriter writer = new JsonWriter();
-        return writer.writeBoardState(gameBoard);
-    }
-    public String saveUserSettings(){
-        JsonWriter writer = new JsonWriter();
-        return writer.writeSettings(gameBoard.getSettings());
-    }
+
 
 
     public GameModes getGameMode(){
         return gameBoard.getGameMode();
     }
 
+    public Board getGameBoard() {
+        return gameBoard;
+    }
 }

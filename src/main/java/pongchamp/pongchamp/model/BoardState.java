@@ -16,29 +16,29 @@ public class BoardState {
     private PaddleState rightPaddleState;
     private BallState ballState;
     private boolean hasPowerUps;
-    private int rightScore,leftScore;
+    private int rightScore, leftScore;
+    private float time;
 
-    public BoardState (Board board){
+    public BoardState(Board board) {
         this.settings = board.getSettings();
         Paddle leftPaddle = board.getLeftPaddle();
-        this.leftPaddleState = new PaddleState(PaddleState.Type.PLAYER,leftPaddle.getLocation(),leftPaddle.getWidth(),leftPaddle.getHeight());
+        this.leftPaddleState = new PaddleState(PaddleState.Type.PLAYER, leftPaddle.getLocation(), leftPaddle.getWidth(), leftPaddle.getHeight());
         Paddle rightPaddle = board.getRightPaddle();
         PaddleState.Type type;
-        if (rightPaddle instanceof MediumAIPaddle){
+        if (rightPaddle instanceof MediumAIPaddle) {
             type = PaddleState.Type.BEATABLE_AI;
-        }
-        else if (rightPaddle instanceof UnbeatableAIPaddle){
+        } else if (rightPaddle instanceof UnbeatableAIPaddle) {
             type = PaddleState.Type.UNBEATABLE_AI;
-        }
-        else  {
+        } else {
             type = PaddleState.Type.PLAYER;
         }
-        this.rightPaddleState = new PaddleState(type, rightPaddle.getLocation(),rightPaddle.getWidth(),rightPaddle.getHeight());
+        this.rightPaddleState = new PaddleState(type, rightPaddle.getLocation(), rightPaddle.getWidth(), rightPaddle.getHeight());
         Ball ball = board.getBall();
         this.ballState = new BallState(ball.getRadius(), ball.getSpeed(), ball.getAcceleration(), ball.getVisibility(), ball.getLocation());
         this.hasPowerUps = board.isPowerUpsEnabled();
         this.leftScore = board.getLeftScore();
         this.rightScore = board.getRightScore();
+        this.time = board.getTime();
     }
 
     public UserSettings getSettings() {
@@ -69,7 +69,12 @@ public class BoardState {
         return leftScore;
     }
 
-    public class PaddleState{
+    public float getTime() {
+        return time;
+    }
+
+
+    public class PaddleState {
 
         Type type;
         Point location;
@@ -92,8 +97,7 @@ public class BoardState {
         }
 
 
-
-        public PaddleState(Type type, Point location, float width, float height ) {
+        public PaddleState(Type type, Point location, float width, float height) {
             this.type = type;
             this.location = location;
             this.width = width;
@@ -108,7 +112,7 @@ public class BoardState {
         }
     }
 
-    public class BallState{
+    public class BallState {
         int radius;
         Vector speed, acceleration;
         boolean isVisible;
@@ -144,10 +148,4 @@ public class BoardState {
             return location;
         }
     }
-
-
-
-
-
-
 }
