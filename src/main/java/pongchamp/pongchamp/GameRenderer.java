@@ -66,15 +66,15 @@ public class GameRenderer extends Application{
 
         double[] restartPosition = {(double) Properties.BOARD_WIDTH*0.50,(double) Properties.BOARD_HEIGHT*0.52};
 
-        gameRestart = createButton("RestartBtn", "Restart", false, restartPosition, e -> {
+        gameRestart = createButton("RestartBtn", "Restart", false, restartPosition, 2, e -> {
                 hideButtons();
                 facade.gameRestart();
             }
         );
 
 
-        double[] resumePosition = {(double) Properties.BOARD_WIDTH*0.45,(double) Properties.BOARD_HEIGHT*0.52};
-        gameResume = createButton("ResumeBtn","Resume",false,resumePosition,e -> {
+        double[] resumePosition = {(double) Properties.BOARD_WIDTH*0.45-97,(double) Properties.BOARD_HEIGHT*0.52};
+        gameResume = createButton("ResumeBtn","Resume",false,resumePosition, 2, e -> {
 
             hideButtons();
 
@@ -83,9 +83,8 @@ public class GameRenderer extends Application{
             }
         );
 
-        double[] exitPosition = {(double) Properties.BOARD_WIDTH*0.55,(double) Properties.BOARD_HEIGHT*0.52};
-        gameExit = createButton("ExitBtn","Exit",false
-                ,exitPosition,e -> {
+        double[] exitPosition = {(double) Properties.BOARD_WIDTH*0.45+200,(double) Properties.BOARD_HEIGHT*0.52};
+        gameExit = createButton("ExitBtn","Exit",false, exitPosition,2, e -> {
                     try {
                         exitGame(stage);
                     } catch (Exception ex) {
@@ -201,9 +200,16 @@ public class GameRenderer extends Application{
         gameExit.setVisible(true);
         gameResume.setVisible(true);
         gameRestart.setVisible(true);
-        gameExit.setLayoutX(Properties.BOARD_WIDTH*0.55);
-        gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.50);
         facade.pauseGame();
+        gameExit.setStyle("-fx-background-color: #900000; ");
+        gameExit.setTextFill(Color.WHITE);
+        gameExit.setOpacity(.9);
+        gameResume.setStyle("-fx-background-color: #219000; ");
+        gameResume.setTextFill(Color.WHITE);
+        gameResume.setOpacity(.9);
+        gameRestart.setStyle("-fx-background-color: #907C00; ");
+        gameRestart.setTextFill(Color.WHITE);
+        gameRestart.setOpacity(.9);
     }
 
     private void unPauseGame(){
