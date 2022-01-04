@@ -20,9 +20,6 @@ public class FrontendMethods {
 
         return button;
     }
-
-
-
     public static RadioButton createRadioButton(String Id, String text, boolean isVisible, double[] position){
         RadioButton radioButton = new RadioButton();
 

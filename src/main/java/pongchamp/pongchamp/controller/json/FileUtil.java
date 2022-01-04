@@ -1,4 +1,3 @@
-
 package pongchamp.pongchamp.controller.json;
 import java.io.IOException;
 import java.nio.file.Files;
