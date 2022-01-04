@@ -7,8 +7,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import pongchamp.pongchamp.model.Board;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,6 +42,8 @@ public class GameModeSelectionController extends MainController implements Initi
 
     @FXML
     Button LoadSaveBtn;
+
+    MainController mainController = new MainController();
 
 
     protected void animateIn(AnchorPane anchorPane){ //Animates the given anchor pane in
@@ -84,4 +89,17 @@ public class GameModeSelectionController extends MainController implements Initi
     public void initialize(URL url, ResourceBundle resourceBundle) {
         LoadSaveBtn.setDisable(!jsonAPI.savedGameDetected());
     }
+
+    @FXML
+    protected void onLoadSaveBtnClick() throws IOException {
+        try {
+            Board savedBoard = jsonAPI.loadGame();
+            GameRenderer newGameRender = new GameRenderer(savedBoard.getGameMode(), false, mainController, jsonAPI.loadGame());
+            newGameRender.start((Stage) InfoCard.getScene().getWindow());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }
+

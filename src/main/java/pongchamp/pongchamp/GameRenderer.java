@@ -119,21 +119,8 @@ public class GameRenderer extends Application{
                         }
                     });
 
-            double[] resumeSavePosition = {(double) Properties.BOARD_WIDTH*0.65,(double) Properties.BOARD_HEIGHT*0.52};
-            resumeSave = createButton("ResumeSaveBtn", "Load Save", false
-                    ,resumeSavePosition, e-> {
-                        try {
-                            GameRenderer newGameRender = new GameRenderer(chosenGameMode, false, mainController, jsonAPI.loadGame());
-                            newGameRender.start(stage);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    });
-            resumeSave.setDisable(true);
-
             buttons.add(gameSave);
-            buttons.add(resumeSave);
-            anchorPane.getChildren().addAll(gameSave, resumeSave);
+            anchorPane.getChildren().addAll(gameSave);
         }
 
 
@@ -247,10 +234,6 @@ public class GameRenderer extends Application{
         gameResume.setVisible(true);
         gameRestart.setVisible(true);
         gameSave.setVisible(true);
-        resumeSave.setVisible(true);
-        if(jsonAPI.savedGameDetected()){
-            resumeSave.setDisable(false);
-        }
         gameExit.setLayoutX(Properties.BOARD_WIDTH*0.55);
         gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.50);
         facade.pauseGame();
@@ -261,7 +244,6 @@ public class GameRenderer extends Application{
         gameResume.setVisible(false);
         gameRestart.setVisible(false);
         gameSave.setVisible(false);
-        resumeSave.setVisible(false);
 
         facade.resumeGame();
     }

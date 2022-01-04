@@ -62,9 +62,15 @@ public class SettingsController extends MainController implements Initializable 
 
     JsonAPI jsonAPI = new JsonAPI();
 
-    UserSettings userSettings = new UserSettings();
+    UserSettings newSettings;
 
-
+    {
+        try {
+            newSettings = jsonAPI.loadSettings();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @FXML
@@ -91,15 +97,18 @@ public class SettingsController extends MainController implements Initializable 
 // colour picker needs to be assigned to paddle/ball etc in back-end
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        setSettingsColors();
+
         paddle2Colour.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("hello");
                 paddle2Preview.setFill(paddle2Colour.getValue());
                 Color colorpickerChoice = paddle2Colour.getValue();
-                userSettings.setPaddle2Color(colorpickerChoice);
+                newSettings.setPaddle2Color(colorpickerChoice);
                 try {
-                    jsonAPI.saveSettings(userSettings);
+                    jsonAPI.saveSettings(newSettings);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -111,9 +120,9 @@ public class SettingsController extends MainController implements Initializable 
                 System.out.println("hello");
                 paddle1Preview.setFill(paddle1Colour.getValue());
                 Color colorpickerChoice = paddle1Colour.getValue();
-                userSettings.setPaddle1Color(colorpickerChoice);
+                newSettings.setPaddle1Color(colorpickerChoice);
                 try {
-                    jsonAPI.saveSettings(userSettings);
+                    jsonAPI.saveSettings(newSettings);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -125,9 +134,9 @@ public class SettingsController extends MainController implements Initializable 
             public void handle(ActionEvent event) {
                 ballPreview.setFill(ballColour.getValue());
                 Color colorpickerChoice = ballColour.getValue();
-                userSettings.setBallColor(colorpickerChoice);
+                newSettings.setBallColor(colorpickerChoice);
                 try {
-                    jsonAPI.saveSettings(userSettings);
+                    jsonAPI.saveSettings(newSettings);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -137,9 +146,18 @@ public class SettingsController extends MainController implements Initializable 
     @FXML
     private void handleColourPicker(ActionEvent event) throws IOException {
         Color colorpickerChoice = paddle1Colour.getValue();
-        userSettings.setPaddle1Color(colorpickerChoice);
-        jsonAPI.saveSettings(userSettings);
+        newSettings.setPaddle1Color(colorpickerChoice);
+        jsonAPI.saveSettings(newSettings);
 
+    }
+
+    private void setSettingsColors(){
+        paddle1Preview.setFill(newSettings.getPaddle1Color());
+        paddle1Colour.setValue(newSettings.getPaddle1Color());
+        paddle2Preview.setFill(newSettings.getPaddle2Color());
+        paddle2Colour.setValue(newSettings.getPaddle2Color());
+        ballPreview.setFill(newSettings.getBallColor());
+        ballColour.setValue(newSettings.getBallColor());
     }
 
 

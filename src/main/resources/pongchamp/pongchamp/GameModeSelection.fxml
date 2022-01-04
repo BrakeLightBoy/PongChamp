@@ -32,7 +32,7 @@
                                 <Font name="System Bold" size="37.0" />
                             </font>
                         </Button>
-                  <Button fx:id="LoadSaveBtn" disable="#detectSave" mnemonicParsing="false" text="Load Save" GridPane.rowIndex="1" />
+                  <Button fx:id="LoadSaveBtn" disable="#detectSave" mnemonicParsing="false" text="Load Save" GridPane.rowIndex="1" onAction="#onLoadSaveBtnClick"/>
                     </children>
                 </GridPane>
                 <AnchorPane id="InfoCard" fx:id="InfoCard" layoutX="976.0" layoutY="242.0" prefHeight="350.0" prefWidth="400.0" styleClass="yeet" stylesheets="@CSS/style.css" visible="false" AnchorPane.rightAnchor="535.0" AnchorPane.topAnchor="95.0">

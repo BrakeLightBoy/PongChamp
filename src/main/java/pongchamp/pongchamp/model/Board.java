@@ -3,6 +3,7 @@ package pongchamp.pongchamp.model;
 import javafx.scene.paint.Color;
 import pongchamp.pongchamp.controller.ai.MediumAIPaddle;
 import pongchamp.pongchamp.controller.ai.UnbeatableAIPaddle;
+import pongchamp.pongchamp.controller.json.JsonAPI;
 import pongchamp.pongchamp.model.entities.*;
 import pongchamp.pongchamp.model.math.LineSegment;
 import pongchamp.pongchamp.model.math.Point;
@@ -10,10 +11,13 @@ import pongchamp.pongchamp.model.math.Vector;
 import static pongchamp.pongchamp.model.Properties.*;
 import pongchamp.pongchamp.model.entities.powerups.*;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Board implements Runnable {
     private final UserSettings settings;
+
+    private final JsonAPI jsonAPI;
 
     private final Color backgroundColor;
 
@@ -51,6 +55,8 @@ public class Board implements Runnable {
     public Board(GameModes gameMode, Boolean hasPowerUps,UserSettings settings) {
         time = 0;
         this.settings = settings;
+
+        this.jsonAPI = new JsonAPI();
 
         this.gameMode = gameMode;
 
@@ -122,11 +128,13 @@ public class Board implements Runnable {
         obstacles.add(upperWall);
     }
 
-    public Board(BoardState state){
+    public Board(BoardState state) throws IOException {
         time = state.getTime();
-        settings = new UserSettings();//todo should manucall load from the actual user settngs
+        jsonAPI = new JsonAPI();
+        settings = jsonAPI.loadSettings();//todo should manucall load from the actual user settngs
         backgroundColor = settings.getBackgroundColor();
         hasPowerUps = state.hasPowerUps(); //should always be false at this moment
+        gameMode = state.getGameModes();
 
         powerPoints = new Point[]{ new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .25f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .25f)};
         takenPoints = new boolean[]{false, false, false, false};
@@ -163,7 +171,7 @@ public class Board implements Runnable {
         this.leftScore = state.getLeftScore();
 
         BoardState.PaddleState leftPaddleState = state.getLeftPaddleState();
-        leftPaddle = new Paddle(leftPaddleState.getLocation(),leftPaddleState.getWidth(),leftPaddleState.getHeight(),leftPaddleMovementPath,null,CollisionTypes.LEFT ,settings.getPaddle1Color());
+        leftPaddle = new Paddle(leftPaddleState.getLocation(),leftPaddleState.getWidth(),leftPaddleState.getHeight(),leftPaddleMovementPath,null,CollisionTypes.LEFT, settings.getPaddle1Color());
         //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
         BoardState.BallState ballState = state.getBallState();
         ball = new Ball(ballState.getLocation(), ballState.getRadius(), ballState.getSpeed(), ballState.getAcceleration(), settings.getBallColor());
@@ -511,7 +519,7 @@ public class Board implements Runnable {
     }
 
     public Color getPaddle1Color(){
-        return settings.getPaddle1Color();
+        return leftPaddle.getPaddleColor();
     }
 
     public Color getPaddle2Color(){
@@ -532,5 +540,9 @@ public class Board implements Runnable {
 
     public boolean isPowerUpsEnabled(){
         return hasPowerUps;
+    }
+
+    public Color getBallColor() {
+        return ball.getBallColor();
     }
 }

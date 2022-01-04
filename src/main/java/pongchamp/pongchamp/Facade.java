@@ -127,7 +127,7 @@ public class Facade {
     }
 
     public Color getBallColor(){
-        return gameBoard.getBall().getBallColor();
+        return gameBoard.getBallColor();
     }
 
     public Boolean isPaused() {

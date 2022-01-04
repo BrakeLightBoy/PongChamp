@@ -17,6 +17,7 @@ public class BoardState {
     private boolean hasPowerUps;
     private int rightScore, leftScore;
     private float time;
+    private GameModes gameModes;
 
     public BoardState(Board board) {
 
@@ -38,6 +39,7 @@ public class BoardState {
         this.leftScore = board.getLeftScore();
         this.rightScore = board.getRightScore();
         this.time = board.getTime();
+        this.gameModes = board.getGameMode();
     }
 
 
@@ -68,6 +70,8 @@ public class BoardState {
     public float getTime() {
         return time;
     }
+
+    public GameModes getGameModes(){return gameModes;}
 
 
     public class PaddleState {
@@ -121,7 +125,6 @@ public class BoardState {
             this.acceleration = acceleration;
             this.isVisible = isVisible;
             this.location = location;
-
         }
 
         public int getRadius() {
