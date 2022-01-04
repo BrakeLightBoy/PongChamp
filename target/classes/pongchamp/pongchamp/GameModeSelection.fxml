@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.GameModeSelectionController">
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pongchamp.pongchamp.GameModeSelectionController">
     <center>
         <AnchorPane prefHeight="811.0" prefWidth="1358.0" styleClass="backdrop">
             <stylesheets>
@@ -24,43 +24,61 @@
                     <children>
                         <Button fx:id="Button1v1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseReleased="#onButton1v1ButtonClick" prefHeight="200.0" prefWidth="200.0" text="1v1">
                             <font>
-                                <Font name="System Bold" size="58.0" />
+                                <Font name="Gill Sans MT" size="60.0" />
                             </font>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onButtonEndlessButtonClick" prefHeight="200.0" prefWidth="200.0" text="Endless" GridPane.columnIndex="1">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onButtonEndlessButtonClick" prefHeight="200.0" prefWidth="200.0" text="ENDLESS" GridPane.columnIndex="1">
                             <font>
-                                <Font name="System Bold" size="37.0" />
+                                <Font name="Gill Sans MT Condensed" size="53.0" />
                             </font>
                         </Button>
-                  <Button fx:id="LoadSaveBtn" disable="#detectSave" mnemonicParsing="false" text="Load Save" GridPane.rowIndex="1" onAction="#onLoadSaveBtnClick"/>
+                  <Button fx:id="LoadSaveBtn" mnemonicParsing="false" text="Load Save" GridPane.rowIndex="1" onAction="#onLoadSaveBtnClick" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #873232;" textFill="WHITE">
+                        <font>
+                            <Font name="HYHeadLine-Medium" size="20.0" />
+                        </font>
+                    </Button>
                     </children>
                 </GridPane>
-                <AnchorPane id="InfoCard" fx:id="InfoCard" layoutX="976.0" layoutY="242.0" prefHeight="350.0" prefWidth="400.0" styleClass="yeet" stylesheets="@CSS/style.css" visible="false" AnchorPane.rightAnchor="535.0" AnchorPane.topAnchor="95.0">
+                <AnchorPane id="InfoCard" fx:id="InfoCard" layoutX="976.0" layoutY="242.0" prefHeight="315.0" prefWidth="400.0" styleClass="yeet" stylesheets="@CSS/style.css" visible="false" AnchorPane.rightAnchor="535.0" AnchorPane.topAnchor="95.0">
                     <children>
-                        <Button fx:id="closeWindow" layoutX="343.0" layoutY="14.0" mnemonicParsing="false" onAction="#onCloseWindowClick" text="close" />
-                        <Button layoutX="42.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#Start1v1Local" text="Local">
+                        <Button fx:id="closeWindow" layoutX="290.0" layoutY="15.0" mnemonicParsing="false" onAction="#onCloseWindowClick" prefHeight="43.0" prefWidth="96.0" style="-fx-background-color: #873232;" text="EXIT" textFill="WHITE">
                             <font>
-                                <Font size="25.0" />
+                                <Font name="HYHeadLine-Medium" size="20.0" />
                             </font>
                         </Button>
-                        <Button layoutX="308.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#Start1v1AI" text="AI">
-                            <font>
-                                <Font size="25.0" />
+                        <Button alignment="CENTER" layoutX="220.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#Start1v1Local" prefHeight="150.0" prefWidth="150.0" text="LOCAL" textAlignment="CENTER">
+                        <font>
+                            <Font name="HYHeadLine-Medium" size="30.0" />
                             </font>
                         </Button>
-                        <RadioButton fx:id="PowerUpTgl" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="250" prefHeight="200.0" prefWidth="200.0" text="With Power Ups">
+                        <Button layoutX="29.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#Start1v1AI" prefHeight="150.0" prefWidth="150.0" text="AI">
+                            <font>
+                                <Font name="HYHeadLine-Medium" size="30.0" />
+                            </font>
+                        </Button>
+                        <RadioButton fx:id="PowerUpTgl" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="250.0" prefHeight="53.0" prefWidth="200.0" text="POWER-UPS" textFill="WHITE">
+                            <font>
+                                <Font name="HYHeadLine-Medium" size="20.0" />
+                            </font>
                         </RadioButton>
                     </children>
                 </AnchorPane>
-                <AnchorPane id="InfoCard" fx:id="InfoCard1" layoutX="146.0" layoutY="130.0" prefHeight="350.0" prefWidth="400.0" styleClass="yeet" stylesheets="@CSS/style.css" visible="false" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="95.0">
+                <AnchorPane id="InfoCard" fx:id="InfoCard1" layoutX="146.0" layoutY="130.0" prefHeight="260.0" prefWidth="400.0" styleClass="yeet" stylesheets="@CSS/style.css" visible="false" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="95.0">
                     <children>
-                        <Button fx:id="closeWindow2" layoutX="343.0" layoutY="14.0" mnemonicParsing="false" onAction="#onCloseWindow2Click" text="close" />
-                        <Button layoutX="250.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#StartEndless" text="Start">
+                        <Button fx:id="closeWindow2" layoutX="290.0" layoutY="15.0" mnemonicParsing="false" onAction="#onCloseWindow2Click" prefHeight="43.0" prefWidth="96.0" style="-fx-background-color: #873232;" text="EXIT" textFill="WHITE">
                             <font>
-                                <Font size="25.0" />
+                                <Font name="HYHeadLine-Medium" size="20.0" />
                             </font>
                         </Button>
-                        <RadioButton fx:id="PowerUpTgl2" alignment="CENTER" contentDisplay="CENTER" layoutX="150.0" layoutY="250" prefHeight="200.0" prefWidth="200.0" text="With Power Ups">
+                        <Button layoutX="105.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#StartEndless" prefHeight="85.0" prefWidth="190.0" scaleZ="0.0" text="PLAY">
+                        <font>
+                            <Font name="HYHeadLine-Medium" size="30.0" />
+                            </font>
+                        </Button>
+                        <RadioButton fx:id="PowerUpTgl2" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="190.0" prefHeight="50.0" prefWidth="200.0" text="POWER-UPS" textFill="WHITE">
+                            <font>
+                                <Font name="HYHeadLine-Medium" size="20.0" />
+                            </font>
                         </RadioButton>
                     </children>
                 </AnchorPane>
