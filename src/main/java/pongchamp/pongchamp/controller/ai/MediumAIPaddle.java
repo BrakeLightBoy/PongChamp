@@ -14,50 +14,64 @@ public class MediumAIPaddle extends AIPaddle{
     private final float[] lastYs = new float[3];
     private final static double chanceOfNotMovingWithVisibleBall = 0.01;
     private final static double chanceOfNotMovingWithInvisibleBall = 0.75;
+    private int movingUp;
+    private int movingDown;
+    float x = 5f;
+    int counter = 0;
+    int speedUp;
+    boolean decreaseSpeed;
+    boolean onProcess = false;
+    float previousSpeed;
+    boolean restorePreviousSpeed = false;
+
+
 
     public MediumAIPaddle(Point location, LineSegment movementPath, CollisionTypes paddleType, Ball target, Color paddleColor) {
         super(location, movementPath, paddleType, target, paddleColor);
+        setPlatformSpeed(6f);
     }
 
     public MediumAIPaddle(Point location, float width, float height, LineSegment movementPath, CollisionTypes paddleType, Ball target, Color paddleColor){
         super(location,width,height,movementPath,paddleType,target,paddleColor);
+        setPlatformSpeed(6f);
     }
 
     @Override
     public boolean movingUp() {
 
-        if (tick < nextTickToMove)return false;
 
-        if (notMovedLastTick){
-            notMovedLastTick = false;
-            return false;
-        }
-        if (tick % 4 == 0)return false;
+        float targetY = target.getLocation().getY();
 
-        boolean move = location.getY() > target.getLocation().getY();
-        if (notMoving()){
-            notMovedLastTick = true;
-            return false;
+        boolean move = location.getY() > targetY;
+
+
+        if (move){
+            if (Math.abs(targetY - location.getY()) < getPlatformSpeed()) {
+                previousSpeed = getPlatformSpeed();
+                restorePreviousSpeed = true;
+                setPlatformSpeed(getPlatformSpeed() / 2);
+            }
+
         }
 
         return move;
     }
 
     @Override
-    public boolean movingDown() {
+    public boolean movingDown
+        () {
 
-        if (tick < nextTickToMove)return false;
 
-        if (notMovedLastTick){
-            notMovedLastTick = false;
-            return false;
-        }
-        if (tick % 4 == 2)return false;
+        float targetY = target.getLocation().getY();
 
-        boolean move = location.getY() < target.getLocation().getY();
-        if (notMoving()){
-            notMovedLastTick = true;
-            return false;
+        boolean move = location.getY() < targetY;
+
+        if (move){
+            if (Math.abs(targetY - location.getY()) < getPlatformSpeed()) {
+                previousSpeed = getPlatformSpeed();
+                restorePreviousSpeed = true;
+                setPlatformSpeed(getPlatformSpeed() / 2);
+            }
         }
 
         return move;
@@ -67,13 +81,51 @@ public class MediumAIPaddle extends AIPaddle{
     @Override
     public void tick() {
         super.tick();
-        if (checkBounce()){
-            float distance = Math.abs(target.getLocation().getX() - this.location.getX());
-            if (distance < 200)
-                nextTickToMove = tick + 12;
-            else
-                nextTickToMove = tick + 16;
+
+        System.out.println(getPlatformSpeed());
+
+        if (restorePreviousSpeed){
+            restorePreviousSpeed = false;
+            setPlatformSpeed(previousSpeed);
         }
+
+        if (onProcess) {
+                if (getPlatformSpeed() <= 1) {
+                    decreaseSpeed = false;
+                }
+                if (decreaseSpeed) {
+                    setPlatformSpeed(getPlatformSpeed() - 0.5f);
+                } else {
+                    setPlatformSpeed(getPlatformSpeed() + 0.5f);
+                    if (getPlatformSpeed() >= 6)
+                        onProcess = false;
+                }
+
+
+        }
+        if (tick % 16 == 0 && !onProcess) {
+            if (randomBoolean(.4)) {
+                onProcess = true;
+                decreaseSpeed = true;
+            }
+        }
+        /*if (getPlatformSpeed() == 0) {
+            counter++;
+            if (counter == 1) {
+                x=8;
+                counter = 0;
+                speedUp = tick + 4;
+            }
+        }*/
+       /* if (checkBounce()) {
+            if (randomBoolean(0.3)) {
+                float distance = Math.abs(target.getLocation().getX() - this.location.getX());
+                if (distance < 200)
+                    nextTickToMove = tick + 20;
+                else
+                    nextTickToMove = tick + 24;
+            }
+        }*/
         tick++;
     }
 
