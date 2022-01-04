@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import pongchamp.pongchamp.controller.json.JsonAPI;
 import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.util.FrontendMethods;
@@ -29,6 +30,12 @@ public class MainController {
 
     @FXML
     RadioButton PowerUpTgl, PowerUpTgl2;
+
+    @FXML
+    Button LoadSaveBtn;
+
+    JsonAPI jsonAPI = new JsonAPI();
+
 
     public void startMode() {
         loadPage("Main");

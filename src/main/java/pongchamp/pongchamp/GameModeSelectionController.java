@@ -3,12 +3,16 @@ package pongchamp.pongchamp;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
-public class GameModeSelectionController extends MainController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class GameModeSelectionController extends MainController implements Initializable {
 
     @Override
     public void exitPage(ActionEvent event)  {
@@ -32,6 +36,9 @@ public class GameModeSelectionController extends MainController {
 
     @FXML
     AnchorPane InfoCard1;
+
+    @FXML
+    Button LoadSaveBtn;
 
 
     protected void animateIn(AnchorPane anchorPane){ //Animates the given anchor pane in
@@ -73,4 +80,8 @@ public class GameModeSelectionController extends MainController {
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        LoadSaveBtn.setDisable(!jsonAPI.savedGameDetected());
+    }
 }
