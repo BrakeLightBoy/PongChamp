@@ -29,7 +29,7 @@
                         </Button>
                         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onButtonEndlessButtonClick" prefHeight="200.0" prefWidth="200.0" text="ENDLESS" GridPane.columnIndex="1">
                             <font>
-                                <Font name="Gill Sans MT Condensed" size="53.0" />
+                                <Font name="Gill Sans MT Condensed" size="30.0" />
                             </font>
                         </Button>
                   <Button fx:id="LoadSaveBtn" mnemonicParsing="false" text="Load Save" GridPane.rowIndex="1" onAction="#onLoadSaveBtnClick" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #873232;" textFill="WHITE">
@@ -70,9 +70,9 @@
                                 <Font name="HYHeadLine-Medium" size="20.0" />
                             </font>
                         </Button>
-                        <Button layoutX="105.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#StartEndless" prefHeight="85.0" prefWidth="190.0" scaleZ="0.0" text="PLAY">
-                        <font>
-                            <Font name="HYHeadLine-Medium" size="30.0" />
+                        <Button layoutX="105.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#StartEndless" prefHeight="85.0" prefWidth="190.0" text="PLAY">
+                            <font>
+                                <Font name="HYHeadLine-Medium" size="30.0" />
                             </font>
                         </Button>
                         <RadioButton fx:id="PowerUpTgl2" alignment="CENTER" contentDisplay="CENTER" layoutX="100.0" layoutY="190.0" prefHeight="50.0" prefWidth="200.0" text="POWER-UPS" textFill="WHITE">
