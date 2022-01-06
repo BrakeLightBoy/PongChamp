@@ -7,6 +7,9 @@ import javafx.scene.control.RadioButton;
 
 public class FrontendMethods {
 
+    /*
+    Creates a normal button
+    */
     public static Button createButton(String Id, String text, boolean isVisible, double[] position, double scale, EventHandler<ActionEvent> action){
         Button button = new Button();
         button.setId(Id);
@@ -20,6 +23,10 @@ public class FrontendMethods {
 
         return button;
     }
+
+    /*
+    Creates a radio button
+    */
     public static RadioButton createRadioButton(String Id, String text, boolean isVisible, double[] position){
         RadioButton radioButton = new RadioButton();
 

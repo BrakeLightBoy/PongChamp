@@ -15,7 +15,6 @@ public class Paddle extends Entity implements Collidable {
     protected float platformSpeed = Properties.PLATFORM_SPEED;
     private static final int defaultPaddleWidth = 20;
     private static final int defaultPaddleHeight = 100;
-
     protected LineSegment movementPath;
     protected PaddleController paddleController;
     protected float width;
@@ -53,8 +52,11 @@ public class Paddle extends Entity implements Collidable {
         this.paddleColor = paddleColor;
     }
 
+    /*
+    Moves the hitbox of the paddle with the actual location of the paddle
+     */
     private void adjustHitBox(){
-        paddleHitBox = new HitBox(location.getX()-width/2f,location.getY()-height/2f, location.getX()+width/2f, location.getY()+height/2f);
+        paddleHitBox = new HitBox(getLocation().getX()-width/2f,getLocation().getY()-height/2f, getLocation().getX()+width/2f, getLocation().getY()+height/2f);
     }
 
     public void setPaddleController(PaddleController paddleController) {
@@ -74,24 +76,27 @@ public class Paddle extends Entity implements Collidable {
         adjustHitBox();
     }
 
+    /*
+    Main method for the movement of the paddle, taking the new location and determining the new hitbox location.
+    This also prevents the paddle from going beneath or above the ends of the board.
+     */
     @Override
     public void tick() {
-
         if (paddleController == null) setEmptyPaddleController(); //this will prevent NullPointerException when loading the board from json file
 
         if (paddleController.movingDown()){
-            float next = location.getY();
+            float next = getLocation().getY();
             if (next + platformSpeed + height / 2 > Properties.BOARD_HEIGHT)return;
             Vector movementVector = new Vector(0,platformSpeed);
-            location.movePoint(movementVector);
+            getLocation().movePoint(movementVector);
             paddleHitBox.moveHitBox(movementVector);
 
         }
         else if (paddleController.movingUp()){
-            float next = location.getY();
+            float next = getLocation().getY();
             if (next - platformSpeed - height / 2 < 0)return;
             Vector movementVector = new Vector(0,-platformSpeed);
-            location.movePoint(movementVector);
+            getLocation().movePoint(movementVector);
             paddleHitBox.moveHitBox(movementVector);
 
         }

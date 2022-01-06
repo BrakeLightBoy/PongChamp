@@ -20,28 +20,37 @@ public class StrengthPower extends PowerUp{
     }
 
     private Paddle affectedPaddle;
+
     private Ball ball = gameBoard.getBall();
 
+
+    /*
+    Checks if ball has collided with the affected paddle and if it has the ball is sped up
+     */
     @Override
     public void tick(){
         Collision paddleCollision = ball.checkCollision(affectedPaddle);
-
         if (paddleCollision.getColType() != CollisionTypes.NONE){
             ball.speedUp(1,0);
         }
     }
 
+    /*
+    Adds the power up to the activated power up list AS well as maintained power up list, activates, and ages the power
+    up
+     */
     public void onCollect(){
-        System.out.println("OnCollect");
         gameBoard.getActivatedPowerUps().add(this);
         gameBoard.getMaintainedPowerUps().add(this);
         activate();
         agePowerUp();
     }
 
+    /*
+    Sets the affected paddle based on the ball direction
+     */
     public void activate(){
         if (gameBoard.getBall().getSpeed().getX()>0){
-            //left paddle
             affectedPaddle = gameBoard.getLeftPaddle();
         } else {
             affectedPaddle = gameBoard.getRightPaddle();

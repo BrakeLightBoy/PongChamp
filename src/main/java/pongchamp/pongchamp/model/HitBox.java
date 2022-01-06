@@ -26,6 +26,10 @@ public class HitBox {
         height = maxY-minY;
     }
 
+    /*
+    checks if the ball is intersecting with the hit box and returns an enum that tells if
+    the collision was vertical, horizontal or non-existent.
+    */
     public hitBoxCollision checkBallIntersect(Ball ball){
         //Code inspired by "eJames" the explanation from:
         //https://stackoverflow.com/questions/401847/circle-rectangle-collision-detection-intersection
@@ -59,6 +63,9 @@ public class HitBox {
         }
     }
 
+    /*
+    Moves the hit box's location based off of a given vector
+     */
     public void moveHitBox(Vector vector){
         minX += vector.getX();
         maxX += vector.getX();

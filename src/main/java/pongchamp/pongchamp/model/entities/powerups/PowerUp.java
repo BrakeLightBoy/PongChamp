@@ -6,7 +6,6 @@ import pongchamp.pongchamp.model.Properties;
 import pongchamp.pongchamp.model.entities.Ball;
 import pongchamp.pongchamp.model.entities.Entity;
 import pongchamp.pongchamp.model.math.Point;
-//import pongchamp.pongchamp.model.Collectible;
 
 public abstract class PowerUp extends Entity {
     int activatedDuration,decayDuration,radius,currentDuration,currentDecay;
@@ -32,10 +31,14 @@ public abstract class PowerUp extends Entity {
     public Color getPowerColor(){
         return powerColor;
     }
+
     public void tick(){
-//        agePowerUp();
     }
 
+    /*
+    Method in order to check how long an activated power up has been active for and deactivate it after it exceeds the
+    set activated duration.
+     */
     public Boolean agePowerUp(){
         currentDuration++;
         if (activatedDuration<=currentDuration){
@@ -47,10 +50,13 @@ public abstract class PowerUp extends Entity {
         }
     }
 
+    /*
+    Method in order to check how long a spawned power up has been out in the field for, and after it has exceeded the
+    set decay duration return false.
+     */
     public Boolean decay(){
         currentDecay++;
         if (decayDuration<=currentDecay){
-//            System.out.println("Decayed");
             return true;
         }
         else {
@@ -58,20 +64,33 @@ public abstract class PowerUp extends Entity {
         }
     }
 
+    /*
+    When a power up is collected add it to the gameboards activated power ups list, activate the power up, and start the
+    aging of the power up.
+     */
     public void onCollect(){
-        System.out.println("OnCollect");
         gameBoard.getActivatedPowerUps().add(this);
         activate();
         agePowerUp();
     }
 
+    /*
+    Abstract activate method implemented within each specific power up type
+     */
     protected abstract void activate();
 
+    /*
+    Abstract deactivate method implemented within each specific power up type
+     */
     public abstract void deactivate();
 
+    /*
+    Checks if the power up has been collected based on whether the distance between the ball and the power up is less
+    than the radius of the ball + the radius of the power up
+     */
     public Boolean checkIfCollected(Ball ball){
-        float deltaX = ball.getLocation().getX() - location.getX();
-        float deltaY = ball.getLocation().getY() - location.getY();
+        float deltaX = ball.getLocation().getX() - getLocation().getX();
+        float deltaY = ball.getLocation().getY() - getLocation().getY();
 
         double distanceSqr = Math.pow(deltaX,2)+Math.pow(deltaY,2);
         double radSumSqr = Math.pow((ball.getRadius()+radius),2);
@@ -79,7 +98,6 @@ public abstract class PowerUp extends Entity {
             return false;
         }
         else {
-            System.out.println("PICKED UP!");
             return true;
         }
     }

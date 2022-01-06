@@ -25,6 +25,9 @@ public class Point {
         this.y = y;
     }
 
+    /*
+    Determines new point based off of a given vector
+     */
     public void movePoint(Vector v){
         this.x += v.getX();
         this.y += v.getY();

@@ -89,7 +89,6 @@ public class Board implements Runnable {
         wallSegment = new LineSegment(new Point(0,height),new Point(width,height));
         upperWall = new Wall(CollisionTypes.UPPER,wallSegment);
 
-//I don't think the paddle movement paths are still necessary, given the current implementation. -WP
         leftPaddleMovementPath = new LineSegment(
                 new Point(paddleDistanceFromTheEdge,0),
                 new Point(paddleDistanceFromTheEdge,height)
@@ -131,9 +130,9 @@ public class Board implements Runnable {
     public Board(BoardState state) throws IOException {
         time = state.getTime();
         jsonAPI = new JsonAPI();
-        settings = jsonAPI.loadSettings();//todo should manucall load from the actual user settngs
+        settings = jsonAPI.loadSettings();
         backgroundColor = settings.getBackgroundColor();
-        hasPowerUps = state.hasPowerUps(); //should always be false at this moment
+        hasPowerUps = state.hasPowerUps();
         gameMode = state.getGameModes();
 
         powerPoints = new Point[]{ new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .25f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .25f, BOARD_HEIGHT * .75f), new Point(BOARD_WIDTH * .75f, BOARD_HEIGHT * .25f)};
@@ -172,7 +171,7 @@ public class Board implements Runnable {
 
         BoardState.PaddleState leftPaddleState = state.getLeftPaddleState();
         leftPaddle = new Paddle(leftPaddleState.getLocation(),leftPaddleState.getWidth(),leftPaddleState.getHeight(),leftPaddleMovementPath,null,CollisionTypes.LEFT, settings.getPaddle1Color());
-        //rightPaddle = new NormalPaddle(new Point(1160,450),rightPaddleMovementPath,emptyController,CollisionTypes.RIGHT);
+
         BoardState.BallState ballState = state.getBallState();
         ball = new Ball(ballState.getLocation(), ballState.getRadius(), ballState.getSpeed(), ballState.getAcceleration(), settings.getBallColor());
 
@@ -202,6 +201,10 @@ public class Board implements Runnable {
 
     }
 
+    /*
+    The method which actually runs the whole game on the backend. This is then called from the facade in order to update
+    the board state.
+     */
     @Override
     public void run() {
         time += MILLISECONDS_PER_TICK/1000f;
@@ -287,15 +290,19 @@ public class Board implements Runnable {
         }
 
         /*
-        Removes the power ups from the spawned power
+        Removes the power ups from the spawnedPowerUps list which are in the toRemove list and then clears the
+        toRemove list
          */
         for (PowerUp remPowerUp : toRemove){
-//                System.out.println("Remove!");
             spawnedPowerUps.remove(remPowerUp);
         }
         toRemove.clear();
     }
 
+    /*
+    Firstly, adds activated Power ups which have 'aged' to the toRemove list, and then removes it for the original lists
+    and clears the toRemove list
+     */
     private void handleActivePowers(){
         for(int i = 0;i<activatedPowerUps.size();i++){
             if (activatedPowerUps.get(i).agePowerUp()){
@@ -304,29 +311,36 @@ public class Board implements Runnable {
         }
 
         for (PowerUp remPowerUp : toRemove){
-            System.out.println("Remove!");
             activatedPowerUps.remove(remPowerUp);
             maintainedPowerUps.remove(remPowerUp);
         }
         toRemove.clear();
     }
 
+    /*
+    This method is used to check when a goal is scored and also see if the score limit has been reached
+     */
     public void checkScore() {
+        /*
+        If the game mode is Endless then the score limit is changed (to 1)
+         */
         if(gameMode == GameModes.END){
             if(this.getLeftScore() == ENDLESSMATCHPOINT || this.getRightScore() == ENDLESSMATCHPOINT){
                 endGame();
             }
         }
 
+        /*
+        In all other game modes the score limit is set to 5. If the score limit has not been reached then goals are 
+        counted and a new round is started. Otherwise the matchpoint has beenn reached and a winnner is declared. 
+        The game is then ended.
+         */
         if(!(this.getLeftScore() == MATCHPOINT || this.getRightScore() == MATCHPOINT)) {
             if (ball.getLocation().getX() < 0) {
-
                 rightGoal();
-                System.out.println(this.getLeftScore() + " : " + this.getRightScore());
                 newRound();
             } else if (ball.getLocation().getX() > 1200) {
                 this.leftGoal();
-                System.out.println(this.getLeftScore() + " : " + this.getRightScore());
                 newRound();
             }
         } else if(getLeftScore() == MATCHPOINT){
@@ -338,6 +352,10 @@ public class Board implements Runnable {
         }
     }
 
+    /*
+    This method is a randomizer for the ball start speed, setting the inital speed of the ball to a new random vector
+    (within limit).
+     */
     private void reRollSpeed(){
         float initialX = 7*random.nextInt(2);
         float initialY = 2*(random.nextInt(8)-4);
@@ -352,6 +370,10 @@ public class Board implements Runnable {
         initialSpeed = new Vector(initialX,initialY);
     }
 
+    /*
+    This method calls to clear all the power ups and power up spawning locations, resets the ball to its start location
+    and re-rolls the initial speed.
+     */
     private void newRound(){
         clearAllPowers();
         ball.getLocation().setX(BOARD_WIDTH/2);
@@ -364,6 +386,9 @@ public class Board implements Runnable {
         ball.setSpeed(initialSpeed);
     }
 
+    /*
+    Deactivates all power ups which are currently active as well as removes ALL power ups from all lists.
+     */
     private void clearAllPowers(){
         for (PowerUp activePower : activatedPowerUps){
             activePower.deactivate();
@@ -373,8 +398,9 @@ public class Board implements Runnable {
         maintainedPowerUps.clear();
     }
 
-
-
+    /*
+    Completely resets the game, setting both scores to zero and starts a new round
+     */
     public void restartGame(){
         setLeftScore(0);
         setRightScore(0);
@@ -383,18 +409,14 @@ public class Board implements Runnable {
     }
 
 
-    private Point randomizeLocation(){
+    /*
+    Randomizes the spawn spot based on if the spot is taken or not and returns the point
+     */
+    private Point randomizePowerUpSpawnLocation(){
         int locationIdentifier;
         for (int i = 0; i<10; i++){
             locationIdentifier = random.nextInt(4);
-
-
-
-
-//            System.out.println(!takenPoints[locationIdentifier]);
-
             if (!takenPoints[locationIdentifier]){
-
                 takenPoints[locationIdentifier] = true;
                 return powerPoints[locationIdentifier];
             }
@@ -402,45 +424,36 @@ public class Board implements Runnable {
         return null;
     }
 
-
+    /*
+    Spawns a power up based on if the randomized outcome is within 99% threshold, gives it a random spawn location, and
+    based on another randomized outcome chooses the type of power up. If the spawn outcome is not within the threshold
+    then the power up is null.
+     */
     private PowerUp spawnPowerUp(){
         double spawnOutcome = Math.random()*100;
 
         double spawnThreshold = POWERUPSPAWNTHRESHOLD;
-
-
+        
         if (spawnOutcome >= spawnThreshold)  {
 
-            Point spawnPoint = randomizeLocation();
+            Point spawnPoint = randomizePowerUpSpawnLocation();
             PowerUp spawnedPowerUp;
             double powerTypeOutcome = Math.random() * 100;
 
             if ((spawnPoint != null)){
                 if (powerTypeOutcome <= 10) {
                     spawnedPowerUp = new InvisPower(this, spawnPoint);
-                    System.out.println("Invisible Power Up Spawned!");
-                    //spawn invis power
                 } else if (powerTypeOutcome <= 40) {
                     spawnedPowerUp = new ElongatePaddlePower(this, spawnPoint);
-                    System.out.println("Elongated Paddle Power Up Spawned!");
-                    //spawn elongated paddle
                 } else if (powerTypeOutcome <= 70) {
                     spawnedPowerUp = new RandomSpeedPower(this, spawnPoint);
-                    System.out.println("Random Speed Power Up Spawned!");
-                    //spawn random speed power up
                 } else {
                     spawnedPowerUp = new StrengthPower(this, spawnPoint);
-                    System.out.println("Strengthened Paddle Power Up Spawned!");
-                    //spawn strengthened paddle
                 }
                 return spawnedPowerUp;
             }
         }
         return null;
-    }
-
-    private void powerUpType(){
-
     }
 
     public void endGame(){

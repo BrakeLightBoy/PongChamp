@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import pongchamp.pongchamp.controller.FXKeyHandler;
 import pongchamp.pongchamp.controller.InGameKeyListener;
-import pongchamp.pongchamp.controller.json.JsonAPI;
 import pongchamp.pongchamp.model.Board;
 import pongchamp.pongchamp.model.GameModes;
 import pongchamp.pongchamp.model.Properties;
@@ -39,13 +38,12 @@ public class GameRenderer extends Application{
     MainController mainController;
     GameModes chosenGameMode;
     boolean powerUpsChosen;
-    JsonAPI jsonAPI;
+
 
     public GameRenderer(GameModes gameMode, boolean withPowerUps, MainController mainController) {
-        jsonAPI = new JsonAPI();
         try {
-            facade = new Facade(gameMode, withPowerUps, jsonAPI.loadSettings());
-        } catch (IOException e) {
+            facade = new Facade(gameMode, withPowerUps);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         this.chosenGameMode = gameMode;
@@ -54,7 +52,6 @@ public class GameRenderer extends Application{
     }
 
     public GameRenderer(GameModes gameMode, boolean withPowerUps, MainController mainController, Board newBoard) throws IOException {
-        jsonAPI = new JsonAPI();
         facade = new Facade(newBoard);
         this.chosenGameMode = gameMode;
         this.powerUpsChosen = withPowerUps;
@@ -62,9 +59,12 @@ public class GameRenderer extends Application{
 
     }
 
+    /*
+    This start method sets the scene, as well as the tick rate through the timeline and cycle count. This also adds the
+    buttons to the scene as well as the key listeners which allow for the paddle movement.
+     */
     public void start(Stage stage) {
         stage.setTitle("PONGCHAMP");
-        //background size
 
         AnchorPane anchorPane = new AnchorPane();
 
@@ -74,9 +74,8 @@ public class GameRenderer extends Application{
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        //JavaFX Timeline = free form animation defined by KeyFrames and their duration
         Timeline tl = new Timeline(new KeyFrame(Duration.millis(Properties.MILLISECONDS_PER_TICK), e -> run(gc)));
-        //number of cycles in animation INDEFINITE = repeat indefinitely
+
         tl.setCycleCount(Timeline.INDEFINITE);
 
         Scene scene = new Scene(anchorPane);
@@ -89,15 +88,12 @@ public class GameRenderer extends Application{
                 }
         );
 
-
-
         double[] resumePosition = {(double) Properties.BOARD_WIDTH*0.45-97,(double) Properties.BOARD_HEIGHT*0.52};
         gameResume = createButton("ResumeBtn","Resume",false,resumePosition, 2, e -> {
                     hideButtons();
                     facade.resumeGame();
                 }
         );
-
 
         double[] exitPosition = {(double) Properties.BOARD_WIDTH*0.45+200,(double) Properties.BOARD_HEIGHT*0.52};
         gameExit = createButton("ExitBtn","Exit",false, exitPosition,2, e -> {
@@ -108,14 +104,12 @@ public class GameRenderer extends Application{
             }
         });
 
-
-
         if(!powerUpsChosen){
             double[] savePosition = {(double) Properties.BOARD_WIDTH*0.50,(double) Properties.BOARD_HEIGHT*0.65};
             gameSave = createButton("SaveBtn", "Save Game", false
             ,savePosition,2, e-> {
                         try {
-                            jsonAPI.saveGame(facade.getGameBoard());
+                            facade.saveGame();
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -165,19 +159,27 @@ public class GameRenderer extends Application{
         tl.play();
     }
 
+
+    /*
+    Sets the visibility of all buttons to false
+     */
     private void hideButtons(){
         for (Button button : buttons) {
             button.setVisible(false);
         }
     }
 
-
-
+    /*
+    Draws the gamefield with the settings background color and at the properties set width and set height
+     */
     private void drawBoard(GraphicsContext gc){
         gc.setFill(facade.getBackgroundColor());
         gc.fillRect(0, 0, Properties.BOARD_WIDTH, Properties.BOARD_HEIGHT);
     }
 
+    /*
+    If the ball visibility is true then it draws the ball with the settings set ball color and location from the facade.
+     */
     private void drawBall(GraphicsContext gc){
         if (facade.getBallVisibility()){
             gc.setFill(facade.getBallColor());
@@ -188,6 +190,9 @@ public class GameRenderer extends Application{
         }
     }
 
+    /*
+    Draws the paddles based off of the settings set paddle color and location from the board
+     */
     private void drawPaddles(GraphicsContext gc){
         gc.setFill(facade.getPaddle1Color());
         float[] leftPaddlePos = facade.getLeftPaddlePosition();
@@ -201,6 +206,9 @@ public class GameRenderer extends Application{
 
     }
 
+    /*
+    Takes the score from the facade and draws this onto the gamefield
+     */
     private void drawScore(GraphicsContext gc){
         gc.setFill(Properties.FONT_COLOR);
         gc.setFont(Properties.FONT_SIZE);
@@ -209,6 +217,9 @@ public class GameRenderer extends Application{
         gc.fillText(String.valueOf(score[1]), Properties.BOARD_WIDTH*3/4, Properties.BOARD_HEIGHT*1/10);
     }
 
+    /*
+    Takes the time from the facade and draws this onto the gamefield
+     */
     private void drawTimer(GraphicsContext gc){
         gc.setFill(Properties.FONT_COLOR);
         gc.setFont(Properties.FONT_SIZE);
@@ -216,6 +227,9 @@ public class GameRenderer extends Application{
         gc.fillText(time,Properties.BOARD_WIDTH*1/2,Properties.BOARD_HEIGHT*1/10);
     }
 
+    /*
+    Based off of the hashmap containing the powerups received from the facade, as well as colors, we draw the power ups.
+     */
     private void drawPowerUps(GraphicsContext gc){
         HashMap<Class<? extends PowerUp>, ArrayList<Float[]>> powerMap = facade.returnPowerMap();
         HashMap<Class<? extends PowerUp>, Color> powerColors = facade.returnPowerColors();
@@ -231,6 +245,10 @@ public class GameRenderer extends Application{
         });
     }
 
+    /*
+    Sets the pause button visibilities to true, and depending on whether power ups are on may also show the save button
+    Then proceeds to pause the game
+     */
     private void pauseGame(){
         gameExit.setVisible(true);
         gameResume.setVisible(true);
@@ -253,6 +271,9 @@ public class GameRenderer extends Application{
         facade.pauseGame();
     }
 
+    /*
+    Sets the visiblity of the buttons back to false and resumes the game
+     */
     private void unPauseGame(){
         gameExit.setVisible(false);
         gameResume.setVisible(false);
@@ -265,6 +286,10 @@ public class GameRenderer extends Application{
         facade.resumeGame();
     }
 
+    /*
+    Based on the gamemode, the game displays end game text, and reveals end game buttons.
+    The facades end game method is also called so that the game does not continue to run in the background.
+     */
     private void endGame(GraphicsContext gc){
         gc.setFill(Properties.FONT_COLOR);
         gc.setFont(Properties.FONT_SIZE);
@@ -280,14 +305,19 @@ public class GameRenderer extends Application{
         gameRestart.setLayoutX(Properties.BOARD_WIDTH*0.45);
     }
 
+    /*
+    Returns the user back to the gamemodes selection scene
+     */
     private void exitGame(Stage stage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("GameModeSelection.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
     }
 
+    /*
+    Method which actually makes the updating of game state visible to the user.
+     */
     private void run(GraphicsContext gc) {
-        //update gameBoard state
         facade.updateBoardState();
 
         drawBoard(gc);
@@ -310,7 +340,8 @@ public class GameRenderer extends Application{
         }
 
    }
-    // start the application
+
+
     public static void main(String[] args) {
         launch(args);
     }

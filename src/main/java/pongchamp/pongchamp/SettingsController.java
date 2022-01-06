@@ -103,7 +103,6 @@ public class SettingsController extends MainController implements Initializable 
         paddle2Colour.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("hello");
                 paddle2Preview.setFill(paddle2Colour.getValue());
                 Color colorpickerChoice = paddle2Colour.getValue();
                 newSettings.setPaddle2Color(colorpickerChoice);
@@ -117,7 +116,6 @@ public class SettingsController extends MainController implements Initializable 
         paddle1Colour.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                System.out.println("hello");
                 paddle1Preview.setFill(paddle1Colour.getValue());
                 Color colorpickerChoice = paddle1Colour.getValue();
                 newSettings.setPaddle1Color(colorpickerChoice);

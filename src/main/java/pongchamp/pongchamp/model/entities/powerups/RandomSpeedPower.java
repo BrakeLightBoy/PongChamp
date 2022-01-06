@@ -20,10 +20,10 @@ public class RandomSpeedPower extends PowerUp {
         super(gameBoard, location,duration,radius);
     }
 
-//    public void onCollect(){
-//        System.out.println("Picked up!");
-//    }
-
+    /*
+    Creates a new randomized speed which is added to the ball (this also gives it a randomized direction)
+    If the randomized speed ends up being 0 then it is automatically set to 3 (to avoid the ball completely stopping)
+     */
     public void activate(){
         Random random = new Random();
         extraSpeedX = random.nextInt(2);
@@ -40,6 +40,9 @@ public class RandomSpeedPower extends PowerUp {
         ball.speedUp(extraSpeedX,extraSpeedY);
     }
 
+    /*
+    Resets the ball speed to its prior speed
+     */
     public void deactivate(){
         ball.speedUp(-extraSpeedX,-extraSpeedY);
     }

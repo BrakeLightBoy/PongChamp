@@ -18,11 +18,16 @@ public class InvisPower extends PowerUp {
 
     Ball ball = gameBoard.getBall();
 
+    /*
+    Sets the visibility to false, causing the rendering of the ball to be stopped
+     */
     public void activate(){
-        System.out.println("The ball is invisible! Get recked bruh!");
         ball.setVisibility(false);
     }
 
+    /*
+    Resets the ball visibility to true, causing the rendering of the ball to continue
+     */
     public void deactivate(){
         ball.setVisibility(true);
     }
