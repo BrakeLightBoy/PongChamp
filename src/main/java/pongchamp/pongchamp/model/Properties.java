@@ -25,6 +25,8 @@ public class Properties {
     public static final double POWERUPSPAWNTHRESHOLD = 99;
 
     public static final int MATCHPOINT = 5;
+    public static final int ENDLESSMATCHPOINT = 1;
+
 
     public static final Color FONT_COLOR = Color.WHITE;
     public static final Font FONT_SIZE = Font.font(25);

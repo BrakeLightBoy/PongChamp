@@ -235,7 +235,11 @@ public class GameRenderer extends Application{
         gameExit.setVisible(true);
         gameResume.setVisible(true);
         gameRestart.setVisible(true);
-        gameSave.setVisible(true);
+
+        if(!powerUpsChosen) {
+            gameSave.setVisible(true);
+        }
+
         gameExit.setStyle("-fx-background-color: #900000; ");
         gameExit.setTextFill(Color.WHITE);
         gameExit.setOpacity(.9);
@@ -253,7 +257,10 @@ public class GameRenderer extends Application{
         gameExit.setVisible(false);
         gameResume.setVisible(false);
         gameRestart.setVisible(false);
-        gameSave.setVisible(false);
+
+        if(!powerUpsChosen) {
+            gameSave.setVisible(false);
+        }
 
         facade.resumeGame();
     }
@@ -261,7 +268,11 @@ public class GameRenderer extends Application{
     private void endGame(GraphicsContext gc){
         gc.setFill(Properties.FONT_COLOR);
         gc.setFont(Properties.FONT_SIZE);
-        gc.fillText(facade.getGameWinner() + " wins!", Properties.BOARD_WIDTH*9/20, Properties.BOARD_HEIGHT*1/2);
+        if(chosenGameMode == GameModes.END){
+            gc.fillText(" Your time was: " + facade.getTime(), Properties.BOARD_WIDTH*9/20, Properties.BOARD_HEIGHT*1/2);
+        } else {
+            gc.fillText(facade.getGameWinner() + " wins!", Properties.BOARD_WIDTH * 9 / 20, Properties.BOARD_HEIGHT * 1 / 2);
+        }
         gameRestart.setVisible(true);
         gameExit.setVisible(true);
         facade.endGame();

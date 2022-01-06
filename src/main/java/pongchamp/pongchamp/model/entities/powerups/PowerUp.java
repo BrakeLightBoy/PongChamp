@@ -17,7 +17,7 @@ public abstract class PowerUp extends Entity {
         super(location);
         this.powerColor = powerColor;
         this.gameBoard = gameBoard;
-        this.activatedDuration = 800; //the default duration (some random number just to test it)
+        this.activatedDuration = 400; //the default duration (some random number just to test it)
         this.radius = Properties.POWER_UP_RADIUS; //again just random for test
         this.decayDuration = 500;
     }

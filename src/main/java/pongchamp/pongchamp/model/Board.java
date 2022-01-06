@@ -202,22 +202,6 @@ public class Board implements Runnable {
 
     }
 
-    public List<PowerUp> getActivatedPowerUps(){
-        return activatedPowerUps;
-    }
-
-    public List<PowerUp> getSpawnedPowers() {
-        return spawnedPowerUps;
-    }
-
-    public Ball getBall() {
-        return ball;
-    }
-
-    public GameModes getGameMode() {
-        return gameMode;
-    }
-
     @Override
     public void run() {
         time += MILLISECONDS_PER_TICK/1000f;
@@ -239,12 +223,19 @@ public class Board implements Runnable {
         }
     }
 
+    /*
+    From the list of maintained power ups (currently limited to the strength power) calls each power ups tick method
+     */
     private void maintainPowerUps(){
         for (PowerUp maintainedPowerUp : maintainedPowerUps){
             maintainedPowerUp.tick();
         }
     }
 
+    /*
+    Checks to see if the max number of power ups has spawned, and if not tries to create a new power up, and add it to
+    the spawned power ups list
+     */
     private void spawnPowerUps(){
         if (spawnedPowerUps.size()<MAXNUMBEROFPOWERUPS){
             PowerUp newPower = spawnPowerUp();
@@ -254,21 +245,34 @@ public class Board implements Runnable {
         }
     }
 
+    /*
+    As there are four dedicated spawning spots for power ups, here it checks to find the spot which a power up spawned
+    at and then free it up (by changing the boolean to false from true)
+     */
     private void freeSpawningSpace(Point powerUpPoint){
         for(int i = 0; i< takenPoints.length; i++){
             if(powerUpPoint.equals(powerPoints[i])){
-                System.out.println("Before:"+takenPoints[i]);
                 takenPoints[i] = false;
-                System.out.println("After:"+takenPoints[i]);
             }
         }
     }
 
+    /*
+    Clears all spots in the takenPoints list (for example if the game restarts or a goal is scored) in one go
+     */
     private void purgeAllSpawningSpaces(){
         Arrays.fill(takenPoints, false);
     }
 
+    /*
+    Deals with spawned power ups. More detailed comments about for loops are described within the method
+     */
     private void handleSpawnedPowers(){
+        /*
+        Deals with spawned power ups, checking if the power up decayed (and if so frees up the spawn spot and adds it to
+        the toRemove list). If the power up has not decayed it checks to see if it has been collected by the ball
+        (and if so calls the power ups collect method and frees up the spawn and adds it to a removed list).
+         */
         for (int i = 0; i<spawnedPowerUps.size();i++){
             if (spawnedPowerUps.get(i).decay()){
                 freeSpawningSpace(spawnedPowerUps.get(i).getLocation());
@@ -282,6 +286,9 @@ public class Board implements Runnable {
             }
         }
 
+        /*
+        Removes the power ups from the spawned power
+         */
         for (PowerUp remPowerUp : toRemove){
 //                System.out.println("Remove!");
             spawnedPowerUps.remove(remPowerUp);
@@ -305,6 +312,12 @@ public class Board implements Runnable {
     }
 
     public void checkScore() {
+        if(gameMode == GameModes.END){
+            if(this.getLeftScore() == ENDLESSMATCHPOINT || this.getRightScore() == ENDLESSMATCHPOINT){
+                endGame();
+            }
+        }
+
         if(!(this.getLeftScore() == MATCHPOINT || this.getRightScore() == MATCHPOINT)) {
             if (ball.getLocation().getX() < 0) {
 
@@ -544,5 +557,21 @@ public class Board implements Runnable {
 
     public Color getBallColor() {
         return ball.getBallColor();
+    }
+
+    public List<PowerUp> getActivatedPowerUps(){
+        return activatedPowerUps;
+    }
+
+    public List<PowerUp> getSpawnedPowers() {
+        return spawnedPowerUps;
+    }
+
+    public Ball getBall() {
+        return ball;
+    }
+
+    public GameModes getGameMode() {
+        return gameMode;
     }
 }
