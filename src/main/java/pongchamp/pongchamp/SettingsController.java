@@ -73,27 +73,7 @@ public class SettingsController extends MainController implements Initializable 
     }
 
 
-    @FXML
-    public void playHit(ActionEvent event) {
-        String path = "pongchamp/src/main/resources/pongchamp/pongchamp/Sounds/Celebration by Kool and the Gang with.mp3";
-        Media media = new Media(new File(path).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
-        volumeSlider.setValue(mediaPlayer.getVolume() * 100);
-        volumeSlider.valueProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                mediaPlayer.setVolume(volumeSlider.getValue() / 100);
-            }
-        });
-        musicB.setOnAction(e -> {
-            if (musicB.isSelected()) {
-                mediaPlayer.pause();
-            } else {
-                mediaPlayer.play();
-            }
-        });
-    }
+
 // colour picker needs to be assigned to paddle/ball etc in back-end
     @Override
     public void initialize(URL location, ResourceBundle resources) {
